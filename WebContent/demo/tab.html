@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>睿峰网络雷达预警系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+	
+	<!-- Font Awesome -->
+	<link href="../css/font-awesome.min.css" rel="stylesheet">
+	
+	<!-- Pace -->
+	<link href="../css/pace.css" rel="stylesheet">
+	
+	<!-- Color box -->
+	<link href="../css/colorbox.css" rel="stylesheet">
+	
+	<!-- Morris -->
+	<link href="../css/morris.css" rel="stylesheet"/>	
+	
+	<!-- Endless -->
+	<link href="../css/endless.min.css" rel="stylesheet">
+	<link href="../css/endless-skin.css" rel="stylesheet">
+
+	<!-- Jquery -->
+	<script src="../js/jquery-1.10.2.min.js"></script>
+	
+  </head>
+
+  <body class="overflow-hidden">
+	<!-- Overlay Div -->
+	<div id="overlay" class="transparent"></div>
+	
+	
+	<a href="" id="theme-setting-icon"><i class="fa fa-cog fa-lg"></i></a>
+	<div id="theme-setting">
+		<div class="title">
+			<strong class="no-margin">Skin Color</strong>
+		</div>
+		<div class="theme-box">
+			<a class="theme-color" style="background:#323447" id="default"></a>
+			<a class="theme-color" style="background:#efefef" id="skin-1"></a>
+			<a class="theme-color" style="background:#a93922" id="skin-2"></a>
+			<a class="theme-color" style="background:#3e6b96" id="skin-3"></a>
+			<a class="theme-color" style="background:#635247" id="skin-4"></a>
+			<a class="theme-color" style="background:#3a3a3a" id="skin-5"></a>
+			<a class="theme-color" style="background:#495B6C" id="skin-6"></a>
+		</div>
+		<div class="title">
+			<strong class="no-margin">Sidebar Menu</strong>
+		</div>
+		<div class="theme-box">
+			<label class="label-checkbox">
+				<input type="checkbox" checked id="fixedSidebar">
+				<span class="custom-checkbox"></span>
+				Fixed Sidebar
+			</label>
+		</div>
+	</div><!-- /theme-setting -->
+
+	<div id="wrapper" class="preload">
+		
+		<!-- 头部 -->
+		<div id="top-nav" class="fixed skin-6">
+			<a href="#" class="brand">
+				<span class="text-toggle"> LOGO</span>
+			</a><!-- /brand -->					
+			<button type="button" class="navbar-toggle pull-left" id="sidebarToggle">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<button type="button" class="navbar-toggle pull-left hide-menu" id="menuToggle">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<ul class="nav-notification clearfix">
+				<!-- alert -->
+				<li class="dropdown">
+					<a id="alert_href" href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<i class="fa fa-bell fa-lg"></i>
+					</a>
+					<ul class="dropdown-menu notification dropdown-3">
+						<li><a href="#">You have 5 new notifications</a></li>					  
+						<li>
+							<a href="#">
+								<span class="notification-icon bg-warning">
+									<i class="fa fa-warning"></i>
+								</span>
+								<span class="m-left-xs">Server #2 not responding.</span>
+								<span class="time text-muted">Just now</span>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<span class="notification-icon bg-success">
+									<i class="fa fa-plus"></i>
+								</span>
+								<span class="m-left-xs">New user registration.</span>
+								<span class="time text-muted">2m ago</span>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<span class="notification-icon bg-danger">
+									<i class="fa fa-bolt"></i>
+								</span>
+								<span class="m-left-xs">Application error.</span>
+								<span class="time text-muted">5m ago</span>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<span class="notification-icon bg-success">
+									<i class="fa fa-usd"></i>
+								</span>
+								<span class="m-left-xs">2 items sold.</span>
+								<span class="time text-muted">1hr ago</span>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<span class="notification-icon bg-success">
+									<i class="fa fa-plus"></i>
+								</span>
+								<span class="m-left-xs">New user registration.</span>
+								<span class="time text-muted">1hr ago</span>
+							</a>
+						</li>
+						<li><a href="#">View all notifications</a></li>					  
+					</ul>
+				</li>
+				<!-- sysadmin -->
+				<li class="profile dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+						<strong id="userName">admin</strong>
+						<span><i class="fa fa-chevron-down"></i></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a class="clearfix" href="#">
+								<img src="../img/user.jpg" alt="User Avatar"/>
+								<div class="detail">
+									<strong>John Doe</strong>
+									<p class="grey">John_Doe@email.com</p> 
+								</div> 
+							</a>
+						</li>
+						<!-- Modify the password -->
+						<li><a tabindex="-1" data-toggle="modal" data-target="#editPassWord" class="main-link"><i class="fa fa-edit fa-lg"></i>修改密码</a></li>
+						
+						<li><a tabindex="-1" class="main-link logoutConfirm_open" href="#logoutConfirm"><i class="fa fa-lock fa-lg"></i>退出</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div><!-- /top-nav-->
+		
+		
+		<!-- Logout confirmation -->
+		<div class="custom-popup width-100" id="logoutConfirm" style="display: none;">
+			<div class="padding-md">
+				<h2 class="m-top-none" style="color:#DBC7C7;">您确定要退出睿峰网络雷达预警系统吗？</h2>
+			</div>
+	
+			<div class="text-center">
+				<a class="btn btn-success m-right-sm" href="../auth/loginOut">确定</a>
+				<a class="btn btn-danger logoutConfirm_close">取消</a>
+			</div>
+		</div>
+		
+		<!-- 提醒框 -->
+		<div class="modal fade " id="top_modal" tabindex="-1" role="dialog" aria-hidden="true">
+			   <div class="modal-dialog">
+			      <div class="modal-content">
+			         <div class="modal-header ">
+			            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+			                  &times;
+			            </button>
+			            <h4 class="modal-title">
+			             	提醒
+			            </h4>
+			         </div>
+			         <div class="modal-body" >
+			         	<h5 id="top_info"></h5>
+			         </div>
+			         <div class="modal-footer">
+			            <button type="button" class="btn btn-success" data-dismiss="modal">确定</button>
+			         </div>
+			      </div><!-- /.modal-content -->
+			</div><!-- /.modal -->
+		</div>
+		
+		<!-- 左侧目录 -->
+		<aside class="fixed skin-6">
+			<div class="sidebar-inner scrollable-sidebar">
+				
+				<div class="main-menu">
+					<ul>
+						<li class="openable">
+							<a href="javascript:void(0)">
+								<span class="menu-icon">
+									<i class="fa fa-file-text fa-lg"></i> 
+								</span>
+								<span class="text">
+									常用部件
+								</span>
+								<span class="badge badge-success bounceIn animation-delay5">7</span>
+								<span class="menu-hover"></span>
+							</a>
+							<ul class="submenu" style="display:block">
+								<li id="button"><a href="index.html?name=button"><span class="menu-icon"><i class="fa fa-tag fa-lg"></i></span> <span class="submenu-label">按钮</span></a></li>
+								<li id="form"><a href="Form Element.html?name=form"><span class="menu-icon"> <i class="fa fa-clock-o fa-lg"></i></span> <span class="submenu-label">表单</span></a></li>
+								<li id="tab" class="active"><a href="tab.html?name=tab"><span class="menu-icon"> <i class="fa fa-picture-o fa-lg"></i></span> <span class="submenu-label">TAB页</span></a></li>
+								<li id="table"><a href="table.html?name=table"><span class="menu-icon"> <i class="fa fa-envelope fa-lg"></i></span> <span class="submenu-label">表格</span></a></li>
+								<li id="timeLine"><a href="timeLine.html?name=timeLine"><span class="menu-icon"> <i class="fa fa-tasks fa-lg"></i> </span> <span class="submenu-label">时间轴</span></a></li>
+								<li id="ui"><a href="ui.html?name=ui"><span class="menu-icon"> <i class="fa fa-magic fa-lg"></i></span> <span class="submenu-label">ui组件</span></a></li>
+								<li id="validate"><a href="validate.html?name=validate"><span class="menu-icon"><i class="fa fa-desktop fa-lg"></i></span> <span class="submenu-label">校验</span></a></li>
+								<li id="widget"><a href="widget.html?name=widget"><span class="menu-icon"><i class="fa fa-rss fa-lg"></i></span> <span class="submenu-label">小部件</span></a></li>
+							</ul>
+						</li>
+						<!-- 
+						<li>
+							<a href="#">
+								<span class="menu-icon">
+									<i class="fa fa-tag fa-lg"></i> 
+								</span>
+								<span class="text">
+									增删改查
+								</span>
+								<span class="menu-hover"></span>
+							</a>
+						</li>
+						 -->
+					</ul>
+					
+					<div class="alert alert-info">
+						欢迎使用睿峰网云网络监控与分析系统
+					</div>
+				</div><!-- /main-menu -->
+			</div><!-- /sidebar-inner -->
+		</aside>
+		
+		
+		<div id="main-container">
+			<div id="breadcrumb">
+				<ul class="breadcrumb">
+					 <li><i class="fa fa-info-circle"></i>&nbsp;&nbsp;TAB页</li> 
+				</ul>
+			</div><!-- /breadcrumb-->
+			<div class="padding-md">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								Basic Tab
+							</div>
+							<div class="panel-tab clearfix">
+								<ul class="tab-bar">
+									<li class="active"><a href="#home1" data-toggle="tab"><i class="fa fa-home"></i> Home</a></li>
+									<li><a href="#profile1" data-toggle="tab"><i class="fa fa-pencil"></i> Profile</a></li>
+									<li><a href="#message1" data-toggle="tab"><i class="fa fa-envelope"></i> Message</a></li>
+								</ul>
+							</div>
+							<div class="panel-body">
+								<div class="tab-content">
+									<div class="tab-pane fade in active" id="home1">
+										<p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
+									</div>
+									<div class="tab-pane fade" id="profile1">
+										<p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.</p>
+									</div>
+									<div class="tab-pane fade" id="message1">
+										<p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu synth chambray yr.</p>
+									</div>
+								</div>
+							</div>
+						</div><!-- /panel -->
+					</div><!-- /.col -->
+					<div class="col-md-6">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								Basic Tab
+							</div>
+							<div class="panel-tab clearfix">
+								<ul class="tab-bar right">
+									<li class="active"><a href="#home2" data-toggle="tab"><i class="fa fa-home"></i> Home</a></li>
+									<li><a href="#profile2" data-toggle="tab"><i class="fa af-pencil"></i> Profile</a></li>
+									<li><a href="#message2" data-toggle="tab"><i class="fa fa-envelope"></i> Message</a></li>
+								</ul>
+							</div>
+							<div class="panel-body">
+								<div class="tab-content">
+									<div class="tab-pane fade in active" id="home2">
+										<p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
+									</div>
+									<div class="tab-pane fade" id="profile2">
+										<p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.</p>
+									</div>
+									<div class="tab-pane fade" id="message2">
+										<p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu synth chambray yr.</p>
+									</div>
+								</div>
+							</div>
+						</div><!-- /panel -->
+					</div><!-- /.col -->
+				</div><!-- /.row -->
+				<div class="row">
+					<div class="col-md-6">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								Left Tab
+							</div>
+							<div class="panel-body no-padding">
+								<div class="tab-left">
+									<ul class="tab-bar">
+										<li class="active"><a href="#home3" data-toggle="tab"><i class="fa fa-home"></i> Home</a></li>
+										<li><a href="#profile3" data-toggle="tab"><i class="fa fa-pencil"></i> Profile</a></li>
+										<li><a href="#message3" data-toggle="tab"><i class="fa fa-envelope"></i> Message</a></li>
+									</ul>
+									<div class="tab-content">
+										<div class="tab-pane fade in active" id="home3">
+											<p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
+										</div>
+										<div class="tab-pane fade" id="profile3">
+											<p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.</p>
+										</div>
+										<div class="tab-pane fade" id="message3">
+											<p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu synth chambray yr.</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div><!-- /panel -->
+					</div><!-- /.col -->
+					<div class="col-md-6">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								Right Tab
+							</div>
+							<div class="panel-body no-padding">
+								<div class="tab-right">
+									<ul class="tab-bar">
+										<li class="active"><a href="#home4" data-toggle="tab"><i class="fa fa-home"></i> Home</a></li>
+										<li><a href="#profile4" data-toggle="tab"><i class="fa fa-pencil"></i> Profile</a></li>
+										<li><a href="#message4" data-toggle="tab"><i class="fa fa-envelope"></i> Message</a></li>
+									</ul>
+									<div class="tab-content">
+										<div class="tab-pane fade in active" id="home4">
+											<p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
+										</div>
+										<div class="tab-pane fade" id="profile4">
+											<p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.</p>
+										</div>
+										<div class="tab-pane fade" id="message4">
+											<p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu synth chambray yr.</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div><!-- panel -->
+					</div><!-- /.col -->
+				</div><!-- /.row-->
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Wizard Steps
+					</div>
+					<div class="panel-tab">	
+						<ul class="wizard-steps" id="wizardTab"> 
+							<li class="active">
+								<a href="#wizardContent1" data-toggle="tab">Step 1</a>
+							</li> 
+							<li>
+								<a href="#wizardContent2" data-toggle="tab">Step 2</a>
+							</li> 
+							<li>
+								<a href="#wizardContent3" data-toggle="tab">Step 3</a>
+							</li>
+						</ul>
+					</div>
+					<div class="panel-body">
+						<div class="tab-content">
+							<div class="tab-pane fade in active" id="wizardContent1">
+								<p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
+							</div>
+							<div class="tab-pane fade" id="wizardContent2">
+								<p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.</p>
+							</div>
+							<div class="tab-pane fade" id="wizardContent3">
+								<p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu synth chambray yr.</p>
+							</div>
+						</div>
+					</div>
+					<div class="panel-footer">
+						<button class="btn btn-success btn-sm disabled" id="prevStep" disabled="">Previous</button>
+						<button type="submit" class="btn btn-sm btn-success" id="nextStep">Next</button>
+
+						<div class="pull-right" style="width:30%">
+							<div class="progress progress-striped active m-top-sm m-bottom-none">
+								<div class="progress-bar progress-bar-success" id="wizardProgress" style="width:33%;"></div>
+							</div>
+						</div>
+					</div>
+				</div><!-- /panel -->
+			</div><!-- /.padding20 -->
+		</div>
+		
+		
+	</div><!-- /wrapper -->
+
+	<a href="" id="scroll-to-top" class="hidden-print"><i class="fa fa-chevron-up"></i></a>
+
+	
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+	
+	<!-- Bootstrap -->
+    <script src="../js/bootstrap.js"></script>
+   
+	<!-- Flot -->
+	<script src='../js/jquery.flot.min.js'></script>
+   
+	<!-- Morris -->
+	<script src='../js/rapheal.min.js'></script>	
+	<script src='../js/morris.min.js'></script>	
+	
+	<!-- Colorbox -->
+	<script src='../js/jquery.colorbox.min.js'></script>	
+
+	<!-- Sparkline -->
+	<script src='../js/jquery.sparkline.min.js'></script>
+	
+	<!-- Pace -->
+	<script src='../js/pace.js'></script>
+	
+	<!-- Popup Overlay -->
+	<script src='../js/jquery.popupoverlay.min.js'></script>
+	
+	<!-- Slimscroll -->
+	<script src='../js/jquery.slimscroll.min.js'></script>
+	
+	<!-- Modernizr -->
+	<script src='../js/modernizr.min.js'></script>
+	
+	<!-- Cookie -->
+	<script src='../js/jquery.cookie.min.js'></script>
+	
+	<!-- Endless 
+	<script src="../js/endless_dashboard.js"></script>
+	-->
+	<script src="../js/endless.js"></script>
+	
+  </body>
+</html>
+    

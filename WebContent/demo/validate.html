@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>睿峰网络雷达预警系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+	
+	<!-- Font Awesome -->
+	<link href="../css/font-awesome.min.css" rel="stylesheet">
+	
+	<!-- Pace -->
+	<link href="../css/pace.css" rel="stylesheet">
+	
+	<!-- Color box -->
+	<link href="../css/colorbox.css" rel="stylesheet">
+	
+	<!-- Morris -->
+	<link href="../css/morris.css" rel="stylesheet"/>	
+	
+	<!-- Endless -->
+	<link href="../css/endless.min.css" rel="stylesheet">
+	<link href="../css/endless-skin.css" rel="stylesheet">
+
+	<!-- Jquery -->
+	<script src="../js/jquery-1.10.2.min.js"></script>
+	
+  </head>
+
+  <body class="overflow-hidden">
+	<!-- Overlay Div -->
+	<div id="overlay" class="transparent"></div>
+	
+	
+	<a href="" id="theme-setting-icon"><i class="fa fa-cog fa-lg"></i></a>
+	<div id="theme-setting">
+		<div class="title">
+			<strong class="no-margin">Skin Color</strong>
+		</div>
+		<div class="theme-box">
+			<a class="theme-color" style="background:#323447" id="default"></a>
+			<a class="theme-color" style="background:#efefef" id="skin-1"></a>
+			<a class="theme-color" style="background:#a93922" id="skin-2"></a>
+			<a class="theme-color" style="background:#3e6b96" id="skin-3"></a>
+			<a class="theme-color" style="background:#635247" id="skin-4"></a>
+			<a class="theme-color" style="background:#3a3a3a" id="skin-5"></a>
+			<a class="theme-color" style="background:#495B6C" id="skin-6"></a>
+		</div>
+		<div class="title">
+			<strong class="no-margin">Sidebar Menu</strong>
+		</div>
+		<div class="theme-box">
+			<label class="label-checkbox">
+				<input type="checkbox" checked id="fixedSidebar">
+				<span class="custom-checkbox"></span>
+				Fixed Sidebar
+			</label>
+		</div>
+	</div><!-- /theme-setting -->
+
+	<div id="wrapper" class="preload">
+		
+		<!-- 头部 -->
+		<div id="top-nav" class="fixed skin-6">
+			<a href="#" class="brand">
+				<span class="text-toggle"> LOGO</span>
+			</a><!-- /brand -->					
+			<button type="button" class="navbar-toggle pull-left" id="sidebarToggle">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<button type="button" class="navbar-toggle pull-left hide-menu" id="menuToggle">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<ul class="nav-notification clearfix">
+				<!-- alert -->
+				<li class="dropdown">
+					<a id="alert_href" href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<i class="fa fa-bell fa-lg"></i>
+					</a>
+					<ul class="dropdown-menu notification dropdown-3">
+						<li><a href="#">You have 5 new notifications</a></li>					  
+						<li>
+							<a href="#">
+								<span class="notification-icon bg-warning">
+									<i class="fa fa-warning"></i>
+								</span>
+								<span class="m-left-xs">Server #2 not responding.</span>
+								<span class="time text-muted">Just now</span>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<span class="notification-icon bg-success">
+									<i class="fa fa-plus"></i>
+								</span>
+								<span class="m-left-xs">New user registration.</span>
+								<span class="time text-muted">2m ago</span>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<span class="notification-icon bg-danger">
+									<i class="fa fa-bolt"></i>
+								</span>
+								<span class="m-left-xs">Application error.</span>
+								<span class="time text-muted">5m ago</span>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<span class="notification-icon bg-success">
+									<i class="fa fa-usd"></i>
+								</span>
+								<span class="m-left-xs">2 items sold.</span>
+								<span class="time text-muted">1hr ago</span>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<span class="notification-icon bg-success">
+									<i class="fa fa-plus"></i>
+								</span>
+								<span class="m-left-xs">New user registration.</span>
+								<span class="time text-muted">1hr ago</span>
+							</a>
+						</li>
+						<li><a href="#">View all notifications</a></li>					  
+					</ul>
+				</li>
+				<!-- sysadmin -->
+				<li class="profile dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+						<strong id="userName">admin</strong>
+						<span><i class="fa fa-chevron-down"></i></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a class="clearfix" href="#">
+								<img src="../img/user.jpg" alt="User Avatar"/>
+								<div class="detail">
+									<strong>John Doe</strong>
+									<p class="grey">John_Doe@email.com</p> 
+								</div> 
+							</a>
+						</li>
+						<!-- Modify the password -->
+						<li><a tabindex="-1" data-toggle="modal" data-target="#editPassWord" class="main-link"><i class="fa fa-edit fa-lg"></i>修改密码</a></li>
+						
+						<li><a tabindex="-1" class="main-link logoutConfirm_open" href="#logoutConfirm"><i class="fa fa-lock fa-lg"></i>退出</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div><!-- /top-nav-->
+		
+		
+		<!-- Logout confirmation -->
+		<div class="custom-popup width-100" id="logoutConfirm" style="display: none;">
+			<div class="padding-md">
+				<h2 class="m-top-none" style="color:#DBC7C7;">您确定要退出睿峰网络雷达预警系统吗？</h2>
+			</div>
+	
+			<div class="text-center">
+				<a class="btn btn-success m-right-sm" href="../auth/loginOut">确定</a>
+				<a class="btn btn-danger logoutConfirm_close">取消</a>
+			</div>
+		</div>
+		
+		<!-- 提醒框 -->
+		<div class="modal fade " id="top_modal" tabindex="-1" role="dialog" aria-hidden="true">
+			   <div class="modal-dialog">
+			      <div class="modal-content">
+			         <div class="modal-header ">
+			            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+			                  &times;
+			            </button>
+			            <h4 class="modal-title">
+			             	提醒
+			            </h4>
+			         </div>
+			         <div class="modal-body" >
+			         	<h5 id="top_info"></h5>
+			         </div>
+			         <div class="modal-footer">
+			            <button type="button" class="btn btn-success" data-dismiss="modal">确定</button>
+			         </div>
+			      </div><!-- /.modal-content -->
+			</div><!-- /.modal -->
+		</div>
+		
+		<!-- 左侧目录 -->
+		<aside class="fixed skin-6">
+			<div class="sidebar-inner scrollable-sidebar">
+				
+				<div class="main-menu">
+					<ul>
+						<li class="openable">
+							<a href="javascript:void(0)">
+								<span class="menu-icon">
+									<i class="fa fa-file-text fa-lg"></i> 
+								</span>
+								<span class="text">
+									常用部件
+								</span>
+								<span class="badge badge-success bounceIn animation-delay5">7</span>
+								<span class="menu-hover"></span>
+							</a>
+							<ul class="submenu" style="display:block">
+								<li id="button"><a href="index.html?name=button"><span class="menu-icon"><i class="fa fa-tag fa-lg"></i></span> <span class="submenu-label">按钮</span></a></li>
+								<li id="form"><a href="Form Element.html?name=form"><span class="menu-icon"> <i class="fa fa-clock-o fa-lg"></i></span> <span class="submenu-label">表单</span></a></li>
+								<li id="tab"><a href="tab.html?name=tab"><span class="menu-icon"> <i class="fa fa-picture-o fa-lg"></i></span> <span class="submenu-label">TAB页</span></a></li>
+								<li id="table"><a href="table.html?name=table"><span class="menu-icon"> <i class="fa fa-envelope fa-lg"></i></span> <span class="submenu-label">表格</span></a></li>
+								<li id="timeLine"><a href="timeLine.html?name=timeLine"><span class="menu-icon"> <i class="fa fa-tasks fa-lg"></i> </span> <span class="submenu-label">时间轴</span></a></li>
+								<li id="ui"><a href="ui.html?name=ui"><span class="menu-icon"> <i class="fa fa-magic fa-lg"></i></span> <span class="submenu-label">ui组件</span></a></li>
+								<li id="validate" class="active"><a href="validate.html?name=validate"><span class="menu-icon"><i class="fa fa-desktop fa-lg"></i></span> <span class="submenu-label">校验</span></a></li>
+								<li id="widget"><a href="widget.html?name=widget"><span class="menu-icon"><i class="fa fa-rss fa-lg"></i></span> <span class="submenu-label">小部件</span></a></li>
+							</ul>
+						</li>
+						<!-- 
+						<li>
+							<a href="#">
+								<span class="menu-icon">
+									<i class="fa fa-tag fa-lg"></i> 
+								</span>
+								<span class="text">
+									增删改查
+								</span>
+								<span class="menu-hover"></span>
+							</a>
+						</li>
+						 -->
+					</ul>
+					
+					<div class="alert alert-info">
+						欢迎使用睿峰网云网络监控与分析系统
+					</div>
+				</div><!-- /main-menu -->
+			</div><!-- /sidebar-inner -->
+		</aside>
+		
+		<div id="main-container">
+		
+			<div id="breadcrumb">
+				<ul class="breadcrumb">
+					 <li><i class="fa fa-info-circle"></i>&nbsp;&nbsp;表单校验</li> 
+				</ul>
+			</div><!-- /breadcrumb-->
+			<div class="padding-md">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="panel panel-default">
+							<form class="form-horizontal form-border no-margin" id="basic-constraint" data-validate="parsley" novalidate="">
+								<div class="panel-heading">
+									Basic Constraints
+								</div>
+								<div class="panel-body">
+									<div class="form-group">
+										<label class="control-label col-lg-3">Required</label>
+										<div class="col-lg-9">
+											<input type="text" class="form-control input-sm parsley-validated" data-required="true" placeholder="Required Field">
+											<div class="seperator"></div>
+											<label class="label-checkbox inline">
+												<input type="checkbox" data-required="true" name="chk-demo" class="parsley-validated">
+												<span class="custom-checkbox"></span>
+												Checkbox
+											</label>
+										</div><!-- /.col -->
+									</div><!-- /form-group -->
+									<div class="form-group">
+										<label class="control-label col-lg-3">Min Length</label>
+										<div class="col-lg-9">
+											<input type="text" class="form-control input-sm parsley-validated" data-minlength="6" placeholder="minlenght = 6">
+										</div><!-- /.col -->
+									</div><!-- /form-group -->
+									<div class="form-group">
+										<label class="control-label col-lg-3">Max Length</label>
+										<div class="col-lg-9">
+											<input type="text" class="form-control input-sm parsley-validated" data-maxlength="6" placeholder="maxlenght = 6">
+										</div><!-- /.col -->
+									</div><!-- /form-group -->
+									<div class="form-group">
+										<label class="control-label col-lg-3">Range Length</label>
+										<div class="col-lg-9">
+											<input type="text" class="form-control input-sm parsley-validated" data-rangelength="[5,10]" placeholder="rangelength = [5,10]">
+										</div><!-- /.col -->
+									</div><!-- /form-group -->
+									<div class="form-group">
+										<label class="control-label col-lg-3">Min (number)</label>
+										<div class="col-lg-9">
+											<input type="text" class="form-control input-sm parsley-validated" data-min="6" placeholder="Min = 6">
+										</div><!-- /.col -->
+									</div><!-- /form-group -->
+									<div class="form-group">
+										<label class="control-label col-lg-3">Max (number)</label>
+										<div class="col-lg-9">
+											<input type="text" class="form-control input-sm parsley-validated" data-max="100" placeholder="Max = 100">
+										</div><!-- /.col -->
+									</div><!-- /form-group -->
+									<div class="form-group">
+										<label class="control-label col-lg-3">Range (number)</label>
+										<div class="col-lg-9">
+											<input type="text" class="form-control input-sm parsley-validated" data-range="[6, 100]" placeholder="range = [6,100]">
+										</div><!-- /.col -->
+									</div><!-- /form-group -->
+									<div class="form-group">
+										<label class="control-label col-lg-3">Equal To</label>
+										<div class="col-lg-9">
+											<input type="password" placeholder="Password" class="form-control input-sm" id="textbox1">
+											<div class="seperator"></div>
+											<input type="password" placeholder="Confirm Password" class="form-control input-sm parsley-validated" data-equalto="#textbox1">
+										</div><!-- /.col -->
+									</div><!-- /form-group -->
+								</div>
+								<div class="panel-footer">
+									<button type="submit" class="btn btn-success">Submit</button>
+								</div>
+							</form>
+						</div><!-- /panel -->
+					</div><!-- /.col-->
+					<div class="col-md-6">
+						<div class="panel panel-default">
+							<form class="form-horizontal form-border no-margin" id="type-constraint" data-validate="parsley" novalidate="">
+								<div class="panel-heading">
+									Type Constraints
+								</div>
+								<div class="panel-body">
+									<div class="form-group">
+										<label class="control-label col-lg-3">Email</label>
+										<div class="col-lg-9">
+											<input type="text" class="form-control input-sm parsley-validated" data-type="email" placeholder="Email Address">
+										</div><!-- /.col -->
+									</div><!-- /form-group -->
+									<div class="form-group">
+										<label class="control-label col-lg-3">Url</label>
+										<div class="col-lg-9">
+											<input type="text" class="form-control input-sm parsley-validated" data-type="url" placeholder="Url">
+										</div><!-- /.col -->
+									</div><!-- /form-group -->
+									<div class="form-group">
+										<label class="control-label col-lg-3">Url Strict</label>
+										<div class="col-lg-9">
+											<input type="text" class="form-control input-sm parsley-validated" data-type="urlstrict" placeholder="http://yourSite.com">
+										</div><!-- /.col -->
+									</div><!-- /form-group -->
+									<div class="form-group">
+										<label class="control-label col-lg-3">Digits</label>
+										<div class="col-lg-9">
+											<input type="text" class="form-control input-sm parsley-validated" data-type="digits" placeholder="Digits">
+										</div><!-- /.col -->
+									</div><!-- /form-group -->
+									<div class="form-group">
+										<label class="control-label col-lg-3">Number</label>
+										<div class="col-lg-9">
+											<input type="text" class="form-control input-sm parsley-validated" data-type="number" placeholder="Number">
+										</div><!-- /.col -->
+									</div><!-- /form-group -->
+									<div class="form-group">
+										<label class="control-label col-lg-3">Alphanum</label>
+										<div class="col-lg-9">
+											<input type="text" class="form-control input-sm parsley-validated" data-type="alphanum" placeholder="alphanumeric string">
+										</div><!-- /.col -->
+									</div><!-- /form-group -->
+									<div class="form-group">
+										<label class="control-label col-lg-3">Min Words</label>
+										<div class="col-lg-9">
+											<input type="text" class="form-control input-sm" data-minwords="6" placeholder="Min = 6 words">
+										</div><!-- /.col -->
+									</div><!-- /form-group -->
+									<div class="form-group">
+										<label class="control-label col-lg-3">Max Words</label>
+										<div class="col-lg-9">
+											<input type="text" class="form-control input-sm" data-maxwords="6" placeholder="Max = 6 words">
+										</div><!-- /.col -->
+									</div><!-- /form-group -->
+									<div class="form-group">
+										<label class="control-label col-lg-3">Date Iso</label>
+										<div class="col-lg-9">
+											<input type="text" class="form-control input-sm parsley-validated" data-type="dateIso" placeholder="YYYY-MM-DD">
+										</div><!-- /.col -->
+									</div><!-- /form-group -->
+									<div class="form-group">
+										<label class="control-label col-lg-3">Phone</label>
+										<div class="col-lg-9">
+											<input type="text" class="form-control input-sm parsley-validated" data-type="phone" placeholder="(XXX) XXXX XXX">
+										</div><!-- /.col -->
+									</div><!-- /form-group -->
+								</div>
+								<div class="panel-footer">
+									<button type="submit" class="btn btn-success">Submit</button>
+								</div>
+							</form>
+						</div><!-- /panel -->
+					</div><!-- /.col-->
+				</div><!-- /.row -->
+				<div class="row">
+					<div class="col-md-6">
+						<div class="panel panel-default">
+							<form class="no-margin" id="formValidate1" data-validate="parsley" novalidate="">
+								<div class="panel-heading">
+									Validation Example1
+								</div>
+								<div class="panel-body">
+									<div class="form-group">
+										<label class="control-label">Username</label>
+										<input type="text" placeholder="Username" class="form-control input-sm parsley-validated" data-required="true" data-minlength="8">
+									</div><!-- /form-group -->
+										
+									<div class="row">
+										<div class="col-md-6">
+											<div class="form-group">
+												<label class="control-label">Password</label>
+												<input type="password" placeholder="Password" class="form-control input-sm parsley-validated" id="password" data-required="true" data-minlength="8">
+											</div><!-- /form-group -->
+										</div><!-- /.col -->
+										<div class="col-md-6">
+											<div class="form-group">
+												<label class="control-label">Confirm Password</label>
+												<input type="password" placeholder="Confirm Password" class="form-control input-sm parsley-validated" data-equalto="#password" data-required="true">
+											</div><!-- /form-group -->
+										</div><!-- /.col -->
+									</div><!-- /.row -->
+									
+									<div class="form-group">
+										<label class="control-label">Email</label>
+										<input type="text" class="form-control input-sm parsley-validated" placeholder="test@example.com" data-required="true" data-type="email">
+									</div><!-- /form-group -->	
+									<div class="form-group">
+										<label class="label-checkbox inline">
+											<input type="checkbox" name="agreement" data-required="true" class="parsley-validated">
+											<span class="custom-checkbox"></span>
+											I accept the user agreement
+										</label>
+									</div><!-- /form-group -->
+								</div>
+								<div class="panel-footer text-right">
+									<button type="submit" class="btn btn-success">Submit</button>
+								</div>
+							</form>
+						</div><!-- /panel -->
+					</div><!-- /.col-->
+					<div class="col-md-6">
+						<div class="panel panel-default">
+							<form class="no-margin" id="formValidate2" data-validate="parsley" novalidate="">
+								<div class="panel-heading">
+									Validation Example2
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-md-6">
+											<div class="form-group">
+												<label class="control-label">Company</label>
+												<input type="text" placeholder="Your Company" class="form-control input-sm parsley-validated" data-required="true">
+											</div>
+										</div><!-- /.col -->
+										<div class="col-md-6">
+											<div class="form-group">
+												<label class="control-label">Website</label>
+												<input type="text" placeholder="Your Website" class="form-control input-sm parsley-validated" data-required="true" data-type="url">
+											</div>
+										</div><!-- /.col -->
+									</div><!-- /.row -->
+									
+									<div class="form-group">
+										<label class="control-label">Email</label>
+										<input type="text" placeholder="Email Address" class="form-control input-sm parsley-validated" data-required="true" data-type="email">
+									</div><!-- /form-group -->
+									<div class="form-group">
+										<label class="control-label">Message</label>
+										<textarea class="form-control parsley-validated" placeholder="Your message here..." rows="3" data-required="true"></textarea>
+									</div><!-- /form-group -->	
+								</div>
+								<div class="panel-footer text-right">
+									<button class="btn btn-success" type="submit">Send</button>
+									<button class="btn btn-success" type="reset">Clear</button>
+								</div>
+							</form>
+						</div><!-- /panel -->
+					</div><!-- /.col-->
+				</div><!-- /.row -->
+				
+				<hr>
+				<div class="panel panel-default">
+					<form class="form-horizontal no-margin form-border" id="formWizard1" novalidate="">
+						<div class="panel-heading">
+							Form Wizard
+						</div>
+						<div class="panel-tab">
+							<ul class="wizard-steps wizard-demo" id="wizardDemo1"> 
+								<li class="active">
+									<a href="#wizardContent1" data-toggle="tab">Step 1</a>
+								</li> 
+								<li>
+									<a href="#wizardContent2" data-toggle="tab">Step 2</a>
+								</li> 
+								<li>
+									<a href="#wizardContent3" data-toggle="tab">Step 3</a>
+								</li>
+							</ul>
+						</div>
+							
+						<div class="panel-body">
+							<div class="tab-content">
+								<div class="tab-pane fade in active" id="wizardContent1">
+									<div class="form-group">
+										<label class="control-label col-lg-2">Username</label>
+										<div class="col-lg-6">
+											<input type="text" placeholder="Normal text input" class="form-control input-sm parsley-validated" data-required="true">
+										</div><!-- /.col -->
+									</div><!-- /form-group -->
+									<div class="form-group">
+										<label class="control-label col-lg-2">Password</label>
+										<div class="col-lg-6">
+											  <input type="password" placeholder="Password" class="form-control input-sm parsley-validated" data-required="true">
+										</div><!-- /.col -->
+									</div><!-- /form-group -->
+									<div class="form-group">
+										<label class="control-label col-lg-2">Email</label>
+										<div class="col-lg-6">
+											<input type="text" class="form-control input-sm parsley-validated" placeholder="test@example.com" data-required="true" data-type="email">
+										</div><!-- /.col -->
+									</div><!-- /form-group -->		
+								</div>
+								<div class="tab-pane fade" id="wizardContent2">
+									<div class="form-group">
+										<label class="control-label col-lg-2">Phone</label>
+										<div class="col-lg-6">
+											<input type="text" class="form-control input-sm parsley-validated" placeholder="(XXX) XXXX XXX" data-required="true" data-type="phone">
+										</div><!-- /.col -->
+									</div><!-- /form-group -->		
+									<div class="form-group">
+										<label class="control-label col-lg-2">Website</label>
+										<div class="col-lg-6">
+											<input type="text" class="form-control input-sm parsley-validated" placeholder="Website url" data-required="true" data-type="urlstrict">
+										</div><!-- /.col -->
+									</div><!-- /form-group -->
+								</div>
+								<div class="tab-pane fade padding-md" id="wizardContent3">
+									<h4>Finish!</h4>
+								</div>
+							</div>
+						</div>
+						<div class="panel-footer clearfix">
+							<div class="pull-left">
+								<button class="btn btn-success btn-sm disabled" id="prevStep1" disabled="">Previous</button>
+								<button type="submit" class="btn btn-sm btn-success" id="nextStep1">Next</button>
+							</div>
+
+							<div class="pull-right" style="width:30%">
+								<div class="progress progress-striped active m-top-sm m-bottom-none">
+									<div class="progress-bar progress-bar-success" id="wizardProgress" style="width:33%;">
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div><!-- /panel -->
+				
+				<div class="panel panel-default">
+					<form class="form-horizontal no-margin form-border" id="formWizard2" novalidate="">
+						<div class="panel-tab clearfix">
+							<ul class="tab-bar wizard-demo" id="wizardDemo2">
+								<li class="active"><a href="#first" data-toggle="tab"><i class="fa fa-home"></i> First</a></li>
+								<li><a href="#second" data-toggle="tab"><i class="fa fa-pencil"></i> Second</a></li>
+								<li><a href="#third" data-toggle="tab"><i class="fa fa-briefcase"></i> Third</a></li>
+								<li><a href="#fourth" data-toggle="tab"><i class="fa fa-check"></i> Fourth</a></li>
+							</ul>
+						</div>
+						<div class="panel-body">
+							<div class="tab-content">
+								<div class="tab-pane fade in active" id="first">	
+									<div class="form-group">
+										<label class="control-label col-lg-2">Company</label>
+										<div class="col-lg-6">
+											<input type="text" placeholder="Company name..." class="form-control input-sm parsley-validated" data-required="true">
+										</div><!-- /.col -->
+									</div><!-- /form-group -->
+								</div>
+								<div class="tab-pane fade" id="second">
+									<div class="form-group">
+										<label class="control-label col-lg-2">Website</label>
+										<div class="col-lg-6">
+											<input type="text" placeholder="Website Url..." class="form-control input-sm parsley-validated" data-required="true" data-type="urlstrict">
+										</div><!-- /.col -->
+									</div><!-- /form-group -->
+								</div>
+								<div class="tab-pane fade" id="third">
+									<div class="form-group">
+										<label class="control-label col-lg-2">Your Name</label>
+										<div class="col-lg-6">
+											<input type="text" placeholder="Your name..." class="form-control input-sm parsley-validated" data-required="true">
+										</div><!-- /.col -->
+									</div><!-- /form-group -->
+								</div>
+								<div class="tab-pane fade" id="fourth">
+									<h4>Finish!</h4>
+								</div>
+							</div>
+						</div>
+						<div class="panel-footer text-right">
+							<button class="btn btn-success btn-sm disabled" id="prevStep2" disabled="">Previous</button>
+							<button type="submit" class="btn btn-sm btn-success" id="nextStep2">Next</button>
+						</div>
+					</form>
+				</div><!-- /panel -->
+			</div>
+		</div>
+		<!-- Footer
+		==================================================
+		<footer>
+			<div class="row">
+				
+			</div>
+		</footer>
+		 -->
+		</div><!-- /.modal -->
+	</div><!-- /wrapper -->
+
+	<a href="" id="scroll-to-top" class="hidden-print"><i class="fa fa-chevron-up"></i></a>
+
+	
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+	
+	<!-- Bootstrap -->
+    <script src="../js/bootstrap.js"></script>
+   
+	<!-- Flot -->
+	<script src='../js/jquery.flot.min.js'></script>
+   
+	<!-- Morris -->
+	<script src='../js/rapheal.min.js'></script>	
+	<script src='../js/morris.min.js'></script>	
+	
+	<!-- Colorbox -->
+	<script src='../js/jquery.colorbox.min.js'></script>	
+
+	<!-- Sparkline -->
+	<script src='../js/jquery.sparkline.min.js'></script>
+	
+	<!-- Pace -->
+	<script src='../js/pace.js'></script>
+	
+	<!-- Popup Overlay -->
+	<script src='../js/jquery.popupoverlay.min.js'></script>
+	
+	<!-- Slimscroll -->
+	<script src='../js/jquery.slimscroll.min.js'></script>
+	
+	<!-- Modernizr -->
+	<script src='../js/modernizr.min.js'></script>
+	
+	<!-- Cookie -->
+	<script src='../js/jquery.cookie.min.js'></script>
+	
+	<!-- Endless 
+	<script src="../js/endless_dashboard.js"></script>
+	-->
+	<script src="../js/endless.js"></script>
+	
+  </body>
+</html>
+    

@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>睿峰网络雷达预警系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+	
+	<!-- Font Awesome -->
+	<link href="../css/font-awesome.min.css" rel="stylesheet">
+	
+	<!-- Pace -->
+	<link href="../css/pace.css" rel="stylesheet">
+	
+	<!-- Color box -->
+	<link href="../css/colorbox.css" rel="stylesheet">
+	
+	<!-- Morris -->
+	<link href="../css/morris.css" rel="stylesheet"/>	
+	
+	<!-- Endless -->
+	<link href="../css/endless.min.css" rel="stylesheet">
+	<link href="../css/endless-skin.css" rel="stylesheet">
+
+	<!-- Jquery -->
+	<script src="../js/jquery-1.10.2.min.js"></script>
+	
+  </head>
+
+  <body class="overflow-hidden">
+	<!-- Overlay Div -->
+	<div id="overlay" class="transparent"></div>
+	
+	
+	<a href="" id="theme-setting-icon"><i class="fa fa-cog fa-lg"></i></a>
+	<div id="theme-setting">
+		<div class="title">
+			<strong class="no-margin">Skin Color</strong>
+		</div>
+		<div class="theme-box">
+			<a class="theme-color" style="background:#323447" id="default"></a>
+			<a class="theme-color" style="background:#efefef" id="skin-1"></a>
+			<a class="theme-color" style="background:#a93922" id="skin-2"></a>
+			<a class="theme-color" style="background:#3e6b96" id="skin-3"></a>
+			<a class="theme-color" style="background:#635247" id="skin-4"></a>
+			<a class="theme-color" style="background:#3a3a3a" id="skin-5"></a>
+			<a class="theme-color" style="background:#495B6C" id="skin-6"></a>
+		</div>
+		<div class="title">
+			<strong class="no-margin">Sidebar Menu</strong>
+		</div>
+		<div class="theme-box">
+			<label class="label-checkbox">
+				<input type="checkbox" checked id="fixedSidebar">
+				<span class="custom-checkbox"></span>
+				Fixed Sidebar
+			</label>
+		</div>
+	</div><!-- /theme-setting -->
+
+	<div id="wrapper" class="preload">
+		
+		<!-- 头部 -->
+		<div id="top-nav" class="fixed skin-6">
+			<a href="#" class="brand">
+				<span class="text-toggle"> LOGO</span>
+			</a><!-- /brand -->					
+			<button type="button" class="navbar-toggle pull-left" id="sidebarToggle">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<button type="button" class="navbar-toggle pull-left hide-menu" id="menuToggle">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<ul class="nav-notification clearfix">
+				
+				<!-- alert -->
+				<li class="dropdown">
+					<a id="alert_href" href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<i class="fa fa-bell fa-lg"></i>
+					</a>
+					<ul class="dropdown-menu notification dropdown-3">
+						<li><a href="#">You have 5 new notifications</a></li>					  
+						<li>
+							<a href="#">
+								<span class="notification-icon bg-warning">
+									<i class="fa fa-warning"></i>
+								</span>
+								<span class="m-left-xs">Server #2 not responding.</span>
+								<span class="time text-muted">Just now</span>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<span class="notification-icon bg-success">
+									<i class="fa fa-plus"></i>
+								</span>
+								<span class="m-left-xs">New user registration.</span>
+								<span class="time text-muted">2m ago</span>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<span class="notification-icon bg-danger">
+									<i class="fa fa-bolt"></i>
+								</span>
+								<span class="m-left-xs">Application error.</span>
+								<span class="time text-muted">5m ago</span>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<span class="notification-icon bg-success">
+									<i class="fa fa-usd"></i>
+								</span>
+								<span class="m-left-xs">2 items sold.</span>
+								<span class="time text-muted">1hr ago</span>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<span class="notification-icon bg-success">
+									<i class="fa fa-plus"></i>
+								</span>
+								<span class="m-left-xs">New user registration.</span>
+								<span class="time text-muted">1hr ago</span>
+							</a>
+						</li>
+						<li><a href="#">View all notifications</a></li>					  
+					</ul>
+				</li>
+				<!-- sysadmin -->
+				<li class="profile dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+						<strong id="userName">admin</strong>
+						<span><i class="fa fa-chevron-down"></i></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a class="clearfix" href="#">
+								<img src="../img/user.jpg" alt="User Avatar"/>
+								<div class="detail">
+									<strong>John Doe</strong>
+									<p class="grey">John_Doe@email.com</p> 
+								</div> 
+							</a>
+						</li>
+						<!-- Modify the password -->
+						<li><a tabindex="-1" data-toggle="modal" data-target="#editPassWord" class="main-link"><i class="fa fa-edit fa-lg"></i>修改密码</a></li>
+						
+						<li><a tabindex="-1" class="main-link logoutConfirm_open" href="#logoutConfirm"><i class="fa fa-lock fa-lg"></i>退出</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div><!-- /top-nav-->
+		
+		
+		<!-- Logout confirmation -->
+		<div class="custom-popup width-100" id="logoutConfirm" style="display: none;">
+			<div class="padding-md">
+				<h2 class="m-top-none" style="color:#DBC7C7;">您确定要退出睿峰网络雷达预警系统吗？</h2>
+			</div>
+	
+			<div class="text-center">
+				<a class="btn btn-success m-right-sm" href="../auth/loginOut">确定</a>
+				<a class="btn btn-danger logoutConfirm_close">取消</a>
+			</div>
+		</div>
+		
+		<!-- 提醒框 -->
+		<div class="modal fade " id="top_modal" tabindex="-1" role="dialog" aria-hidden="true">
+			   <div class="modal-dialog">
+			      <div class="modal-content">
+			         <div class="modal-header ">
+			            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+			                  &times;
+			            </button>
+			            <h4 class="modal-title">
+			             	提醒
+			            </h4>
+			         </div>
+			         <div class="modal-body" >
+			         	<h5 id="top_info"></h5>
+			         </div>
+			         <div class="modal-footer">
+			            <button type="button" class="btn btn-success" data-dismiss="modal">确定</button>
+			         </div>
+			      </div><!-- /.modal-content -->
+			</div><!-- /.modal -->
+		</div>
+		
+		<!-- 左侧目录 -->
+		<aside class="fixed skin-6">
+			<div class="sidebar-inner scrollable-sidebar">
+				
+				<div class="main-menu">
+					<ul>
+						<li class="openable">
+							<a href="javascript:void(0)">
+								<span class="menu-icon">
+									<i class="fa fa-file-text fa-lg"></i> 
+								</span>
+								<span class="text">
+									常用部件
+								</span>
+								<span class="badge badge-success bounceIn animation-delay5">7</span>
+								<span class="menu-hover"></span>
+							</a>
+							<ul class="submenu" style="display:block">
+								<li id="button"><a href="index.html?name=button"><span class="menu-icon"><i class="fa fa-tag fa-lg"></i></span> <span class="submenu-label">按钮</span></a></li>
+								<li id="form" class="active"><a href="Form Element.html?name=form"><span class="menu-icon"> <i class="fa fa-clock-o fa-lg"></i></span> <span class="submenu-label">表单</span></a></li>
+								<li id="tab"><a href="tab.html?name=tab"><span class="menu-icon"> <i class="fa fa-picture-o fa-lg"></i></span> <span class="submenu-label">TAB页</span></a></li>
+								<li id="table"><a href="table.html?name=table"><span class="menu-icon"> <i class="fa fa-envelope fa-lg"></i></span> <span class="submenu-label">表格</span></a></li>
+								<li id="timeLine"><a href="timeLine.html?name=timeLine"><span class="menu-icon"> <i class="fa fa-tasks fa-lg"></i> </span> <span class="submenu-label">时间轴</span></a></li>
+								<li id="ui"><a href="ui.html?name=ui"><span class="menu-icon"> <i class="fa fa-magic fa-lg"></i></span> <span class="submenu-label">ui组件</span></a></li>
+								<li id="validate"><a href="validate.html?name=validate"><span class="menu-icon"><i class="fa fa-desktop fa-lg"></i></span> <span class="submenu-label">校验</span></a></li>
+								<li id="widget"><a href="widget.html?name=widget"><span class="menu-icon"><i class="fa fa-rss fa-lg"></i></span> <span class="submenu-label">小部件</span></a></li>
+							</ul>
+						</li>
+						<!-- 
+						<li>
+							<a href="#">
+								<span class="menu-icon">
+									<i class="fa fa-tag fa-lg"></i> 
+								</span>
+								<span class="text">
+									增删改查
+								</span>
+								<span class="menu-hover"></span>
+							</a>
+						</li>
+						 -->
+					</ul>
+					
+					<div class="alert alert-info">
+						欢迎使用睿峰网云网络监控与分析系统
+					</div>
+				</div><!-- /main-menu -->
+			</div><!-- /sidebar-inner -->
+		</aside>
+		
+		<div id="main-container">
+			<div id="breadcrumb">
+				<ul class="breadcrumb">
+					 <li><i class="fa fa-home"></i>&nbsp;&nbsp;表单</li> 
+				</ul>
+			</div><!--breadcrumb-->
+			<div class="padding-md">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="panel panel-default">
+							<div class="panel-heading">Simple Form</div>
+							<div class="panel-body">
+								<form>
+									<div class="form-group">
+										<label for="exampleInputEmail1">Email address</label>
+										<input type="email" class="form-control input-sm" id="exampleInputEmail1" placeholder="Enter email">
+									</div><!-- /form-group -->
+									<div class="form-group">
+										<label for="exampleInputPassword1">Password</label>
+										<input type="password" class="form-control input-sm" id="exampleInputPassword1" placeholder="Password">
+									</div><!-- /form-group -->
+									<div class="form-group">
+										<label class="label-checkbox">
+											<input type="checkbox">
+											<span class="custom-checkbox"></span>
+											Remember me
+										</label>
+									</div><!-- /form-group -->
+									<button type="submit" class="btn btn-success btn-sm">Submit</button>
+								</form>
+							</div>
+						</div><!-- /panel -->
+					</div><!-- /.col -->
+					<div class="col-md-6">
+						<div class="panel panel-default">
+							<div class="panel-heading">Horizontal Form</div>
+							<div class="panel-body">
+								<form class="form-horizontal">
+									<div class="form-group">
+										<label for="inputEmail1" class="col-lg-2 control-label">Email</label>
+										<div class="col-lg-10">
+											<input type="email" class="form-control input-sm" id="inputEmail1" placeholder="Email">
+										</div><!-- /.col -->
+									</div><!-- /form-group -->
+									<div class="form-group">
+										<label for="inputPassword1" class="col-lg-2 control-label">Password</label>
+										<div class="col-lg-10">
+											<input type="password" class="form-control input-sm" id="inputPassword1" placeholder="Password">
+										</div><!-- /.col -->
+									</div><!-- /form-group -->
+									<div class="form-group">
+										<div class="col-lg-offset-2 col-lg-10">
+											<label class="label-checkbox">
+												<input type="checkbox">
+												<span class="custom-checkbox"></span>
+												Remember me
+											</label>
+										</div><!-- /.col -->
+									</div><!-- /form-group -->
+									<div class="form-group">
+										<div class="col-lg-offset-2 col-lg-10">
+											<button type="submit" class="btn btn-success btn-sm">Sign in</button>
+										</div><!-- /.col -->
+									</div><!-- /form-group -->
+								</form>
+							</div>
+						</div><!-- /panel -->
+					</div><!-- /.col -->
+				</div><!-- /.row -->
+				<div class="panel panel-default">
+					<div class="panel-heading">Inline form</div>
+					<div class="panel-body">
+						<form class="form-inline no-margin">
+							<div class="form-group">
+							    <label class="sr-only">Email address</label>
+							    <input type="text" class="form-control input-sm" placeholder="Email Address">
+							</div><!-- /form-group -->
+							<div class="form-group">
+							    <label class="sr-only">Password</label>
+							    <input type="password" class="form-control input-sm" placeholder="Password">
+							</div><!-- /form-group -->
+						 	<div class="checkbox">
+							    <label class="label-checkbox">
+									<input type="checkbox" checked="">
+									<span class="custom-checkbox"></span>
+									 Remember me<br>
+								</label>
+							</div><!-- /checkbox -->
+							<button type="submit" class="btn btn-sm btn-success">Sign in</button>
+						</form>
+					</div>
+				</div><!-- /panel -->
+				<div class="panel panel-default">
+					<div class="panel-heading">Search form</div>
+					<div class="panel-body">
+						<form class="form-inline no-margin">
+							<div class="row">
+								<div class="col-md-5">
+									<div class="input-group">
+							            <input type="text" class="form-control input-sm">
+							            <div class="input-group-btn">
+							            	<button type="button" class="btn btn-sm btn-success" tabindex="-1">Search</button>
+							            	<button type="button" class="btn btn-sm btn-success dropdown-toggle" data-toggle="dropdown" tabindex="-1">
+							                	Options
+							              	</button>
+							              	<ul class="dropdown-menu pull-right" role="menu">
+								                <li><a href="#">Action</a></li>
+								                <li><a href="#">Another action</a></li>
+								                <li><a href="#">Something else here</a></li>
+								                <li class="divider"></li>
+								                <li><a href="#">Separated link</a></li>
+							              	</ul>
+							            </div> <!-- /input-group-btn -->
+							        </div> <!-- /input-group -->
+								</div><!-- /.col -->
+							</div><!-- /.row -->
+						</form>
+					</div>
+				</div><!-- /panel -->
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Form Element
+						<span class="pull-right">
+							<label class="label-checkbox inline">
+								<input type="checkbox" id="toggleLine" checked="">
+								<span class="custom-checkbox"></span>
+								Toggle Line
+							</label>
+						</span>
+					</div>
+					<div class="panel-body">
+						<form id="formToggleLine" class="form-horizontal no-margin form-border">
+							<div class="form-group">
+								<label class="col-lg-2 control-label">Help Text</label>
+								<div class="col-lg-10">
+									<input class="form-control" type="text" placeholder="input here...">
+									<span class="help-block">A block of help text that breaks onto a new line and may extend beyond one line.</span>
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group">
+								<label class="col-lg-2 control-label">Disabled</label>
+								<div class="col-lg-10">
+									<input class="form-control" type="text" placeholder="Disabled input here..." disabled="">
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group">
+								<label class="col-lg-2 control-label">Password</label>
+								<div class="col-lg-10">
+									<input class="form-control" type="password" placeholder="Password">
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group">
+								<label class="col-lg-2 control-label">Static Control</label>
+								<div class="col-lg-10">
+									<p class="form-control-static">email@example.com</p>
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group">
+								<label class="col-lg-2 control-label">Textarea</label>
+								<div class="col-lg-10">
+									<textarea class="form-control" rows="3"></textarea>
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group">
+								<label class="col-lg-2 control-label">Stacked Checkbox</label>
+								<div class="col-lg-10">
+									<label class="label-checkbox">
+										<input type="checkbox">
+										<span class="custom-checkbox"></span>
+										Option one is this and that be sure to include why it's great
+									</label>
+									<label class="label-checkbox">
+										<input type="checkbox">
+										<span class="custom-checkbox"></span>
+										Option two can be something else and selecting it will deselect option one		
+									</label>
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group">
+								<label class="col-lg-2 control-label">Inline Checkbox</label>
+								<div class="col-lg-10">
+									<label class="label-checkbox inline">
+										<input type="checkbox">
+										<span class="custom-checkbox"></span>
+										Checkbox1
+									</label>
+									<label class="label-checkbox inline">
+										<input type="checkbox">
+										<span class="custom-checkbox"></span>
+										Checkbox2
+									</label>
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group">
+								<label class="col-lg-2 control-label">Stacked Radio Button</label>
+								<div class="col-lg-10">
+									<label class="label-radio">
+										<input type="radio" name="stack-radio">
+										<span class="custom-radio"></span>
+										Option one is this and that be sure to include why it's great
+									</label>
+									<label class="label-checkbox">
+										<input type="radio" name="stack-radio">
+										<span class="custom-radio"></span>
+										Option two can be something else and selecting it will deselect option one		
+									</label>
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group">
+								<label class="col-lg-2 control-label">Inline Radio Button</label>
+								<div class="col-lg-10">
+									<label class="label-radio inline">
+										<input type="radio" name="inline-radio">
+										<span class="custom-radio"></span>
+										Option1
+									</label>
+									<label class="label-radio inline">
+										<input type="radio" name="inline-radio">
+										<span class="custom-radio"></span>
+										Option2
+									</label>
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group has-success">
+								<label class="col-lg-2 control-label">Input with success</label>
+								<div class="col-lg-10">
+									<input class="form-control" type="text">
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group has-warning">
+								<label class="col-lg-2 control-label">Input with success</label>
+								<div class="col-lg-10">
+									<input class="form-control" type="text">
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group has-error">
+								<label class="col-lg-2 control-label">Input with error</label>
+								<div class="col-lg-10">
+									<input class="form-control" type="text">
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group">
+								<label class="col-lg-2 control-label">Select</label>
+								<div class="col-lg-10">
+									<select class="form-control">
+										<option>1</option>
+										<option>2</option>
+										<option>3</option>
+										<option>4</option>
+										<option>5</option>
+									</select>
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group">
+								<label class="col-lg-2 control-label">Chosen Select</label>
+								<div class="col-lg-10">
+									<select class="form-control chzn-select" style="display: none;">
+										<option>Alabama</option>
+										<option>Alaska</option>
+										<option>Arizona</option>
+										<option>Arkansas</option>
+										<option>California</option>
+										<option>Colorado</option>
+										<option>Connecticut</option>
+										<option>Delaware</option>
+										<option>District Of Columbia</option>
+										<option>Florida</option>
+										<option>Georgia</option>
+										<option>Hawaii</option>
+										<option>Idaho</option>
+										<option>Illinois</option>
+										<option>Indiana</option>
+										<option>Iowa</option>
+										<option>Kansas</option>
+										<option>Kentucky</option>
+										<option>Louisiana</option>
+										<option>Maine</option>
+										<option>Maryland</option>
+										<option>Massachusetts</option>
+										<option>Michigan</option>
+										<option>Minnesota</option>
+										<option>Mississippi</option>
+										<option>Missouri</option>
+										<option>Montana</option>
+										<option>Nebraska</option>
+										<option>Nevada</option>
+										<option>New Hampshire</option>
+										<option>New Jersey</option>
+										<option>New Mexico</option>
+										<option>New York</option>
+										<option>North Carolina</option>
+										<option>North Dakota</option>
+										<option>Ohio</option>
+										<option>Oklahoma</option>
+										<option>Oregon</option>
+										<option>Pennsylvania</option>
+										<option>Rhode Island</option>
+										<option>South Carolina</option>
+										<option>South Dakota</option>
+										<option>Tennessee</option>
+										<option>Texas</option>
+										<option>Utah</option>
+										<option>Vermont</option>
+										<option>Virginia</option>
+										<option>Washington</option>
+										<option>West Virginia</option>
+										<option>Wisconsin</option>
+										<option>Wyoming</option>
+									</select><div class="chosen-container chosen-container-single" style="width: 973px;" title=""><a class="chosen-single" tabindex="-1"><span>Alabama</span><div><b></b></div></a><div class="chosen-drop"><div class="chosen-search"><input type="text" autocomplete="off"></div><ul class="chosen-results"></ul></div></div>
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group">
+								<label class="col-lg-2 control-label">Multiple Select</label>
+								<div class="col-lg-10">
+									<select multiple="" class="form-control">
+										<option>1</option>
+										<option>2</option>
+										<option>3</option>
+										<option>4</option>
+										<option>5</option>
+									</select>
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group">
+								<label class="col-lg-2 control-label">Chosen Multiple Select</label>
+								<div class="col-lg-10">
+									<select multiple="" class="form-control chzn-select" style="display: none;">
+										<option>Alabama</option>
+										<option>Alaska</option>
+										<option>Arizona</option>
+										<option>Arkansas</option>
+										<option>California</option>
+										<option>Colorado</option>
+										<option>Connecticut</option>
+										<option>Delaware</option>
+										<option>District Of Columbia</option>
+										<option>Florida</option>
+										<option>Georgia</option>
+										<option>Hawaii</option>
+										<option>Idaho</option>
+										<option>Illinois</option>
+										<option>Indiana</option>
+										<option>Iowa</option>
+										<option>Kansas</option>
+										<option>Kentucky</option>
+										<option>Louisiana</option>
+										<option>Maine</option>
+										<option>Maryland</option>
+										<option>Massachusetts</option>
+										<option>Michigan</option>
+										<option>Minnesota</option>
+										<option>Mississippi</option>
+										<option>Missouri</option>
+										<option>Montana</option>
+										<option>Nebraska</option>
+										<option>Nevada</option>
+										<option>New Hampshire</option>
+										<option>New Jersey</option>
+										<option>New Mexico</option>
+										<option>New York</option>
+										<option>North Carolina</option>
+										<option>North Dakota</option>
+										<option>Ohio</option>
+										<option>Oklahoma</option>
+										<option>Oregon</option>
+										<option>Pennsylvania</option>
+										<option>Rhode Island</option>
+										<option>South Carolina</option>
+										<option>South Dakota</option>
+										<option>Tennessee</option>
+										<option>Texas</option>
+										<option>Utah</option>
+										<option>Vermont</option>
+										<option>Virginia</option>
+										<option>Washington</option>
+										<option>West Virginia</option>
+										<option>Wisconsin</option>
+										<option>Wyoming</option>
+									</select><div class="chosen-container chosen-container-multi" style="width: 973px;" title=""><ul class="chosen-choices"><li class="search-field"><input type="text" value="Select Some Options" class="default" autocomplete="off" style="width: 149px;"></li></ul><div class="chosen-drop"><ul class="chosen-results"></ul></div></div>
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group">
+								<label class="col-lg-2 control-label">Height sizing</label>
+								<div class="col-lg-10">
+									<input class="form-control input-lg" type="text" placeholder=".input-lg">
+									<div class="seperator"></div>
+									<input class="form-control" type="text" placeholder="Default input">
+									<div class="seperator"></div>
+									<input class="form-control input-sm" type="text" placeholder=".input-sm">
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group">
+								<label class="col-lg-2 control-label">Column sizing</label>
+								<div class="col-lg-10">
+									<div class="row">
+										<div class="col-lg-2">
+											<input type="text" class="form-control" placeholder=".col-lg-2">
+										</div><!-- /.col -->
+										<div class="col-lg-3">
+											<input type="text" class="form-control" placeholder=".col-lg-3">
+										</div><!-- /.col -->
+										<div class="col-lg-4">
+											<input type="text" class="form-control" placeholder=".col-lg-4">
+										</div><!-- /.col -->
+									</div><!-- /.row -->
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group">
+								<label class="col-lg-2 control-label">Input Groups</label>
+								<div class="col-lg-10">
+									<div class="input-group">
+										<span class="input-group-addon">@</span>
+										<input type="text" class="form-control" placeholder="Username">
+									</div><!-- /input-group -->
+									<div class="seperator"></div>	
+									<div class="input-group">
+										<input type="text" class="form-control">
+										<span class="input-group-addon">.00</span>
+									</div><!-- /input-group -->
+									<div class="seperator"></div>
+									<div class="input-group">
+										<span class="input-group-addon">$</span>
+										<input type="text" class="form-control">
+										<span class="input-group-addon">.00</span>
+									</div><!-- /input-group -->
+									<div class="seperator"></div>
+									<div class="input-group">
+										<span class="input-group-addon">
+											<label class="label-checkbox no-padding">
+												<input type="checkbox">
+												<span class="custom-checkbox"></span>
+											</label>
+										</span>
+										<input type="text" class="form-control">
+									</div><!-- /input-group -->
+									<div class="seperator"></div>
+									<div class="input-group">
+										<span class="input-group-addon">
+											<label class="label-radio no-padding">
+												<input type="radio">
+												<span class="custom-radio"></span>
+											</label>
+										</span>
+										<input type="text" class="form-control">
+									</div><!-- /input-group -->
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group">
+								<label class="col-lg-2 control-label">Button addons</label>
+								<div class="col-lg-10">
+									<div class="input-group">
+										<span class="input-group-btn">
+											<button class="btn btn-default" type="button">Go!</button>
+										</span>
+										<input type="text" class="form-control">
+									</div><!-- /input-group -->
+									<div class="seperator"></div>	
+									<div class="input-group">
+										<input type="text" class="form-control">
+										<span class="input-group-btn">
+											<button class="btn btn-default" type="button">Go!</button>
+										</span>
+									</div><!-- /input-group -->
+									<div class="seperator"></div>	
+									<div class="input-group">
+										<div class="input-group-btn">
+											<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Action <span class="caret"></span></button>
+											<ul class="dropdown-menu">
+												<li><a href="#">Action</a></li>
+												<li><a href="#">Another action</a></li>
+												<li><a href="#">Something else here</a></li>
+												<li class="divider"></li>
+												<li><a href="#">Separated link</a></li>
+											</ul>
+										</div><!-- /btn-group -->
+										<input type="text" class="form-control">
+									</div><!-- /input-group -->
+									<div class="seperator"></div>	
+									<div class="input-group">
+										<input type="text" class="form-control">
+										<div class="input-group-btn">
+											<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Action <span class="caret"></span></button>
+											<ul class="dropdown-menu pull-right">
+												<li><a href="#">Action</a></li>
+												<li><a href="#">Another action</a></li>
+												<li><a href="#">Something else here</a></li>
+												<li class="divider"></li>
+												<li><a href="#">Separated link</a></li>
+											</ul>
+										</div><!-- /btn-group -->
+									</div><!-- /input-group -->
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group">
+								<label class="col-lg-2 control-label">Segmented buttons</label>
+								<div class="col-lg-10">
+									<div class="input-group">
+										<div class="input-group-btn">
+											<button type="button" class="btn btn-default" tabindex="-1">Action</button>
+											<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" tabindex="-1">
+												<span class="caret"></span>
+											</button>
+											<ul class="dropdown-menu" role="menu">
+												<li><a href="#">Action</a></li>
+												<li><a href="#">Another action</a></li>
+												<li><a href="#">Something else here</a></li>
+												<li class="divider"></li>
+												<li><a href="#">Separated link</a></li>
+											</ul>
+										</div>
+										<input type="text" class="form-control">
+									</div><!-- /input-group -->
+									<div class="seperator"></div>
+									<div class="input-group">
+										<input type="text" class="form-control">
+										<div class="input-group-btn">
+											<button type="button" class="btn btn-default" tabindex="-1">Action</button>
+											<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" tabindex="-1">
+												<span class="caret"></span>
+											</button>
+											<ul class="dropdown-menu pull-right" role="menu">
+												<li><a href="#">Action</a></li>
+												<li><a href="#">Another action</a></li>
+												<li><a href="#">Something else here</a></li>
+												<li class="divider"></li>
+												<li><a href="#">Separated link</a></li>
+											</ul>
+										</div>
+									</div><!-- /input-group -->
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							
+							<div class="form-group">
+								<label class="col-lg-2 control-label">Tags</label>
+								<div class="col-lg-10">
+									<input type="text" class="tag-demo1" value="foo,bar,baz" id="tags1429347499068" style="display: none;"><div id="tags1429347499068_tagsinput" class="tagsinput" style="width: 90%; height: auto;"><span class="tag"><span>foo&nbsp;&nbsp;</span><a href="#" title="Removing tag">x</a></span><span class="tag"><span>bar&nbsp;&nbsp;</span><a href="#" title="Removing tag">x</a></span><span class="tag"><span>baz&nbsp;&nbsp;</span><a href="#" title="Removing tag">x</a></span><div id="tags1429347499068_addTag"><input id="tags1429347499068_tag" value="" data-default="add a tag" style="color: rgb(102, 102, 102); width: 68px;"></div><div class="tags_clear"></div></div>
+									
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group">
+								<label class="col-lg-2 control-label">WYSIHTML5</label>
+								<div class="col-lg-10">
+									<ul class="wysihtml5-toolbar"><li class="dropdown"><a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-font"></i>&nbsp;<span class="current-font">Normal text</span>&nbsp;<b class="caret"></b></a><ul class="dropdown-menu"><li><a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="div" tabindex="-1" href="javascript:;" unselectable="on">Normal text</a></li><li><a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h1" tabindex="-1" href="javascript:;" unselectable="on">Heading 1</a></li><li><a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h2" tabindex="-1" href="javascript:;" unselectable="on">Heading 2</a></li><li><a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h3" tabindex="-1" href="javascript:;" unselectable="on">Heading 3</a></li><li><a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h4" href="javascript:;" unselectable="on">Heading 4</a></li><li><a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h5" href="javascript:;" unselectable="on">Heading 5</a></li><li><a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h6" href="javascript:;" unselectable="on">Heading 6</a></li></ul></li><li><div class="btn-group"><a class="btn btn-default" data-wysihtml5-command="bold" title="CTRL+B" tabindex="-1" href="javascript:;" unselectable="on"><i class="fa fa-bold"></i></a><a class="btn btn-default" data-wysihtml5-command="italic" title="CTRL+I" tabindex="-1" href="javascript:;" unselectable="on"><i class="fa fa-italic"></i></a><a class="btn btn-default" data-wysihtml5-command="underline" title="CTRL+U" tabindex="-1" href="javascript:;" unselectable="on"><i class="fa fa-underline"></i></a></div></li><li><div class="btn-group"><a class="btn btn-default" data-wysihtml5-command="insertUnorderedList" title="Unordered list" tabindex="-1" href="javascript:;" unselectable="on"><i class="fa fa-list"></i></a><a class="btn btn-default" data-wysihtml5-command="insertOrderedList" title="Ordered list" tabindex="-1" href="javascript:;" unselectable="on"><i class="fa fa-th-list"></i></a><a class="btn btn-default" data-wysihtml5-command="Outdent" title="Outdent" tabindex="-1" href="javascript:;" unselectable="on"><i class="fa fa-indent"></i></a><a class="btn btn-default" data-wysihtml5-command="Indent" title="Indent" tabindex="-1" href="javascript:;" unselectable="on"><i class="fa fa-outdent"></i></a></div></li><li><div class="bootstrap-wysihtml5-insert-link-modal modal fade"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><a class="close" data-dismiss="modal">¡Á</a><h3>Insert link</h3></div><div class="modal-body"><input class="form-control bootstrap-wysihtml5-insert-link-url input-xlarge" value="http://"><label class="label-checkbox"><input type="checkbox" class="bootstrap-wysihtml5-insert-link-target" checked=""><span class="custom-checkbox"></span>Open link in new window</label></div><div class="modal-footer"><a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a><a href="#" class="btn btn-primary" data-dismiss="modal">Insert link</a></div></div></div></div><a class="btn btn-default" data-wysihtml5-command="createLink" title="Insert link" tabindex="-1" href="javascript:;" unselectable="on"><i class="fa fa-share"></i></a></li><li><div class="bootstrap-wysihtml5-insert-image-modal modal fade"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><a class="close" data-dismiss="modal">¡Á</a><h3>Insert image</h3></div><div class="modal-body"><input class="form-control bootstrap-wysihtml5-insert-image-url input-xlarge" value="http://"></div><div class="modal-footer"><a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a><a href="#" class="btn btn-primary" data-dismiss="modal">Insert image</a></div></div></div></div><a class="btn btn-default" data-wysihtml5-command="insertImage" title="Insert image" tabindex="-1" href="javascript:;" unselectable="on"><i class="fa fa-picture-o"></i></a></li></ul><textarea id="wysihtml5-textarea" class="form-control" rows="6" placeholder="Enter your text ..." style="display: none;"></textarea><input type="hidden" name="_wysihtml5_mode" value="1"><iframe class="wysihtml5-sandbox" security="restricted" allowtransparency="true" frameborder="0" width="0" height="0" marginwidth="0" marginheight="0" style="border-collapse: separate; border: 1px solid rgb(204, 204, 204); clear: none; display: block; float: none; margin: 0px; outline: rgb(85, 85, 85) none 0px; outline-offset: 0px; padding: 6px 12px; position: static; top: auto; left: auto; right: auto; bottom: auto; z-index: auto; vertical-align: baseline; text-align: start; box-sizing: border-box; -webkit-box-shadow: rgba(0, 0, 0, 0.0745098) 0px 1px 1px 0px inset; box-shadow: rgba(0, 0, 0, 0.0745098) 0px 1px 1px 0px inset; border-radius: 4px; width: 973.328125px; height: 116px; background-color: rgb(255, 255, 255);"></iframe>					
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group">
+								<label class="col-lg-2 control-label">Date Picker</label>
+								<div class="col-lg-10">
+									<div class="input-group">
+										<input type="text" value="06/10/2013" class="datepicker form-control">
+										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+									</div>
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group">
+								<label class="col-lg-2 control-label">Time Picker</label>
+								<div class="col-lg-10">
+									<div class="input-group bootstrap-timepicker"><div class="bootstrap-timepicker-widget dropdown-menu"><table><tbody><tr><td><a href="#" data-action="incrementHour"><i class="fa fa-chevron-up"></i></a></td><td class="separator">&nbsp;</td><td><a href="#" data-action="incrementMinute"><i class="fa fa-chevron-up"></i></a></td><td class="separator">&nbsp;</td><td class="meridian-column"><a href="#" data-action="toggleMeridian"><i class="fa fa-chevron-up"></i></a></td></tr><tr><td><input type="text" name="hour" class="bootstrap-timepicker-hour" maxlength="2"></td> <td class="separator">:</td><td><input type="text" name="minute" class="bootstrap-timepicker-minute" maxlength="2"></td> <td class="separator">&nbsp;</td><td><input type="text" name="meridian" class="bootstrap-timepicker-meridian" maxlength="2"></td></tr><tr><td><a href="#" data-action="decrementHour"><i class="fa fa-chevron-down"></i></a></td><td class="separator"></td><td><a href="#" data-action="decrementMinute"><i class="fa fa-chevron-down"></i></a></td><td class="separator">&nbsp;</td><td><a href="#" data-action="toggleMeridian"><i class="fa fa-chevron-down"></i></a></td></tr></tbody></table></div>
+										<input class="timepicker form-control" type="text">
+										<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+									</div>
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group">
+								<label class="col-lg-2 control-label">Slider</label>
+								<div class="col-lg-10">
+									<div class="slider slider-horizontal" style="width: 210px;"><div class="slider-track"><div class="slider-selection" style="left: 0%; width: 50%;"></div><div class="slider-handle round" style="left: 50%;"></div><div class="slider-handle round hide" style="left: 0%;"></div></div><div class="tooltip top" style="top: -30px; left: 93.5px;"><div class="tooltip-arrow"></div><div class="tooltip-inner">5</div></div><input type="text" class="form-control" value="4" id="sl1" data-slider-handle="round"></div>
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group">
+								<label class="col-lg-2 control-label">Range Slider</label>
+								<div class="col-lg-10">
+									<div class="slider slider-horizontal" style="width: 210px;"><div class="slider-track"><div class="slider-selection" style="left: 14.1414141414141%; width: 50.5050505050505%;"></div><div class="slider-handle round" style="left: 14.1414141414141%;"></div><div class="slider-handle round" style="left: 64.6464646464647%;"></div></div><div class="tooltip top" style="top: -30px; left: 49.2272727272727px;"><div class="tooltip-arrow"></div><div class="tooltip-inner">150 : 650</div></div><input type="text" class="form-control" value="" data-slider-min="10" data-slider-max="1000" data-slider-step="5" data-slider-value="[150,650]" id="sl2"></div>
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group">
+								<label class="col-lg-2 control-label">Vertical Slider</label>
+								<div class="col-lg-10">
+									<div class="slider slider-vertical"><div class="slider-track"><div class="slider-selection" style="top: 0%; height: 17.5%;"></div><div class="slider-handle round" style="top: 17.5%;"></div><div class="slider-handle round hide" style="top: 0%;"></div></div><div class="tooltip right" style="left: 100%; top: 25.75px;"><div class="tooltip-arrow"></div><div class="tooltip-inner">-13</div></div><input type="text" class="form-control" id="sl3" data-slider-value="-13" data-slider-min="-20" data-slider-max="20" data-slider-handle="round" data-slider-orientation="vertical"></div>
+									<div class="slider slider-vertical"><div class="slider-track"><div class="slider-selection" style="top: 0%; height: 42.5%;"></div><div class="slider-handle round" style="top: 42.5%;"></div><div class="slider-handle round hide" style="top: 0%;"></div></div><div class="tooltip right" style="left: 100%; top: 78.25px;"><div class="tooltip-arrow"></div><div class="tooltip-inner">-3</div></div><input type="text" class="form-control" id="sl4" data-slider-value="-3" data-slider-min="-20" data-slider-max="20" data-slider-handle="round" data-slider-orientation="vertical"></div>
+									<div class="slider slider-vertical"><div class="slider-track"><div class="slider-selection" style="top: 0%; height: 90%;"></div><div class="slider-handle round" style="top: 90%;"></div><div class="slider-handle round hide" style="top: 0%;"></div></div><div class="tooltip right" style="left: 100%; top: 178px;"><div class="tooltip-arrow"></div><div class="tooltip-inner">16</div></div><input type="text" class="form-control" id="sl5" data-slider-value="16" data-slider-min="-20" data-slider-max="20" data-slider-handle="round" data-slider-orientation="vertical"></div>
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group">
+								<label class="col-lg-2 control-label">Form in modal</label>
+								<div class="col-lg-10">
+									<a href="#formModal" class="btn btn-success" data-toggle="modal">Form In Modal</a>
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+						</form>
+					</div>
+				</div><!-- /panel -->
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						File Upload
+					</div>
+					<div class="panel-body">
+						<fieldset class="form-horizontal form-border">
+							<div class="form-group">
+								<label class="col-lg-2 control-label">Default</label>
+								<div class="col-lg-10">
+									<input type="file">
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group">
+								<label class="control-label col-lg-2">Custom</label>
+								<div class="col-lg-10">
+									<div class="upload-file">
+										<input type="file" id="upload-demo" class="upload-demo">
+										<label data-title="Select file" for="upload-demo">
+											<span data-title="No file selected..."></span>
+										</label>
+									</div>
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group">
+								<label class="control-label col-lg-2">Dropzone</label>
+								<div class="col-lg-10">
+									<div class="alert">
+										<i class="fa fa-warning"></i><span class="m-left-xs">This is just a demo dropzone. Uploaded files are not stored.</span>
+									</div>
+									<form action="." class="dropzone dz-clickable">
+										  
+									<div class="dz-default dz-message"><i class="fa fa-cloud-upload fa-4x"></i> <span>Drop files here to upload</span></div></form>
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+						</fieldset>			
+					</div>
+				</div><!-- /panel -->
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Mask Input
+					</div>
+					<div class="panel-body">
+						<form class="form-horizontal form-border">
+							<div class="form-group">
+								<label class="control-label col-lg-2 col-sm-2">Date</label>
+								<div class="col-lg-10 col-sm-10">
+									<input id="date-mask" type="text" class="form-control input-sm date">
+									<p class="help-block">99/99/9999</p>
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group">
+								<label class="control-label col-lg-2  col-sm-2">Phone</label>
+								<div class="col-lg-10  col-sm-10">
+									<input id="phone-mask" type="text" class=" form-control input-sm phone">
+									<p class="help-block">(999) 999-9999</p>
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group">
+								<label class="control-label col-lg-2  col-sm-2">SSN</label>
+								<div class="col-lg-10  col-sm-10">
+									<input id="ssn-mask" type="text" class=" form-control input-sm ssn">
+									<p class="help-block">999-99-9999</p>
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group">
+								<label class="control-label col-lg-2 col-sm-2">Eye script</label>
+								<div class="col-lg-10 col-sm-10">
+									<input id="eyescript" type="text" class=" form-control input-sm eyescript">	
+									<p class="help-block">~9.99 ~9.99 999</p>
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+							<div class="form-group">
+								<label class="control-label col-lg-2 col-sm-2">Product key</label>
+								<div class="col-lg-10 col-sm-10">
+									<input id="product-key" type="text" class=" form-control input-sm product-key">
+									<p class="help-block">a*-999-a999</p>
+								</div><!-- /.col -->
+							</div><!-- /form-group -->
+						</form>			
+					</div>
+				</div><!-- /panel -->
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Draggable Multiselect
+					</div>
+					<div class="panel-body relative">
+						<select multiple="multiple" id="selectedBox1" class="select-box pull-left form-control">
+							<option value="1">Apple</option>
+							<option value="2">Banana</option>
+							<option value="3">Cola</option>
+							<option value="4">Dog</option>
+							<option value="5">Elephant</option>
+						</select>		
+
+						<div class="select-box-option">
+							<a class="btn btn-sm btn-default" id="btnRemove">
+								<i class="fa fa-angle-left"></i>
+							</a>
+							<a class="btn btn-sm btn-default" id="btnSelect">
+								<i class="fa fa-angle-right"></i>
+							</a>
+							<div class="seperator"></div>
+							<a class="btn btn-sm btn-default" id="btnRemoveAll">
+								<i class="fa fa-angle-double-left"></i>
+							</a>
+							<a class="btn btn-sm btn-default" id="btnSelectAll">
+								<i class="fa fa-angle-double-right"></i>
+							</a>
+						</div>
+
+						<select multiple="multiple" id="selectedBox2" class="select-box pull-right form-control">
+							<option>Alabama</option>
+							<option>Montana</option>
+							<option>New Jersey</option>
+							<option>New York</option>
+							<option>Texas</option>
+						</select>		
+					</div>
+				</div><!-- /panel -->
+			</div><!-- /.padding-md -->
+		</div>
+	</div><!-- /wrapper -->
+
+	<a href="" id="scroll-to-top" class="hidden-print"><i class="fa fa-chevron-up"></i></a>
+
+	
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+	
+	<!-- Bootstrap -->
+    <script src="../js/bootstrap.js"></script>
+   
+	<!-- Flot -->
+	<script src='../js/jquery.flot.min.js'></script>
+   
+	<!-- Morris -->
+	<script src='../js/rapheal.min.js'></script>	
+	<script src='../js/morris.min.js'></script>	
+	
+	<!-- Colorbox -->
+	<script src='../js/jquery.colorbox.min.js'></script>	
+
+	<!-- Sparkline -->
+	<script src='../js/jquery.sparkline.min.js'></script>
+	
+	<!-- Pace -->
+	<script src='../js/pace.js'></script>
+	
+	<!-- Popup Overlay -->
+	<script src='../js/jquery.popupoverlay.min.js'></script>
+	
+	<!-- Slimscroll -->
+	<script src='../js/jquery.slimscroll.min.js'></script>
+	
+	<!-- Modernizr -->
+	<script src='../js/modernizr.min.js'></script>
+	
+	<!-- Cookie -->
+	<script src='../js/jquery.cookie.min.js'></script>
+	
+	<!-- Endless 
+	<script src="../js/endless_dashboard.js"></script>
+	-->
+	<script src="../js/endless.js"></script>
+	
+  </body>
+</html>
+    

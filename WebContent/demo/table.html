@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>睿峰网络雷达预警系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+	
+	<!-- Font Awesome -->
+	<link href="../css/font-awesome.min.css" rel="stylesheet">
+	
+	<!-- Pace -->
+	<link href="../css/pace.css" rel="stylesheet">
+	
+	<!-- Color box -->
+	<link href="../css/colorbox.css" rel="stylesheet">
+	
+	<!-- Morris -->
+	<link href="../css/morris.css" rel="stylesheet"/>	
+	
+	<!-- Endless -->
+	<link href="../css/endless.min.css" rel="stylesheet">
+	<link href="../css/endless-skin.css" rel="stylesheet">
+
+	<!-- Jquery -->
+	<script src="../js/jquery-1.10.2.min.js"></script>
+	
+  </head>
+
+  <body class="overflow-hidden">
+	<!-- Overlay Div -->
+	<div id="overlay" class="transparent"></div>
+	
+	
+	<a href="" id="theme-setting-icon"><i class="fa fa-cog fa-lg"></i></a>
+	<div id="theme-setting">
+		<div class="title">
+			<strong class="no-margin">Skin Color</strong>
+		</div>
+		<div class="theme-box">
+			<a class="theme-color" style="background:#323447" id="default"></a>
+			<a class="theme-color" style="background:#efefef" id="skin-1"></a>
+			<a class="theme-color" style="background:#a93922" id="skin-2"></a>
+			<a class="theme-color" style="background:#3e6b96" id="skin-3"></a>
+			<a class="theme-color" style="background:#635247" id="skin-4"></a>
+			<a class="theme-color" style="background:#3a3a3a" id="skin-5"></a>
+			<a class="theme-color" style="background:#495B6C" id="skin-6"></a>
+		</div>
+		<div class="title">
+			<strong class="no-margin">Sidebar Menu</strong>
+		</div>
+		<div class="theme-box">
+			<label class="label-checkbox">
+				<input type="checkbox" checked id="fixedSidebar">
+				<span class="custom-checkbox"></span>
+				Fixed Sidebar
+			</label>
+		</div>
+	</div><!-- /theme-setting -->
+
+	<div id="wrapper" class="preload">
+		
+		<!-- 头部 -->
+		<div id="top-nav" class="fixed skin-6">
+			<a href="#" class="brand">
+				<span class="text-toggle"> LOGO</span>
+			</a><!-- /brand -->					
+			<button type="button" class="navbar-toggle pull-left" id="sidebarToggle">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<button type="button" class="navbar-toggle pull-left hide-menu" id="menuToggle">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<ul class="nav-notification clearfix">
+				<!-- alert -->
+				<li class="dropdown">
+					<a id="alert_href" href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<i class="fa fa-bell fa-lg"></i>
+					</a>
+					<ul class="dropdown-menu notification dropdown-3">
+						<li><a href="#">You have 5 new notifications</a></li>					  
+						<li>
+							<a href="#">
+								<span class="notification-icon bg-warning">
+									<i class="fa fa-warning"></i>
+								</span>
+								<span class="m-left-xs">Server #2 not responding.</span>
+								<span class="time text-muted">Just now</span>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<span class="notification-icon bg-success">
+									<i class="fa fa-plus"></i>
+								</span>
+								<span class="m-left-xs">New user registration.</span>
+								<span class="time text-muted">2m ago</span>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<span class="notification-icon bg-danger">
+									<i class="fa fa-bolt"></i>
+								</span>
+								<span class="m-left-xs">Application error.</span>
+								<span class="time text-muted">5m ago</span>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<span class="notification-icon bg-success">
+									<i class="fa fa-usd"></i>
+								</span>
+								<span class="m-left-xs">2 items sold.</span>
+								<span class="time text-muted">1hr ago</span>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<span class="notification-icon bg-success">
+									<i class="fa fa-plus"></i>
+								</span>
+								<span class="m-left-xs">New user registration.</span>
+								<span class="time text-muted">1hr ago</span>
+							</a>
+						</li>
+						<li><a href="#">View all notifications</a></li>					  
+					</ul>
+				</li>
+				<!-- sysadmin -->
+				<li class="profile dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+						<strong id="userName">admin</strong>
+						<span><i class="fa fa-chevron-down"></i></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a class="clearfix" href="#">
+								<img src="../img/user.jpg" alt="User Avatar"/>
+								<div class="detail">
+									<strong>John Doe</strong>
+									<p class="grey">John_Doe@email.com</p> 
+								</div> 
+							</a>
+						</li>
+						<!-- Modify the password -->
+						<li><a tabindex="-1" data-toggle="modal" data-target="#editPassWord" class="main-link"><i class="fa fa-edit fa-lg"></i>修改密码</a></li>
+						
+						<li><a tabindex="-1" class="main-link logoutConfirm_open" href="#logoutConfirm"><i class="fa fa-lock fa-lg"></i>退出</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div><!-- /top-nav-->
+		
+		
+		<!-- Logout confirmation -->
+		<div class="custom-popup width-100" id="logoutConfirm" style="display: none;">
+			<div class="padding-md">
+				<h2 class="m-top-none" style="color:#DBC7C7;">您确定要退出睿峰网络雷达预警系统吗？</h2>
+			</div>
+	
+			<div class="text-center">
+				<a class="btn btn-success m-right-sm" href="../auth/loginOut">确定</a>
+				<a class="btn btn-danger logoutConfirm_close">取消</a>
+			</div>
+		</div>
+		
+		<!-- 提醒框 -->
+		<div class="modal fade " id="top_modal" tabindex="-1" role="dialog" aria-hidden="true">
+			   <div class="modal-dialog">
+			      <div class="modal-content">
+			         <div class="modal-header ">
+			            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+			                  &times;
+			            </button>
+			            <h4 class="modal-title">
+			             	提醒
+			            </h4>
+			         </div>
+			         <div class="modal-body" >
+			         	<h5 id="top_info"></h5>
+			         </div>
+			         <div class="modal-footer">
+			            <button type="button" class="btn btn-success" data-dismiss="modal">确定</button>
+			         </div>
+			      </div><!-- /.modal-content -->
+			</div><!-- /.modal -->
+		</div>
+		
+		<!-- 左侧目录 -->
+		<aside class="fixed skin-6">
+			<div class="sidebar-inner scrollable-sidebar">
+				
+				<div class="main-menu">
+					<ul>
+						<li class="openable">
+							<a href="javascript:void(0)">
+								<span class="menu-icon">
+									<i class="fa fa-file-text fa-lg"></i> 
+								</span>
+								<span class="text">
+									常用部件
+								</span>
+								<span class="badge badge-success bounceIn animation-delay5">7</span>
+								<span class="menu-hover"></span>
+							</a>
+							<ul class="submenu" style="display:block">
+								<li id="button"><a href="index.html?name=button"><span class="menu-icon"><i class="fa fa-tag fa-lg"></i></span> <span class="submenu-label">按钮</span></a></li>
+								<li id="form"><a href="Form Element.html?name=form"><span class="menu-icon"> <i class="fa fa-clock-o fa-lg"></i></span> <span class="submenu-label">表单</span></a></li>
+								<li id="tab"><a href="tab.html?name=tab"><span class="menu-icon"> <i class="fa fa-picture-o fa-lg"></i></span> <span class="submenu-label">TAB页</span></a></li>
+								<li id="table" class="active"><a href="table.html?name=table"><span class="menu-icon"> <i class="fa fa-envelope fa-lg"></i></span> <span class="submenu-label">表格</span></a></li>
+								<li id="timeLine"><a href="timeLine.html?name=timeLine"><span class="menu-icon"> <i class="fa fa-tasks fa-lg"></i> </span> <span class="submenu-label">时间轴</span></a></li>
+								<li id="ui"><a href="ui.html?name=ui"><span class="menu-icon"> <i class="fa fa-magic fa-lg"></i></span> <span class="submenu-label">ui组件</span></a></li>
+								<li id="validate"><a href="validate.html?name=validate"><span class="menu-icon"><i class="fa fa-desktop fa-lg"></i></span> <span class="submenu-label">校验</span></a></li>
+								<li id="widget"><a href="widget.html?name=widget"><span class="menu-icon"><i class="fa fa-rss fa-lg"></i></span> <span class="submenu-label">小部件</span></a></li>
+							</ul>
+						</li>
+						<!-- 
+						<li>
+							<a href="#">
+								<span class="menu-icon">
+									<i class="fa fa-tag fa-lg"></i> 
+								</span>
+								<span class="text">
+									增删改查
+								</span>
+								<span class="menu-hover"></span>
+							</a>
+						</li>
+						 -->
+					</ul>
+					
+					<div class="alert alert-info">
+						欢迎使用睿峰网云网络监控与分析系统
+					</div>
+				</div><!-- /main-menu -->
+			</div><!-- /sidebar-inner -->
+		</aside>
+		
+		
+		<div id="main-container">
+		
+			<div id="breadcrumb">
+				<ul class="breadcrumb">
+					 <li><i class="fa fa-info-circle"></i>&nbsp;&nbsp;表格</li> 
+				</ul>
+			</div><!-- /breadcrumb-->
+			<div class="padding-md">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								Simple Table
+							</div>
+							<div class="panel-body">
+								Some default panel content here.
+							</div>
+							<table class="table table-hover table-striped">
+								<thead>
+									<tr>
+										<th>Task</th>
+										<th>Progress</th>
+										<th></th>
+										<th>Time</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>Bug Fixes</td>
+										<td>
+											<div class="progress progress-striped active" style="height:8px; margin:5px 0 0 0;">
+												<div class="progress-bar" style="width: 45%">
+													<span class="sr-only">45% Complete</span>
+												</div>
+											</div>
+										</td>
+										<td>45%</td>
+										<td><span class="badge badge-warning">2hr</span></td>
+									</tr>
+									<tr>
+										<td>Mobile Development</td>
+										<td>
+											<div class="progress progress-striped active" style="height:8px; margin:5px 0 0 0;">
+												<div class="progress-bar progress-bar-success" style="width: 61%">
+													<span class="sr-only">61% Complete</span>
+												</div>
+											</div>
+										</td>
+										<td>61%</td>
+										<td><span class="badge badge-warning">1hr</span></td>
+									</tr>
+									<tr>
+										<td>Unit Tesing</td>
+										<td>
+											<div class="progress progress-striped active" style="height:8px; margin:5px 0 0 0;">
+												<div class="progress-bar progress-bar-danger" style="width: 97%">
+													<span class="sr-only">97% Complete</span>
+												</div>
+											</div>
+										</td>
+										<td>97%</td>
+										<td><span class="badge badge-warning">5m</span></td>
+									</tr>
+									<tr>
+										<td>New Frontend Layout</td>
+										<td>
+											<div class="progress progress-striped active" style="height:8px; margin:5px 0 0 0;">
+												<div class="progress-bar progress-bar-warning" style="width: 18%">
+													<span class="sr-only">18% Complete</span>
+												</div>
+											</div>
+										</td>
+										<td>18%</td>
+										<td><span class="badge badge-warning">12hr</span></td>
+									</tr>
+								</tbody>
+							</table>
+						</div><!-- /panel -->
+					</div><!-- /.col -->
+					<div class="col-md-6">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								Bordered Table
+							</div>
+							<div class="panel-body">
+								<span>Total User</span><span class="badge m-left-xs">365</span>
+								<span>Approved</span><span class="badge badge-success m-left-xs">321</span>
+								<span>Pending</span><span class="badge badge-warning m-left-xs">37</span>
+								<span>Banned</span><span class="badge badge-danger m-left-xs">7</span>
+							</div>
+							<table class="table table-bordered table-condensed table-hover table-striped">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Name</th>
+										<th>Date</th>
+										<th>Status</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>
+											3242
+										</td>
+										<td>
+											John Doe
+										</td>
+										<td>
+											Oct 08,2013
+										</td>
+										<td>
+											<span class="label label-warning">Pending</span>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											3243
+										</td>
+										<td>
+											Jahn Doe
+										</td>
+										<td>
+											Oct 07,2013
+										</td>
+										<td>
+											<span class="label label-warning">Pending</span>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											3244
+										</td>
+										<td>
+											Bill Doe
+										</td>
+										<td>
+											29 Sep,2013
+										</td>
+										<td>
+											<span class="label label-success">Approved</span>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											3245
+										</td>
+										<td>
+											Kate Doe
+										</td>
+										<td>
+											19 July,2013
+										</td>
+										<td>
+											<span class="label label-success">Approved</span>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											3246
+										</td>
+										<td>
+											Jame Doe
+										</td>
+										<td>
+											18 July,2013
+										</td>
+										<td>
+											<span class="label label-danger">Banned</span>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div><!-- /panel -->
+					</div><!-- /.col -->
+				</div><!-- /.row -->
+				<div class="panel panel-default table-responsive">
+					<div class="panel-heading">
+						Responsive Table
+						<span class="label label-info pull-right">790 Items</span>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-4 col-sm-4">
+								<select class="input-sm form-control inline" style="width:130px;"> 
+									<option value="0">All</option> 
+									<option value="1">Men</option> 
+									<option value="2">Women</option> 
+									<option value="3">Accessary</option> 
+								</select>
+								<a class="btn btn-default btn-sm">Apply</a>
+							</div><!-- /.col -->
+						</div><!-- /.row -->
+					</div>
+					<table class="table table-striped" id="responsiveTable">
+						<thead>
+							<tr>
+								<th>
+									<label class="label-checkbox">
+										<input type="checkbox" id="chk-all">
+										<span class="custom-checkbox"></span>
+									</label>
+								</th>
+								<th>Product</th>
+								<th>Price</th>
+								<th>Quantity</th>
+								<th>Sales</th>
+								<th>Date</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<label class="label-checkbox">
+										<input type="checkbox" class="chk-row">
+										<span class="custom-checkbox"></span>
+									</label>
+								</td>
+								<td>Leather Bag</td>
+								<td>$89</td>
+								<td>30</td>
+								<td>187</td>
+								<td>Oct 08,2013</td>
+								<td><span class="label label-success">In Stock</span></td>
+							</tr>
+							<tr>
+								<td>
+									<label class="label-checkbox">
+										<input type="checkbox" class="chk-row">
+										<span class="custom-checkbox"></span>
+									</label>
+								</td>
+								<td>Brown Sunglasses <span class="label label-success m-left-xs">Best Seller</span> </td>
+								<td>$120</td>
+								<td>0</td>
+								<td>861</td>
+								<td>Oct 07,2013</td>
+								<td><span class="label label-danger">Sold Out</span></td>
+							</tr>
+							<tr>
+								<td>
+									<label class="label-checkbox">
+										<input type="checkbox" class="chk-row">
+										<span class="custom-checkbox"></span>
+									</label>
+								</td>
+								<td>Casual Boots</td>
+								<td>$99</td>
+								<td>100</td>
+								<td>12</td>
+								<td>Oct 06,2013</td>
+								<td><span class="label label-success">In Stock</span></td>
+							</tr>
+							<tr>
+								<td>
+									<label class="label-checkbox">
+										<input type="checkbox" class="chk-row">
+										<span class="custom-checkbox"></span>
+									</label>
+								</td>
+								<td>Lambskin Sport Coat</td>
+								<td>$4000</td>
+								<td>7</td>
+								<td>41</td>
+								<td>Oct 06,2013</td>
+								<td><span class="label label-success">In Stock</span></td>
+							</tr>
+							<tr>
+								<td>
+									<label class="label-checkbox">
+										<input type="checkbox" class="chk-row">
+										<span class="custom-checkbox"></span>
+									</label>
+								</td>
+								<td>Summer Dress</td>
+								<td>$310</td>
+								<td>25</td>
+								<td>39</td>
+								<td>Oct 05,2013</td>
+								<td><span class="label label-success">In Stock</span></td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="panel-footer clearfix">
+						<ul class="pagination pagination-xs m-top-none pull-right">
+							<li class="disabled"><a href="#">Previous</a></li>
+							<li class="active"><a href="#">1</a></li>
+							<li><a href="#">2</a></li>
+							<li><a href="#">3</a></li>
+							<li><a href="#">4</a></li>
+							<li><a href="#">5</a></li>
+							<li><a href="#">Next</a></li>
+						</ul>
+					</div>
+				</div><!-- /panel -->
+				<div class="panel panel-default table-responsive">
+					<div class="panel-heading">
+						Data Table
+						<span class="label label-info pull-right">790 Items</span>
+					</div>
+					<div class="padding-md clearfix">
+						<div id="dataTable_wrapper" class="dataTables_wrapper" role="grid">
+							<div class="fg-toolbar ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix">
+								<div id="dataTable_length" class="dataTables_length">
+									<label>Show 
+										<select class="form-control input-sm inline-block" size="1" style="width:100px;" name="dataTable_length" aria-controls="dataTable">
+											<option value="10" selected="selected">10</option>
+											<option value="25">25</option>
+											<option value="50">50</option>
+											<option value="100">100</option>
+										</select> 
+									entries</label>
+								</div>
+								<div class="dataTables_filter" id="dataTable_filter">
+									<label> 
+										<div class="input-group pull-right" style="width:200px;">
+											<input type="text" class="form-control input-sm" placeholder="search here..." aria-controls="dataTable">
+											<span class="input-group-btn">
+											<button class="btn btn-default btn-sm" type="button">
+											<i class="fa fa-search"></i>
+											</button>
+											</span>
+										</div>
+									</label>
+								</div>
+							</div>
+							<table class="table table-striped dataTable" id="dataTable" aria-describedby="dataTable_info">
+								<thead>
+									<tr role="row">
+										<th class="ui-state-default" role="columnheader" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="No: activate to sort column descending" style="width: 88px;">
+										<div class="DataTables_sort_wrapper">No
+										<span class="DataTables_sort_icon css_right ui-icon ui-icon-triangle-1-n"></span>
+										</div>
+										</th>
+										<th class="ui-state-default" role="columnheader" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Product: activate to sort column ascending" style="width: 361px;">
+										<div class="DataTables_sort_wrapper">
+										Product<span class="DataTables_sort_icon css_right ui-icon ui-icon-carat-2-n-s"></span>
+										</div>
+										</th>
+										<th class="ui-state-default" role="columnheader" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending" style="width: 98px;">
+										<div class="DataTables_sort_wrapper">
+										Price<span class="DataTables_sort_icon css_right ui-icon ui-icon-carat-2-n-s"></span>
+										</div>
+										</th>
+										<th class="ui-state-default" role="columnheader" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Quantity: activate to sort column ascending" style="width: 137px;">
+										<div class="DataTables_sort_wrapper">
+										Quantity<span class="DataTables_sort_icon css_right ui-icon ui-icon-carat-2-n-s"></span>
+										</div>
+										</th>
+										<th class="ui-state-default" role="columnheader" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Sales: activate to sort column ascending" style="width: 100px;">
+										<div class="DataTables_sort_wrapper">Sales<span class="DataTables_sort_icon css_right ui-icon ui-icon-carat-2-n-s"></span></div></th><th class="ui-state-default" role="columnheader" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Date: activate to sort column ascending" style="width: 147px;"><div class="DataTables_sort_wrapper">Date<span class="DataTables_sort_icon css_right ui-icon ui-icon-carat-2-n-s"></span></div></th><th class="ui-state-default" role="columnheader" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: 162px;"><div class="DataTables_sort_wrapper">Status<span class="DataTables_sort_icon css_right ui-icon ui-icon-carat-2-n-s"></span></div></th></tr>
+								</thead>
+							
+						<tbody role="alert" aria-live="polite" aria-relevant="all"><tr class="odd">
+									<td class=" sorting_1">#1001</td>
+									<td class=" ">Leather Bag</td>
+									<td class=" ">$89</td>
+									<td class=" ">30</td>
+									<td class=" ">187</td>
+									<td class=" ">Oct 08,2013</td>
+									<td class=" "><span class="label label-success">In Stock</span></td>
+								</tr><tr class="even">
+									<td class=" sorting_1">#1002</td>
+									<td class=" ">Brown Sunglasses <span class="label label-success m-left-xs">Best Seller</span> </td>
+									<td class=" ">$120</td>
+									<td class=" ">0</td>
+									<td class=" ">861</td>
+									<td class=" ">Oct 07,2013</td>
+									<td class=" "><span class="label label-danger">Sold Out</span></td>
+								</tr><tr class="odd">
+									<td class=" sorting_1">#1003</td>
+									<td class=" ">Casual Boots</td>
+									<td class=" ">$99</td>
+									<td class=" ">100</td>
+									<td class=" ">12</td>
+									<td class=" ">Oct 06,2013</td>
+									<td class=" "><span class="label label-success">In Stock</span></td>
+								</tr><tr class="even">
+									<td class=" sorting_1">#1004</td>
+									<td class=" ">Lambskin Sport Coat</td>
+									<td class=" ">$4000</td>
+									<td class=" ">7</td>
+									<td class=" ">41</td>
+									<td class=" ">Oct 06,2013</td>
+									<td class=" "><span class="label label-success">In Stock</span></td>
+								</tr><tr class="odd">
+									<td class=" sorting_1">#1005</td>
+									<td class=" ">Summer Dress</td>
+									<td class=" ">$310</td>
+									<td class=" ">25</td>
+									<td class=" ">39</td>
+									<td class=" ">Oct 05,2013</td>
+									<td class=" "><span class="label label-success">In Stock</span></td>
+								</tr><tr class="even">
+									<td class=" sorting_1">#1006</td>
+									<td class=" ">Duffle Coat</td>
+									<td class=" ">$80</td>
+									<td class=" ">0</td>
+									<td class=" ">20</td>
+									<td class=" ">Sep 30,2013</td>
+									<td class=" "><span class="label label-danger">Sold out</span></td>
+								</tr><tr class="odd">
+									<td class=" sorting_1">#1007</td>
+									<td class=" ">Universal Camera Case</td>
+									<td class=" ">$35</td>
+									<td class=" ">30</td>
+									<td class=" ">3</td>
+									<td class=" ">Sep 29,2013</td>
+									<td class=" "><span class="label label-success">In Stock</span></td>
+								</tr><tr class="even">
+									<td class=" sorting_1">#1008</td>
+									<td class=" ">Leopard Rose Dress</td>
+									<td class=" ">$1500</td>
+									<td class=" ">10</td>
+									<td class=" ">1</td>
+									<td class=" ">Sep 27,2013</td>
+									<td class=" "><span class="label label-success">In Stock</span></td>
+								</tr><tr class="odd">
+									<td class=" sorting_1">#1009</td>
+									<td class=" ">Casual stripe</td>
+									<td class=" ">$50</td>
+									<td class=" ">30</td>
+									<td class=" ">25</td>
+									<td class=" ">Sep 27,2013</td>
+									<td class=" "><span class="label label-success">Sold out</span></td>
+								</tr><tr class="even">
+									<td class=" sorting_1">#1010</td>
+									<td class=" ">Italian shirt</td>
+									<td class=" ">$70</td>
+									<td class=" ">40</td>
+									<td class=" ">4</td>
+									<td class=" ">Sep 27,2013</td>
+									<td class=" "><span class="label label-info">Promotion</span></td>
+								</tr></tbody></table><div class="fg-toolbar ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"><div class="dataTables_info" id="dataTable_info">Showing 1 to 10 of 12 entries</div><div class="dataTables_paginate fg-buttonset ui-buttonset fg-buttonset-multi ui-buttonset-multi paging_full_numbers" id="dataTable_paginate"><a tabindex="0" class="first ui-corner-tl ui-corner-bl fg-button ui-button ui-state-default ui-state-disabled" id="dataTable_first">First</a><a tabindex="0" class="previous fg-button ui-button ui-state-default ui-state-disabled" id="dataTable_previous">Previous</a><span><a tabindex="0" class="fg-button ui-button ui-state-default ui-state-disabled">1</a><a tabindex="0" class="fg-button ui-button ui-state-default">2</a></span><a tabindex="0" class="next fg-button ui-button ui-state-default" id="dataTable_next">Next</a><a tabindex="0" class="last ui-corner-tr ui-corner-br fg-button ui-button ui-state-default" id="dataTable_last">Last</a></div></div></div>
+					</div><!-- /.padding-md -->
+				</div><!-- /panel -->
+			</div><!-- /.padding-md -->
+		</div>
+	</div><!-- /wrapper -->
+
+	<a href="" id="scroll-to-top" class="hidden-print"><i class="fa fa-chevron-up"></i></a>
+
+	
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+	
+	<!-- Bootstrap -->
+    <script src="../js/bootstrap.js"></script>
+   
+	<!-- Flot -->
+	<script src='../js/jquery.flot.min.js'></script>
+   
+	<!-- Morris -->
+	<script src='../js/rapheal.min.js'></script>	
+	<script src='../js/morris.min.js'></script>	
+	
+	<!-- Colorbox -->
+	<script src='../js/jquery.colorbox.min.js'></script>	
+
+	<!-- Sparkline -->
+	<script src='../js/jquery.sparkline.min.js'></script>
+	
+	<!-- Pace -->
+	<script src='../js/pace.js'></script>
+	
+	<!-- Popup Overlay -->
+	<script src='../js/jquery.popupoverlay.min.js'></script>
+	
+	<!-- Slimscroll -->
+	<script src='../js/jquery.slimscroll.min.js'></script>
+	
+	<!-- Modernizr -->
+	<script src='../js/modernizr.min.js'></script>
+	
+	<!-- Cookie -->
+	<script src='../js/jquery.cookie.min.js'></script>
+	
+	<!-- Endless 
+	<script src="../js/endless_dashboard.js"></script>
+	-->
+	<script src="../js/endless.js"></script>
+	
+  </body>
+</html>
+    

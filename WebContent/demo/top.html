@@ -1,0 +1,232 @@
+
+		<div id="top-nav" class="fixed skin-6">
+			<a href="#" class="brand">
+				<span class="text-toggle"> LOGO</span>
+			</a><!-- /brand -->					
+			<button type="button" class="navbar-toggle pull-left" id="sidebarToggle">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<button type="button" class="navbar-toggle pull-left hide-menu" id="menuToggle">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<ul class="nav-notification clearfix">
+				<!-- alert -->
+				<li class="dropdown">
+					<a id="alert_href" href="#"><!-- class="dropdown-toggle" data-toggle="dropdown" -->
+						<i class="fa fa-bell fa-lg"></i>
+					</a>
+					<!-- <ul class="dropdown-menu notification dropdown-3">
+						<li><a href="#">You have 5 new notifications</a></li>					  
+						<li>
+							<a href="#">
+								<span class="notification-icon bg-warning">
+									<i class="fa fa-warning"></i>
+								</span>
+								<span class="m-left-xs">Server #2 not responding.</span>
+								<span class="time text-muted">Just now</span>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<span class="notification-icon bg-success">
+									<i class="fa fa-plus"></i>
+								</span>
+								<span class="m-left-xs">New user registration.</span>
+								<span class="time text-muted">2m ago</span>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<span class="notification-icon bg-danger">
+									<i class="fa fa-bolt"></i>
+								</span>
+								<span class="m-left-xs">Application error.</span>
+								<span class="time text-muted">5m ago</span>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<span class="notification-icon bg-success">
+									<i class="fa fa-usd"></i>
+								</span>
+								<span class="m-left-xs">2 items sold.</span>
+								<span class="time text-muted">1hr ago</span>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<span class="notification-icon bg-success">
+									<i class="fa fa-plus"></i>
+								</span>
+								<span class="m-left-xs">New user registration.</span>
+								<span class="time text-muted">1hr ago</span>
+							</a>
+						</li>
+						<li><a href="#">View all notifications</a></li>					  
+					</ul> -->
+				</li>
+				<!-- sysadmin -->
+				<li class="profile dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+						<strong id="userName">admin</strong>
+						<span><i class="fa fa-chevron-down"></i></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<!--<a class="clearfix" href="#">
+								<img src="../img/user.jpg" alt="User Avatar">
+								 <div class="detail">
+									<strong>John Doe</strong>
+									<p class="grey">John_Doe@email.com</p> 
+								</div> 
+							</a>-->
+						</li>
+						<!-- Modify the password -->
+						<li><a tabindex="-1" data-toggle="modal" data-target="#editPassWord" class="main-link"><i class="fa fa-edit fa-lg"></i>修改密码</a></li>
+						
+						<!-- <li><a tabindex="-1" href="gallery.html" class="main-link"><i class="fa fa-picture-o fa-lg"></i> Photo Gallery</a></li>
+						<li><a tabindex="-1" href="#" class="theme-setting"><i class="fa fa-cog fa-lg"></i> Setting</a></li> -->
+						
+						<!-- <li class="divider"></li> -->
+						<li><a tabindex="-1" class="main-link logoutConfirm_open" href="#logoutConfirm"><i class="fa fa-lock fa-lg"></i>退出</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div><!-- /top-nav-->
+		
+		
+		<!-- Logout confirmation -->
+		<div class="custom-popup width-100" id="logoutConfirm" style="display: none;">
+			<div class="padding-md">
+				<h2 class="m-top-none" style="color:#DBC7C7;">您确定要退出睿峰网络雷达预警系统吗？</h2>
+			</div>
+	
+			<div class="text-center">
+				<a class="btn btn-success m-right-sm" href="<%=basePath2 %>auth/loginOut">确定</a>
+				<a class="btn btn-danger logoutConfirm_close">取消</a>
+			</div>
+		</div>
+		
+		<!-- 提醒框 -->
+		<div class="modal fade " id="top_modal" tabindex="-1" role="dialog" aria-hidden="true">
+			   <div class="modal-dialog">
+			      <div class="modal-content">
+			         <div class="modal-header ">
+			            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+			                  &times;
+			            </button>
+			            <h4 class="modal-title">
+			             	提醒
+			            </h4>
+			         </div>
+			         <div class="modal-body" >
+			         	<h5 id="top_info"></h5>
+			         </div>
+			         <div class="modal-footer">
+			            <button type="button" class="btn btn-success" data-dismiss="modal">确定</button>
+			         </div>
+			      </div><!-- /.modal-content -->
+			</div><!-- /.modal -->
+		</div>
+		
+		<!-- /theme-setting 
+		<div id="theme-setting">
+			<div class="title">
+				<strong class="no-margin">Skin Color</strong>
+			</div>
+			<div class="theme-box">
+				<a class="theme-color" style="background:#323447" id="default"></a>
+				<a class="theme-color" style="background:#efefef" id="skin-1"></a>
+				<a class="theme-color" style="background:#a93922" id="skin-2"></a>
+				<a class="theme-color" style="background:#3e6b96" id="skin-3"></a>
+				<a class="theme-color" style="background:#635247" id="skin-4"></a>
+				<a class="theme-color" style="background:#3a3a3a" id="skin-5"></a>
+				<a class="theme-color" style="background:#495B6C" id="skin-6"></a>
+			</div>
+			<div class="title">
+				<strong class="no-margin">Sidebar Menu</strong>
+			</div>
+			<div class="theme-box">
+				<label class="label-checkbox">
+					<input type="checkbox" checked id="fixedSidebar">
+					<span class="custom-checkbox"></span>
+					Fixed Sidebar
+				</label>
+			</div>
+		</div>
+	<script type="text/javascript">
+		window.onload = function(){
+				
+				$('#editPassWord').on('hidden.bs.modal', function(e){
+					$('#fm_top').parsley().reset();
+					$('input[type=password]').val('');
+				});
+				
+				refreshAlert();
+				setInterval("refreshAlert()",60*1000); 
+		};
+		
+		function refreshAlert(){
+			$.ajax({
+				url : '<%=basePath2 %>home/getAlertCount',
+				type : 'post',
+				datatype: 'json',
+				async: false, 
+				success: function (data) {
+					if(data!=0){
+						$('#alert_href').attr('href', '<%=basePath2%>alert/viewAttack');
+						var temp = "<span  class='notification-label bounceIn animation-delay6'>"+data+"</span>";
+						$('#top_alert_count').html(temp);
+					}else{
+						$('#alert_href').attr('href', '#');
+						$('#top_alert_count').html('');
+					}
+				},
+				error: function (error) {
+					
+				}
+			});
+		}
+		
+		
+		function savePassword(){
+			//阻止表单提交
+			$('#fm_top').submit(function(){
+				return false;
+			});
+			if($('#fm_top').parsley().isValid()){
+				var userName = $('#userName').text();
+				var oldPassWord = fm_top.oldPw.value;
+				var newPassWord = fm_top.newPw.value;
+				
+				$.ajax({
+					url: '<%=basePath2%>auth/changePsw',
+					type: 'post',
+					datatype: 'json',
+					data: {
+						user:userName,
+						oldPswEncode: oldPassWord,
+						newPswEncode: newPassWord
+					},
+					aysnc:false,
+					error:function (error) {
+						alert(error);
+					},
+					success:function (data) {
+						if(data){
+							$('#editPassWord').modal('hide');
+						}else{
+							$('#top_info').text("操作失败,用户当前密码输入错误");
+							$('#top_modal').modal('show');
+						}
+					}
+					
+				});
+			}
+		}
+	</script>
+	-->

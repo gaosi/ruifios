@@ -1,0 +1,351 @@
+/*!
+ * nav nav-tabs
+ */
+.nav-tabs{
+	font-size:14px;
+	/* background: #eee; */
+}
+.nav-tabs>li>a{
+	font-family:'微软雅黑';
+	font-size:16px;
+	color:#333333;
+	margin-top: 5px;
+	margin-left: 5px;
+	padding: 6px 15px;
+	border: 1px solid #ddd;
+}
+.tab-content .nav-tabs{
+	font-size:12px;
+	background: #F3F3F3;
+}
+.panel-stat1{
+	border-radius: 4px;
+}
+.panel-stat1 .title{
+	font-size: 20px;
+}
+.tab-content .title{
+	font-size: 16px;
+}
+.panel-stat1{
+	min-width:90px;
+	min-height:115px;
+	
+}
+
+/* 时间条件 */
+.clock_choose{
+	color:blue !important;
+}
+.clock_default{
+	color:#555 !important;
+}
+
+/* 查询条件 */
+.row ol, .row ul , .row a{
+	list-style: none;
+	text-decoration:none;
+	margin: 0;
+}
+
+.selector .selected>a, .selector .sl-v-list li>a:hover {
+    border-color: #e4393c;
+    color: #e4393c;
+}
+
+.selector .s-brand, .selector .s-line {
+    width: auto;
+    height: auto;
+}
+
+.selector .sl-wrap {
+    position: relative;
+    _zoom: 1;
+    line-height: 30px;
+    border-bottom: 1px solid #DDD;
+}
+
+.selector .multiple {
+    margin-top: -1px;
+    border: 1px solid #edd28b;
+}
+
+.selector .multiple .sl-key {
+    padding-left: 8px;
+}
+
+.selector .extend .sl-v-color ul, .selector .extend .sl-v-list ul, .selector .extend .sl-v-logos ul, .selector .multiple .sl-v-color ul, .selector .multiple .sl-v-list ul, .selector .multiple .sl-v-logos ul{
+	height: auto;
+}
+
+.selector .multiple .sl-v-list li {
+    margin-right: 32px;
+}
+
+.selector .multiple .sl-v-list li a {
+    position: relative;
+    padding-left: 18px;
+}
+
+.selector .multiple .sl-v-list li a i {
+    position: absolute;
+    left: 0;
+    top: 8px;
+    background: url(../img/search.ele.png) no-repeat 9999px 9999px;
+    display: inline-block;
+    height: 12px;
+    width: 12px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    font-size: 0;
+}
+
+.selector .sl-key {
+    float: left;
+    width: 100px;
+    padding-left: 10px;
+}
+
+.selector .sl-value {
+    margin-left: 100px;
+    padding-right: 130px;
+    padding-left: 10px;
+    overflow: hidden;
+    zoom: 1;
+}
+
+.selector .s-brand .multiple .sl-value {
+    margin-left: 108px;
+    background: #fff;
+}
+
+.selector .s-brand .sl-v-list li a {
+    width: 100px;
+    display: inline-block;
+    overflow: hidden;
+    height: 30px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.selector .s-brand .multiple .sl-v-list li a {
+    width: 112px;
+    padding-left: 18px;
+}
+
+.selector .sl-b-letter {
+    display: none;
+    float: left;
+    overflow: hidden;
+    zoom: 1;
+    padding-top: 2px;
+    /* margin-bottom: 10px; */
+}
+
+.selector .sl-b-selected {
+    overflow: hidden;
+    zoom: 1;
+    display: none;
+}
+
+.selector .sl-b-selected .sl-b-key, .selector .sl-b-selected .sl-v-list {
+    float: left;
+}
+
+.selector .s-brand .multiple .sl-v-list.brand-selected li {
+    width: auto;
+    margin-right: 10px;
+}
+
+.selector .multiple .sl-v-list li.selected i {
+    border-color: #e4393c;
+    background-position: -1px -107px;
+}
+
+.selector .sl-b-letter li {
+    float: left;
+    height: 25px;
+    line-height: 25px;
+    border: 1px solid #FFF;
+    padding: 0 8px;
+    cursor: default;
+    text-align: center;
+    color: #005aa0;
+}
+
+.selector .sl-b-letter li.curr, .selector .sl-b-letter li:hover {
+    border-color: #e4393c;
+    color: #e4393c;
+}
+
+.selector .sl-v-list {
+    overflow: hidden;
+    zoom: 1;
+    /* padding-top: 4px; */
+}
+
+.selector .sl-v-list ul {
+    float: left;
+    overflow: hidden;
+    zoom: 1;
+    position: relative;
+    height: 30px;
+}
+
+.selector .s-brand .extend .sl-b-letter, .selector .s-brand .multiple .sl-b-letter {
+    display: block;
+}
+
+.selector .sl-v-list li {
+    float: left;
+    _display: inline;
+    margin-right: 16px;
+    /* margin-bottom: 4px; */
+    height: 30px;
+    line-height: 30px;
+}
+
+.selector .sl-v-list li a {
+    float: left;
+    white-space: nowrap;
+    zoom: 1;
+}
+
+.selector .sl-v-list .sl-input .input-txt {
+    width: 120px;
+    padding: 1px;
+}
+
+.input-txt {
+    height: 22px;
+    line-height: normal;
+    border: 1px solid #CCC;
+}
+
+.selector .multiple .sl-btns {
+    display: block;
+}
+
+.selector .sl-btns {
+    display: none;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.selector .sl-btns>a.R_btnsConfirm {
+    height: 20px;
+    line-height: 18px;
+    border: 0px;
+    cursor: pointer;
+    color: #fff;
+    background: #E74649;
+}
+
+.R_btnsConfirm.disabled {
+	visibility: hidden;
+}
+
+.selector .multiple .sl-ext {
+    right: 8px;
+}
+
+.selector .sl-ext {
+    position: absolute;
+    top: 4px;
+    right: 10px;
+    width: 50px;
+    height: auto;
+    line-height: 25px;
+    overflow: hidden;
+    zoom: 1;
+}
+
+.selector .sl-ext .sl-e-more i, .selector .sl-ext .sl-e-multiple i {
+    background: url(../img/search.ele.png) no-repeat 9999px 9999px;
+    -webkit-transition: background-position .15s ease-in-out;
+    -moz-transition: background-position .15s ease-in-out;
+    transition: background-position .15s ease-in-out;
+}
+
+.selector .sl-ext .sl-e-more i {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: block;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #DDD;
+    background-position: 4px 7px;
+}
+
+.selector .sl-ext .sl-e-multiple i {
+    position: absolute;
+    display: block;
+    font-style: normal;
+    left: 3px;
+    top: 0;
+    width: 13px;
+    height: 20px;
+    background-position: 0 -63px;
+}
+
+.selector .sl-ext .sl-e-multiple {
+    float: left;
+    height: 20px;
+    line-height: 20px;
+    border: 1px solid #DDD;
+    padding: 0 3px 0 18px;
+    position: relative;
+    background: #fff;
+    color: #333;
+}
+
+.selector .sl-ext .sl-e-more {
+    float: left;
+    margin-right: 20px;
+    position: relative;
+    width: 50px;
+    height: 22px;
+    background: #fff;
+    visibility: hidden;
+    color: #333;
+}
+
+.selector .sl-ext .sl-e-more:hover{
+	cursor: pointer;
+}
+
+.clear, .clr {
+    display: block;
+    overflow: hidden;
+    visibility: hidden;
+    clear: both;
+    height: 0;
+    line-height: 0;
+    font-size: 0;
+}
+
+.btn-xs {
+    line-height: 20px;
+    height: 24px;
+    border-radius: 2px;
+    background: #F7F7F7;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid #DDD;
+    padding: 2px 13px;
+    color: #666;
+    background-color: #f7f7f7;
+    background-repeat: repeat-x;
+    background-image: -moz-linear-gradient(top,#f7f7f7,#f2f2f2);
+    background-image: -webkit-linear-gradient(top,#f7f7f7,#f2f2f2);
+    background-image: -o-linear-gradient(top,#f7f7f7,#f2f2f2);
+    background-image: linear-gradient(top,#f7f7f7,#f2f2f2);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f7f7f7', endColorstr='#f2f2f2', GradientType=0);
+}
+
+.fr {
+    float: right;
+}

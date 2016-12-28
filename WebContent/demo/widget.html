@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>睿峰网络雷达预警系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+	
+	<!-- Font Awesome -->
+	<link href="../css/font-awesome.min.css" rel="stylesheet">
+	
+	<!-- Pace -->
+	<link href="../css/pace.css" rel="stylesheet">
+	
+	<!-- Color box -->
+	<link href="../css/colorbox.css" rel="stylesheet">
+	
+	<!-- Morris -->
+	<link href="../css/morris.css" rel="stylesheet"/>	
+	
+	<!-- Endless -->
+	<link href="../css/endless.min.css" rel="stylesheet">
+	<link href="../css/endless-skin.css" rel="stylesheet">
+
+	<!-- Jquery -->
+	<script src="../js/jquery-1.10.2.min.js"></script>
+	
+  </head>
+
+  <body class="overflow-hidden">
+	<!-- Overlay Div -->
+	<div id="overlay" class="transparent"></div>
+	
+	
+	<a href="" id="theme-setting-icon"><i class="fa fa-cog fa-lg"></i></a>
+	<div id="theme-setting">
+		<div class="title">
+			<strong class="no-margin">Skin Color</strong>
+		</div>
+		<div class="theme-box">
+			<a class="theme-color" style="background:#323447" id="default"></a>
+			<a class="theme-color" style="background:#efefef" id="skin-1"></a>
+			<a class="theme-color" style="background:#a93922" id="skin-2"></a>
+			<a class="theme-color" style="background:#3e6b96" id="skin-3"></a>
+			<a class="theme-color" style="background:#635247" id="skin-4"></a>
+			<a class="theme-color" style="background:#3a3a3a" id="skin-5"></a>
+			<a class="theme-color" style="background:#495B6C" id="skin-6"></a>
+		</div>
+		<div class="title">
+			<strong class="no-margin">Sidebar Menu</strong>
+		</div>
+		<div class="theme-box">
+			<label class="label-checkbox">
+				<input type="checkbox" checked id="fixedSidebar">
+				<span class="custom-checkbox"></span>
+				Fixed Sidebar
+			</label>
+		</div>
+	</div><!-- /theme-setting -->
+
+	<div id="wrapper" class="preload">
+		
+		<!-- 头部 -->
+		<div id="top-nav" class="fixed skin-6">
+			<a href="#" class="brand">
+				<span class="text-toggle"> LOGO</span>
+			</a><!-- /brand -->					
+			<button type="button" class="navbar-toggle pull-left" id="sidebarToggle">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<button type="button" class="navbar-toggle pull-left hide-menu" id="menuToggle">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<ul class="nav-notification clearfix">
+				<!-- alert -->
+				<li class="dropdown">
+					<a id="alert_href" href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<i class="fa fa-bell fa-lg"></i>
+					</a>
+					<ul class="dropdown-menu notification dropdown-3">
+						<li><a href="#">You have 5 new notifications</a></li>					  
+						<li>
+							<a href="#">
+								<span class="notification-icon bg-warning">
+									<i class="fa fa-warning"></i>
+								</span>
+								<span class="m-left-xs">Server #2 not responding.</span>
+								<span class="time text-muted">Just now</span>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<span class="notification-icon bg-success">
+									<i class="fa fa-plus"></i>
+								</span>
+								<span class="m-left-xs">New user registration.</span>
+								<span class="time text-muted">2m ago</span>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<span class="notification-icon bg-danger">
+									<i class="fa fa-bolt"></i>
+								</span>
+								<span class="m-left-xs">Application error.</span>
+								<span class="time text-muted">5m ago</span>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<span class="notification-icon bg-success">
+									<i class="fa fa-usd"></i>
+								</span>
+								<span class="m-left-xs">2 items sold.</span>
+								<span class="time text-muted">1hr ago</span>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<span class="notification-icon bg-success">
+									<i class="fa fa-plus"></i>
+								</span>
+								<span class="m-left-xs">New user registration.</span>
+								<span class="time text-muted">1hr ago</span>
+							</a>
+						</li>
+						<li><a href="#">View all notifications</a></li>					  
+					</ul>
+				</li>
+				<!-- sysadmin -->
+				<li class="profile dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+						<strong id="userName">admin</strong>
+						<span><i class="fa fa-chevron-down"></i></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a class="clearfix" href="#">
+								<img src="../img/user.jpg" alt="User Avatar"/>
+								<div class="detail">
+									<strong>John Doe</strong>
+									<p class="grey">John_Doe@email.com</p> 
+								</div> 
+							</a>
+						</li>
+						<!-- Modify the password -->
+						<li><a tabindex="-1" data-toggle="modal" data-target="#editPassWord" class="main-link"><i class="fa fa-edit fa-lg"></i>修改密码</a></li>
+						
+						<li><a tabindex="-1" class="main-link logoutConfirm_open" href="#logoutConfirm"><i class="fa fa-lock fa-lg"></i>退出</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div><!-- /top-nav-->
+		
+		
+		<!-- Logout confirmation -->
+		<div class="custom-popup width-100" id="logoutConfirm" style="display: none;">
+			<div class="padding-md">
+				<h2 class="m-top-none" style="color:#DBC7C7;">您确定要退出睿峰网络雷达预警系统吗？</h2>
+			</div>
+	
+			<div class="text-center">
+				<a class="btn btn-success m-right-sm" href="../auth/loginOut">确定</a>
+				<a class="btn btn-danger logoutConfirm_close">取消</a>
+			</div>
+		</div>
+		
+		<!-- 提醒框 -->
+		<div class="modal fade " id="top_modal" tabindex="-1" role="dialog" aria-hidden="true">
+			   <div class="modal-dialog">
+			      <div class="modal-content">
+			         <div class="modal-header ">
+			            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+			                  &times;
+			            </button>
+			            <h4 class="modal-title">
+			             	提醒
+			            </h4>
+			         </div>
+			         <div class="modal-body" >
+			         	<h5 id="top_info"></h5>
+			         </div>
+			         <div class="modal-footer">
+			            <button type="button" class="btn btn-success" data-dismiss="modal">确定</button>
+			         </div>
+			      </div><!-- /.modal-content -->
+			</div><!-- /.modal -->
+		</div>
+		
+		<!-- 左侧目录 -->
+		<aside class="fixed skin-6">
+			<div class="sidebar-inner scrollable-sidebar">
+				
+				<div class="main-menu">
+					<ul>
+						<li class="openable">
+							<a href="javascript:void(0)">
+								<span class="menu-icon">
+									<i class="fa fa-file-text fa-lg"></i> 
+								</span>
+								<span class="text">
+									常用部件
+								</span>
+								<span class="badge badge-success bounceIn animation-delay5">7</span>
+								<span class="menu-hover"></span>
+							</a>
+							<ul class="submenu" style="display:block">
+								<li id="button"><a href="index.html?name=button"><span class="menu-icon"><i class="fa fa-tag fa-lg"></i></span> <span class="submenu-label">按钮</span></a></li>
+								<li id="form"><a href="Form Element.html?name=form"><span class="menu-icon"> <i class="fa fa-clock-o fa-lg"></i></span> <span class="submenu-label">表单</span></a></li>
+								<li id="tab"><a href="tab.html?name=tab"><span class="menu-icon"> <i class="fa fa-picture-o fa-lg"></i></span> <span class="submenu-label">TAB页</span></a></li>
+								<li id="table"><a href="table.html?name=table"><span class="menu-icon"> <i class="fa fa-envelope fa-lg"></i></span> <span class="submenu-label">表格</span></a></li>
+								<li id="timeLine"><a href="timeLine.html?name=timeLine"><span class="menu-icon"> <i class="fa fa-tasks fa-lg"></i> </span> <span class="submenu-label">时间轴</span></a></li>
+								<li id="ui"><a href="ui.html?name=ui"><span class="menu-icon"> <i class="fa fa-magic fa-lg"></i></span> <span class="submenu-label">ui组件</span></a></li>
+								<li id="validate"><a href="validate.html?name=validate"><span class="menu-icon"><i class="fa fa-desktop fa-lg"></i></span> <span class="submenu-label">校验</span></a></li>
+								<li id="widget" class="active"><a href="widget.html?name=widget"><span class="menu-icon"><i class="fa fa-rss fa-lg"></i></span> <span class="submenu-label">小部件</span></a></li>
+							</ul>
+						</li>
+						<!-- 
+						<li>
+							<a href="#">
+								<span class="menu-icon">
+									<i class="fa fa-tag fa-lg"></i> 
+								</span>
+								<span class="text">
+									增删改查
+								</span>
+								<span class="menu-hover"></span>
+							</a>
+						</li>
+						 -->
+					</ul>
+					
+					<div class="alert alert-info">
+						欢迎使用睿峰网云网络监控与分析系统
+					</div>
+				</div><!-- /main-menu -->
+			</div><!-- /sidebar-inner -->
+		</aside>
+		
+		<div id="main-container">
+			<div id="breadcrumb">
+				<ul class="breadcrumb">
+					 <li><i class="fa fa-info-circle"></i>&nbsp;&nbsp;小部件</li> 
+				</ul>
+			</div><!-- /breadcrumb-->
+			<div class="padding-md">
+				<div class="row">
+					<div class="col-md-3 col-sm-4">
+						<div class="panel panel-default panel-stat1 bg-success">
+							<div class="panel-body">
+								<div class="value">99</div>
+								<div class="title">
+									<i class="fa fa-usd"></i>
+									<span class="m-left-xs">Sales</span>
+								</div>
+							</div>
+						</div><!-- /panel -->
+					</div><!-- /.col -->
+					<div class="col-md-3 col-sm-4">
+						<div class="panel panel-default panel-stat2 bg-warning">
+							<div class="panel-body">
+								<span class="stat-icon">
+									<i class="fa fa-bar-chart-o"></i>
+								</span>
+								<div class="pull-right text-right">
+									<div class="value">58</div>
+									<div class="title">Visits</div>
+								</div>
+							</div>
+						</div><!-- /panel -->
+					</div><!-- /.col -->
+					<div class="col-md-3 col-sm-4">
+						<div class="panel panel-default panel-stat2 bg-info">
+							<div class="panel-body">
+								<span class="stat-icon">
+									<i class="fa fa-envelope"></i>
+								</span>
+								<div class="pull-right text-right">
+									<div class="value">41</div>
+									<div class="title">Email</div>
+								</div>
+							</div>
+						</div><!-- /panel -->
+					</div><!-- /.col -->
+					<div class="col-md-3 col-sm-4">
+						<div class="panel panel-default panel-stat2 bg-danger">
+							<div class="panel-body">
+								<span class="stat-icon">
+									<i class="fa fa-shopping-cart"></i>
+								</span>
+								<div class="pull-right text-right">
+									<div class="value">88</div>
+									<div class="title">Orders</div>
+								</div>
+							</div>
+						</div><!-- /panel -->
+					</div><!-- /.col -->
+					<div class="col-md-3 col-sm-4">
+						<div class="panel panel-default panel-stat2">
+							<div class="panel-body">
+								<span class="stat-icon">
+									<i class="fa fa-user"></i>
+								</span>
+								<div class="pull-right text-right">
+									<div class="value">45</div>
+									<div class="title">Members</div>
+								</div>
+							</div>
+						</div><!-- /panel -->
+					</div><!-- /.col -->
+					<div class="col-md-3 col-sm-4">
+						<div class="panel panel-default panel-stat2 bg-primary">
+							<div class="panel-body">
+								<span class="stat-icon">
+									<i class="fa fa-comment"></i>
+								</span>
+								<div class="pull-right text-right">
+									<div class="value">72</div>
+									<div class="title"><small>Comments</small></div>
+								</div>
+							</div>
+						</div><!-- /panel -->
+					</div><!-- /.col -->
+					<div class="col-md-2 col-sm-4">
+						<div class="panel panel-default panel-stat1 bg-success">
+							<div class="panel-body">
+								<div class="value">12</div>
+								<div class="title">
+									<span class="m-left-xs">Bookings</span>
+								</div>
+							</div>
+						</div><!-- /panel -->
+					</div><!-- /.col -->
+					<div class="col-md-2 col-sm-4">
+						<div class="panel panel-default panel-stat1 bg-warning">
+							<div class="panel-body">
+								<div class="value">39</div>
+								<div class="title">
+									<span class="m-left-xs">Cancelled</span>
+								</div>
+							</div>
+						</div><!-- /panel -->
+					</div><!-- /.col -->
+					<div class="col-md-2 col-sm-4">
+						<div class="panel panel-default panel-stat1 bg-info">
+							<div class="panel-body">
+								<div class="value">51</div>
+								<div class="title">
+									<span class="m-left-xs"><small>New Items</small></span>
+								</div>
+							</div>
+						</div><!-- /panel -->
+					</div><!-- /.col -->
+				</div><!-- /.row -->
+				<div class="row">
+					<div class="col-md-6">
+						<div class="panel panel-default">
+							<div class="panel-heading clearfix">
+								<span class="pull-left">Simple Widget</span>
+								<ul class="tool-bar">
+									<li><a href="#" class="refresh-widget" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Refresh"><i class="fa fa-refresh"></i></a></li>
+									<li><a href="#collapseWidget" data-toggle="collapse"><i class="fa fa-arrows-v"></i></a></li>
+								</ul>
+							</div>
+							<div class="panel-body no-padding collapse in" id="collapseWidget">
+								<div class="padding-md">
+									Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eros nibh, viverra a dui a, gravida varius velit. Nunc vel tempor nisi. Aenean id pellentesque mi, non placerat mi. Integer luctus accumsan tellus. Vivamus quis elit sit amet nibh lacinia suscipit eu quis purus. Vivamus tristique est non ipsum dapibus lacinia sed nec metus.
+								</div>
+							</div>
+							<div class="loading-overlay">
+								<i class="loading-icon fa fa-refresh fa-spin fa-lg"></i>
+							</div>
+						</div><!-- /panel -->
+						<div class="panel panel-default">
+							<div class="panel-body p-top-sm">
+								<div class="inline-block m-top-xs">
+									<span class="badge badge-danger">4321</span><strong class="m-left-xs m-right-sm"> Visits</strong>
+								</div>
+								<div class="inline-block m-top-xs">
+									<span class="badge badge-success">5190</span><strong class="m-left-xs m-right-sm"> Sales</strong>
+								</div>
+								<div class="inline-block m-top-xs">
+									<span class="badge badge-info">8123</span><strong class="m-left-xs m-right-sm"> Orders</strong>
+								</div>
+								<div class="inline-block m-top-xs">
+									<span class="badge badge-warning">2351</span><strong class="m-left-xs m-right-sm"> Users</strong>
+								</div>
+							</div>
+						</div><!-- /panel -->
+					</div><!-- /.col -->
+					<div class="col-md-6">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								Task
+								<span class="badge badge-info pull-right">	
+									4 left
+								</span>
+							</div>
+						
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Task</th>
+										<th>Progress</th>
+										<th></th>
+										<th>Time</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>Bug Fixes</td>
+										<td>
+											<div class="progress progress-striped active" style="height:8px; margin:5px 0 0 0;">
+												<div class="progress-bar" style="width: 45%">
+													<span class="sr-only">45% Complete</span>
+												</div>
+											</div>
+										</td>
+										<td>45%</td>
+										<td><span class="badge badge-info">2hr</span></td>
+									</tr>
+									<tr>
+										<td>Mobile Development</td>
+										<td>
+											<div class="progress progress-striped active" style="height:8px; margin:5px 0 0 0;">
+												<div class="progress-bar progress-bar-success" style="width: 61%">
+													<span class="sr-only">61% Complete</span>
+												</div>
+											</div>
+										</td>
+										<td>61%</td>
+										<td><span class="badge badge-info">1hr</span></td>
+									</tr>
+									<tr>
+										<td>Unit Testing</td>
+										<td>
+											<div class="progress progress-striped active" style="height:8px; margin:5px 0 0 0;">
+												<div class="progress-bar progress-bar-danger" style="width: 97%">
+													<span class="sr-only">97% Complete</span>
+												</div>
+											</div>
+										</td>
+										<td>97%</td>
+										<td><span class="badge badge-info">5m</span></td>
+									</tr>
+									<tr>
+										<td>New Frontend Layout</td>
+										<td>
+											<div class="progress progress-striped active" style="height:8px; margin:5px 0 0 0;">
+												<div class="progress-bar progress-bar-warning" style="width: 18%">
+													<span class="sr-only">18% Complete</span>
+												</div>
+											</div>
+										</td>
+										<td>18%</td>
+										<td><span class="badge badge-info">12hr</span></td>
+									</tr>
+								</tbody>
+							</table>
+						</div><!-- /panel -->
+					</div><!-- /.col-->
+				</div><!-- /.row-->
+				<div class="row">
+					<div class="col-lg-8">
+						<div class="row">
+							<div class="col-md-6 col-sm-6">
+								<div class="panel panel-default bg-success">
+									<div class="panel-body">
+										<a href="#" class="pull-left avatar"> 
+											<img src="../img/user.jpg" class="img-circle" alt="User Avatar"> 
+										</a>
+										<div class="pull-left" style="margin-left:15px;">
+											<strong class="font-16">John Doe</strong><br>
+											<span class="grey">John@email.com</span>
+										</div>
+									</div>
+									<div class="list-group">
+										<a class="list-group-item">
+											<i class="fa fa-bar-chart-o fa-lg grey"></i>
+											<span class="m-left-xs">Overview</span>
+											<span class="badge badge-warning">3</span>
+										</a>
+										<a class="list-group-item">
+											<i class="fa fa-shopping-cart fa-lg grey"></i>
+											<span class="m-left-xs">Sales</span>
+											<span class="badge badge-danger">14</span>
+										</a>
+										<a class="list-group-item">
+											<i class="fa fa-envelope fa-lg"></i>
+											<span class="m-left-xs">Inbox</span>
+											<span class="badge badge-info">7</span>
+										</a>
+										<a class="list-group-item">
+											<i class="fa fa-usd fa-lg"></i>
+											<span class="m-left-xs">Balance</span>
+											<span class="badge">$3216</span>	
+										</a>
+									</div><!-- /list-group -->
+								</div><!-- /panel -->
+								<div class="panel panel-default">	
+									<div class="panel-heading">
+										Feeds
+									</div>
+											
+									<ul class="list-group">
+										<li class="list-group-item clearfix">
+											<div class="activity-icon small">
+												<i class="fa fa-camera"></i>
+											</div>
+											<div class="pull-left m-left-sm">
+												<span>John Doe Add a new photo.</span><br>
+												<small class="text-muted"><i class="fa fa-clock-o"></i> 2m ago</small>
+											</div>
+										</li>
+										<li class="list-group-item clearfix">
+											<div class="activity-icon bg-success small">
+												<i class="fa fa-usd"></i>
+											</div>
+											<div class="pull-left m-left-sm">
+												<span>2 items sold.</span><br>
+												<small class="text-muted"><i class="fa fa-clock-o"></i> 30m ago</small>
+											</div>	
+										</li>
+										<li class="list-group-item clearfix">
+											<div class="activity-icon bg-info small">
+												<i class="fa fa-comment"></i>
+											</div>
+											<div class="pull-left m-left-sm">
+												<span>John Doe commented on <a href="#">This article</a></span><br>
+												<small class="text-muted"><i class="fa fa-clock-o"></i> 1hr ago</small>
+											</div>
+										</li>
+										<li class="list-group-item clearfix">
+											<div class="activity-icon bg-success small">
+												<i class="fa fa-usd"></i>
+											</div>
+											<div class="pull-left m-left-sm">
+												<span>3 items sold.</span><br>
+												<small class="text-muted"><i class="fa fa-clock-o"></i> 2days ago</small>
+											</div>	
+										</li>
+									</ul>	
+									<div class="panel-footer text-right">
+										<a href="#" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> View more</a>
+									</div>
+								</div><!-- /panel -->
+								<div class="panel">
+									<div class="panel-body">
+										<a href="#" class="pull-left avatar"> 
+											<img src="../img/user.jpg" class="img-circle" alt="User Avatar"> 
+										</a>
+										<div class="pull-left m-left-sm">
+											<strong class="font-14 block">John Doe</strong>
+											<small class="text-muted">John_Doe@email.com</small>
+											<div class="seperator"></div>
+											<a class="btn btn-xs btn-warning">View Profile</a>
+											<a class="btn btn-xs btn-warning">Follow</a>
+										</div>
+									</div>
+								</div><!-- /panel -->
+							</div><!-- /.col -->
+							<div class="col-md-6 col-sm-6">
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<i class="fa fa-comment"></i> Chat
+										<div class="btn-group pull-right">
+											<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+												<i class="fa fa-chevron-down"></i>
+											</button>
+											<ul class="dropdown-menu slidedown">
+												<li><a href="#"><i class="fa fa-refresh"></i> Refresh</a></li>
+												<li><a href="#"><i class="fa fa-check-circle"></i> Available</a></li>
+												<li><a href="#"><i class="fa fa-times-circle"></i> Busy</a></li>
+												<li><a href="#"><i class="fa fa-clock-o"></i> Away</a></li>
+												<li><a href="#"><i class="fa fa-sign-out"></i> Disconnect</a></li>
+											</ul>
+										</div>	
+									</div>
+									<div class="panel-body">
+										<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 250px;"><div id="chatScroll" style="overflow: hidden; width: auto; height: 250px;">
+											<ul class="chat">
+												<li class="left clearfix">
+													<span class="chat-img pull-left">
+														<img src="../img/user.jpg" alt="User Avatar">
+													</span>
+													<div class="chat-body clearfix">
+														<div class="header">
+															<strong class="primary-font">John Doe</strong>
+															<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 12 mins ago</small>
+														</div>
+														<p>
+															Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+														</p>
+													</div>
+												</li>
+												<li class="right clearfix">
+													<span class="chat-img pull-right">
+														<img src="../img/user2.jpg" alt="User Avatar">
+													</span>
+													<div class="chat-body clearfix">
+													<div class="header">
+														<strong class="primary-font">Jane Doe</strong>
+														<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 13 mins ago</small>
+													</div>
+														<p>
+															Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales at. 
+														</p>
+													</div>
+												</li>
+												<li class="left clearfix">
+													<span class="chat-img pull-left">
+														<img src="../img/user.jpg" alt="User Avatar">
+													</span>
+													<div class="chat-body clearfix">
+														<div class="header">
+															<strong class="primary-font">John Doe</strong>
+															<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 20 mins ago</small>
+														</div>
+														<p>
+															Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+														</p>
+													</div>
+												</li>
+												<li class="right clearfix">
+													<span class="chat-img pull-right">
+														<img src="../img/user2.jpg" alt="User Avatar">
+													</span>
+													<div class="chat-body clearfix">
+													<div class="header">
+														<strong class="primary-font">Jane Doe</strong>
+														<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 25 mins ago</small>
+													</div>
+														<p>
+															Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales at. 
+														</p>
+													</div>
+												</li>
+											</ul>
+										</div><div class="slimScrollBar" style="width: 7px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px; height: 152.439024390244px; background: rgb(0, 0, 0);"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; opacity: 0.2; z-index: 90; right: 1px; background: rgb(51, 51, 51);"></div></div>
+									</div>
+									<div class="panel-footer">
+										<div class="input-group">
+											<input id="btn-input" type="text" class="form-control input-sm" placeholder="type your message here...">
+											<span class="input-group-btn">
+												<button class="btn btn-warning btn-sm" id="btn-chat">Send</button>
+											</span>
+										</div><!-- /input-group -->
+									</div>
+								</div><!-- /panel -->
+								<div class="panel">
+									<div class="panel-tab clearfix">
+										<ul class="tab-bar bg-primary">
+											<li><a href="#Sales" data-toggle="tab"><i class="fa fa-usd"></i> Sales</a></li>
+											<li class="active"><a href="#user" data-toggle="tab"><i class="fa fa-user"></i> Member</a></li>
+											<li><a href="#comment" data-toggle="tab"><i class="fa fa-comment"></i> Comment</a></li>
+										</ul>
+									</div>
+									<div class="panel-body">
+										<div class="tab-content">
+											<div class="tab-pane fade" id="Sales">
+												<div class="media">
+													<a href="#" class="thumbnail pull-left">
+														<img data-src="holder.js/40x40" alt="40x40" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAABD0lEQVRYR+2XsQqEMBBEE9DS2sZea///G6z1E2xsLBU8ssdCLmdiuLE4cGzUwI6zz9mIdlmWw/zxYWkQfDskCAI0JEiCKAG0nhkkQZQAWs8MPpvguq5mGAaB0Pe9nN39tm1yXZalrFdVlQSF6EQzqKLOjDPStq2ZpunLrJqPmUR1Tg2qaF3XZp5nMfWLwTt0YIPH8f5j2PfdNE0jDYXUkUa/DPp56brOjON4SVDpxozk6pzlOUlQh8E5LIpCjFprPwYmHCA/k37+dIqudMIsJzdqn2Yqg2cEfRq5OtkEtdvYBPrbjJpza2EG9YE5OrHtip+6Z3/q0O7vqGcGUYokSIIoAbSeGSRBlABazwyiBF/mV5agb9VgogAAAABJRU5ErkJggg==" style="width: 40px; height: 40px;">
+													</a>
+													<div class="media-body">
+														<span class="block"><a href="#">Product 1</a></span>
+														2 items sold<strong class="text-danger">($50)</strong>
+														<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 5m ago</small>
+													</div>
+												</div><!-- /media -->
+											
+												<div class="media">
+													<a href="#" class="thumbnail pull-left">
+														<img data-src="holder.js/40x40" alt="40x40" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAABD0lEQVRYR+2XsQqEMBBEE9DS2sZea///G6z1E2xsLBU8ssdCLmdiuLE4cGzUwI6zz9mIdlmWw/zxYWkQfDskCAI0JEiCKAG0nhkkQZQAWs8MPpvguq5mGAaB0Pe9nN39tm1yXZalrFdVlQSF6EQzqKLOjDPStq2ZpunLrJqPmUR1Tg2qaF3XZp5nMfWLwTt0YIPH8f5j2PfdNE0jDYXUkUa/DPp56brOjON4SVDpxozk6pzlOUlQh8E5LIpCjFprPwYmHCA/k37+dIqudMIsJzdqn2Yqg2cEfRq5OtkEtdvYBPrbjJpza2EG9YE5OrHtip+6Z3/q0O7vqGcGUYokSIIoAbSeGSRBlABazwyiBF/mV5agb9VgogAAAABJRU5ErkJggg==" style="width: 40px; height: 40px;">
+													</a>
+													<div class="media-body">
+														<span class="block"><a href="#">Product 2</a></span>
+														3 items sold<strong class="text-danger">($60)</strong>
+														<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 15m ago</small>
+													</div>
+												</div><!-- /media -->
+											
+												<div class="media">
+													<a href="#" class="thumbnail pull-left">
+														<img data-src="holder.js/40x40" alt="40x40" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAABD0lEQVRYR+2XsQqEMBBEE9DS2sZea///G6z1E2xsLBU8ssdCLmdiuLE4cGzUwI6zz9mIdlmWw/zxYWkQfDskCAI0JEiCKAG0nhkkQZQAWs8MPpvguq5mGAaB0Pe9nN39tm1yXZalrFdVlQSF6EQzqKLOjDPStq2ZpunLrJqPmUR1Tg2qaF3XZp5nMfWLwTt0YIPH8f5j2PfdNE0jDYXUkUa/DPp56brOjON4SVDpxozk6pzlOUlQh8E5LIpCjFprPwYmHCA/k37+dIqudMIsJzdqn2Yqg2cEfRq5OtkEtdvYBPrbjJpza2EG9YE5OrHtip+6Z3/q0O7vqGcGUYokSIIoAbSeGSRBlABazwyiBF/mV5agb9VgogAAAABJRU5ErkJggg==" style="width: 40px; height: 40px;">
+													</a>
+													<div class="media-body">
+														<span class="block"><a href="#">Product 3</a></span>
+														1 item sold<strong class="text-danger">($25)</strong>
+														<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 1hr ago</small>
+													</div>
+												</div><!-- /media -->
+												
+												<div class="media">
+													<a href="#" class="thumbnail pull-left">
+														<img data-src="holder.js/40x40" alt="40x40" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAABD0lEQVRYR+2XsQqEMBBEE9DS2sZea///G6z1E2xsLBU8ssdCLmdiuLE4cGzUwI6zz9mIdlmWw/zxYWkQfDskCAI0JEiCKAG0nhkkQZQAWs8MPpvguq5mGAaB0Pe9nN39tm1yXZalrFdVlQSF6EQzqKLOjDPStq2ZpunLrJqPmUR1Tg2qaF3XZp5nMfWLwTt0YIPH8f5j2PfdNE0jDYXUkUa/DPp56brOjON4SVDpxozk6pzlOUlQh8E5LIpCjFprPwYmHCA/k37+dIqudMIsJzdqn2Yqg2cEfRq5OtkEtdvYBPrbjJpza2EG9YE5OrHtip+6Z3/q0O7vqGcGUYokSIIoAbSeGSRBlABazwyiBF/mV5agb9VgogAAAABJRU5ErkJggg==" style="width: 40px; height: 40px;">
+													</a>
+													<div class="media-body">
+														<span class="block"><a href="#">Product 4</a></span>
+														2 items sold<strong class="text-danger">($19)</strong>
+														<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> yesterday</small>
+													</div>
+												</div><!-- /media -->								
+											</div>
+										
+											<div class="tab-pane fade in active" id="user">
+												<div class="media">
+													<a href="#" class="pull-left">
+														<img class="img-circle" style="width:40px;" src="../img/user.jpg" alt="User Avatar">
+													</a>
+													<div class="media-body">
+														<strong class="block">John Doe</strong>
+														<small class="text-muted">john_doe@email.com</small>
+														<span class="pull-right label label-success">Approved</span>
+													</div>
+												</div><!-- /media -->
+											
+												<div class="media">
+													<a href="#" class="pull-left">
+														<img class="pull-left img-circle" style="width:40px;" src="../img/user2.jpg" alt="User Avatar">
+													</a>
+													<div class="media-body">
+														<strong class="block">Jane Doe</strong>
+														<small class="text-muted">jane_doe@email.com</small>
+														<span class="pull-right label label-success">Approved</span>
+													</div>
+												</div><!-- /media -->
+											
+												<div class="media">
+													<a href="#" class="pull-left">
+														<img class="pull-left img-circle" style="width:40px;" src="../img/user.jpg" alt="User Avatar">
+													</a>
+													<div class="media-body">
+														<strong class="block">Bill Doe</strong>
+														<small class="text-muted">bill_doe@email.com</small>
+														<span class="pull-right label label-warning">Pending</span>
+													</div>
+												</div><!-- /media -->
+												
+												<div class="media">
+													<a href="#" class="pull-left">
+														<img class="pull-left img-circle" style="width:40px;" src="../img/user2.jpg" alt="User Avatar">
+													</a>
+													<div class="media-body">
+														<strong class="block">Susan Doe</strong>
+														<small class="text-muted">susan_doe@email.com</small>
+														<span class="pull-right label label-danger">Banned</span>
+													</div>
+												</div><!-- /media -->							
+											</div>
+											<div class="tab-pane fade" id="comment">
+												<div class="media">
+													<a href="#" class="pull-left">
+														<img class="img-circle" style="width:40px;" src="../img/user.jpg" alt="User Avatar">
+													</a>
+													<div class="media-body">
+														<strong>John Doe</strong>
+														<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 1m ago</small>
+														<p class="ellipsis">
+															Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales at.
+														</p>
+													</div>
+												</div><!-- /media -->
+											
+												<div class="media">
+													<a href="#" class="pull-left">
+														<img class="img-circle" style="width:40px;" src="../img/user2.jpg" alt="User Avatar">
+													</a>
+													<div class="media-body">
+														<strong>Jane Doe</strong>
+														<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 31m ago</small>
+														<p class="ellipsis">
+															Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales at.
+														</p>
+													</div>
+												</div><!-- /media -->
+											
+												<div class="media">
+													<a href="#" class="pull-left">
+														<img class="img-circle" style="width:40px;" src="../img/user.jpg" alt="User Avatar">
+													</a>
+													<div class="media-body">
+														<strong>Bill Doe</strong>
+														<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 50m ago</small>
+														<p class="ellipsis">
+															Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales at.
+														</p>
+													</div>
+												</div><!-- /media -->
+												
+												<div class="media">
+													<a href="#" class="pull-left">
+														<img class="img-circle" style="width:40px;" src="../img/user2.jpg" alt="User Avatar">
+													</a>
+													<div class="media-body">
+														<strong>Susan Doe</strong>
+														<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 1hr ago</small>
+														<p class="ellipsis">
+															Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales at.
+														</p>
+													</div>
+												</div><!-- /media -->					
+											</div>
+										</div><!-- /tab-content -->
+									</div>
+								</div><!-- /panel -->
+							</div><!-- /.col -->
+						</div><!-- /.row -->
+					</div><!-- /.col -->
+					<div class="col-lg-4">
+						<div class="panel bg-info">
+							<div class="panel-body text-center">
+								<span class="h4 block pull-right m-bottom-md">London</span>
+								<div class="seperator"></div>
+								<div class="m-top-md">
+									<i class="fa fa-cloud fa-4x"></i><span class="h1"> 12¡ã</span>
+								</div>
+							</div>
+							<div class="panel-footer">
+								<div class="row">
+									<div class="col-xs-4">
+										HUMIDITY
+										<strong class="block">47%</strong>
+									</div>
+									<div class="col-xs-4">
+										PRECIP
+										<strong class="block">1.5 in</strong>
+									</div>
+									<div class="col-xs-4">
+										WINDS
+										<strong class="block">15 mph</strong>
+									</div>
+								</div>
+							</div>
+						</div><!-- /panel -->
+						<div class="panel">
+							<div class="panel-body">
+								<div class="media">
+									<a href="#" class="thumbnail pull-left">
+										<img data-src="holder.js/80x80" alt="80x80" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAABtUlEQVR4Xu3aoW6DUABG4YtAojF4PO//DHgeAYNBQsLCXUgooVnHuSxreqqWZj+Dr6esotkwDEvwcVkgE/CyXRwKyPwEhH4CCkgF4N57oIBQAM4tUEAoAOcWKCAUgHMLFBAKwLkFCggF4NwCBYQCcG6BAkIBOLdAAaEAnFuggFAAzi1QQCgA5xYoIBSAcwsUEArAuQUKCAXg3AIFhAJwboECQgE4/5MCx3EMbduGaZri6eZ5HpqmiT+fPV8UxellpToONHuY3w64XfT6V/doy/L93fYsyx6e337viJjqOCnx4vnf/SXzVBee6jhvB7ie8Nlbr67r0HVdvJ6zMud5DlVVhb7v41t/fdtvm/2t4NlxnpX8doBXytlQyrKMgOvjJ/BXbwUfAbgv8lgovZd+BKAFHl7m33z82N/nXrkHXvk4lLLC2/8LpzzZ/3gsAeGrIqCAUADOLVBAKADnFiggFIBzCxQQCsC5BQoIBeDcAgWEAnBugQJCATi3QAGhAJxboIBQAM4tUEAoAOcWKCAUgHMLFBAKwLkFCggF4NwCBYQCcG6BAkIBOLdAAaEAnFuggFAAzr8AVLA3P/49YKkAAAAASUVORK5CYII=" style="width: 80px; height: 80px;">
+									</a>
+									<div class="media-body">
+										<strong class="font-14">
+											Special Offer
+										</strong><br>
+										<small class="text-muted">Buy 1 Get 1 Free</small>
+										<div class="seperator"></div>
+										<p>
+											Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum auctor suscipit lobortis.
+										</p>
+										<a href="#" class="btn btn-success btn-sm"><i class="fa fa-shopping-cart"></i> Purchase</a>
+										<a href="#" class="btn btn-success btn-sm">View</a>
+									</div>
+								</div>
+							</div>
+						</div><!-- /panel -->
+						<div class="panel panel-default">
+							<div class="panel-body">
+								<div class="clearfix">
+									<a href="#" class="pull-left m-right-sm"> 
+										<img src="../img/user.jpg" class="img-circle" style="width:40px;" alt="User Avatar"> 
+									</a>
+									<span class="label label-success pull-right">Friend</span>
+									<strong class="block">John Doe</strong>
+									<small class="text-muted">Oct 08,2013</small>
+								</div>
+								<div class="seperator"></div>
+
+								<p>
+									Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales at. 
+								</p>
+								<a class="btn btn-default btn-xs"><i class="fa fa-thumbs-up"></i> Like</a>
+								<a class="btn btn-default btn-xs"><i class="fa fa-share"></i> Share</a>
+							</div>
+							<div class="panel-footer">
+								<input type="text" class="form-control input-sm" placeholder="Write a comment...">
+							</div>
+						</div><!-- /panel -->
+						<div class="panel panel-overview">
+							<div class="overview-icon bg-danger">
+								<i class="fa fa-usd"></i>
+							</div>
+							<div class="overview-value">
+								<div class="h2">256</div>
+								<div class="text-muted">Sales</div>
+							</div>
+						</div><!--/ panel -->
+					</div><!-- /.col -->
+				</div><!-- /.row -->
+			</div><!-- /.padding-md -->
+		</div>
+	</div><!-- /wrapper -->
+
+	<a href="" id="scroll-to-top" class="hidden-print"><i class="fa fa-chevron-up"></i></a>
+
+	
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+	
+	<!-- Bootstrap -->
+    <script src="../js/bootstrap.js"></script>
+   
+	<!-- Flot -->
+	<script src='../js/jquery.flot.min.js'></script>
+   
+	<!-- Morris -->
+	<script src='../js/rapheal.min.js'></script>	
+	<script src='../js/morris.min.js'></script>	
+	
+	<!-- Colorbox -->
+	<script src='../js/jquery.colorbox.min.js'></script>	
+
+	<!-- Sparkline -->
+	<script src='../js/jquery.sparkline.min.js'></script>
+	
+	<!-- Pace -->
+	<script src='../js/pace.js'></script>
+	
+	<!-- Popup Overlay -->
+	<script src='../js/jquery.popupoverlay.min.js'></script>
+	
+	<!-- Slimscroll -->
+	<script src='../js/jquery.slimscroll.min.js'></script>
+	
+	<!-- Modernizr -->
+	<script src='../js/modernizr.min.js'></script>
+	
+	<!-- Cookie -->
+	<script src='../js/jquery.cookie.min.js'></script>
+	
+	<!-- Endless 
+	<script src="../js/endless_dashboard.js"></script>
+	-->
+	<script src="../js/endless.js"></script>
+	
+  </body>
+</html>
+    

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+       <Encoding>UTF-8</Encoding>   
+        <layout class="ch.qos.logback.classic.PatternLayout">   
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n   
+            </pattern>   
+        </layout>   
+    </appender>   
+	
+    <appender name="FILE"  class="ch.qos.logback.core.rolling.RollingFileAppender">   
+        <Encoding>UTF-8</Encoding>   
+		<File>../logs/netpptreport.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <FileNamePattern>../logs/netpptreport.%i.log</FileNamePattern>   
+            <MinIndex>1</MinIndex> 
+			<MaxIndex>9</MaxIndex>
+        </rollingPolicy>   
+        <layout class="ch.qos.logback.classic.PatternLayout">  
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n   
+            </pattern>   
+       </layout> 
+       <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+         <MaxFileSize>900KB</MaxFileSize>
+       </triggeringPolicy>
+    </appender> 
+    
+    <root level="INFO">   
+        <appender-ref ref="STDOUT" />   
+        <appender-ref ref="FILE" />   
+    </root> 
+
+</configuration>

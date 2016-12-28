@@ -1,0 +1,2 @@
+CREATE DATABASE IF NOT EXISTS `ruifios` CHARACTER SET utf8;
+USE `ruifios`;

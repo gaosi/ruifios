@@ -33,7 +33,7 @@ public class AuthController extends AbstractController
 	@RequestMapping("/index")
 	public ModelAndView loginIndex(HttpServletRequest request) 
 	{
-		ModelAndView view = new ModelAndView("redirect:/login.jsp");
+		ModelAndView view = new ModelAndView("redirect:/index.jsp");
 		view.addObject("errorMsg", request.getParameter("errorMsg"));
 		logOk(request, "进入登录页面");
 		return view;

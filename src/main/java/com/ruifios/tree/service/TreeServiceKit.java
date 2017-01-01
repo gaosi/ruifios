@@ -2,20 +2,17 @@ package com.ruifios.tree.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hawkeye.server.RuifiosEnv;
 import com.ruifios.sales.model.ShopsInfo;
+import com.ruifios.server.RuifiosEnv;
 import com.ruifios.tree.model.ArrayTree;
 import com.ruifios.tree.model.StandardTree;
 import com.ruifios.tree.model.TreeNode;
-import com.ruifios.tree.model.TreeNodeWrapper;
 
 /**
  * 树助手
@@ -44,10 +41,11 @@ public class TreeServiceKit
 	protected List<TreeNode> queryNodes(String condition, Class<? extends TreeNode>... classes) {
 		List<TreeNode> nodes = new ArrayList<>();
 		try {
-			if (classes != null)
+			if (classes != null){
 				for(Class<? extends TreeNode> cls: classes){
-					nodes.addAll(RuifiosEnv.dao.query("from " + cls.getSimpleName() + condition));
+					nodes.addAll(RuifiosEnv.dao.query(cls, condition));
 				}
+			}
 		} catch (Exception e) {
 			logger.error("", e);
 		}
@@ -135,7 +133,7 @@ public class TreeServiceKit
 		
 		System.out.println(mapper.writeValueAsString(ArrayTree.from(simpleTree)));
 	}
-	
+	/*
 	public static ArrayTree from(StandardTree simpleTree) throws JsonProcessingException {
 
 		List<TreeNodeWrapper> nodes = simpleTree.getNodes().stream().map(n ->  new TreeNodeWrapper(n)).collect(Collectors.toList());
@@ -158,5 +156,5 @@ public class TreeServiceKit
 		
         return tree;
 	}
-	
+	*/
 }

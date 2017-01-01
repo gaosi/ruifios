@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 /**
@@ -17,7 +18,8 @@ public class TreeNodeWrapper extends AbstractStdTreeNode<TreeNodeWrapper> {
 	@JsonUnwrapped
 	private TreeNode node;
 
-	public TreeNode get() {
+	@JsonProperty("")
+	public TreeNode getNode() {
 		return node;
 	}
 

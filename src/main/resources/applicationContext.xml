@@ -17,6 +17,7 @@
 	<!-- 使用annotation 自动注册bean, 并保证@Required、@Autowired的属性被注入 -->
 	<context:component-scan base-package="com.ruifios">
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController"/>
 		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
 	</context:component-scan>
 
@@ -92,7 +93,7 @@
 		<!-- 数据源配置, 使用Tomcat JDBC连接池 -->
 		<bean id="dataSourceBean" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close" 
 			scope="singleton" lazy-init="false">
-			<property name="driverClass" value="com.mysql.cj.jdbc.Driver" />
+			<property name="driverClass" value="com.mysql.jdbc.Driver" />
 			<property name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3306/ruifios?serverTimezone=UTC&amp;createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=UTF-8" />
 			<property name="user" value="root" />
 			<property name="password" value="admin" />

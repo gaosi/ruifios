@@ -1,4 +1,4 @@
-<%@ include file="/WEB-INF/common/taglibs.jsp" %>
+<%@ include file="/WEB-INF/template/taglibs.jsp" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,17 +11,22 @@
 
     <title><spring:message code="title"/></title>
 
-	<link rel="icon" href="${base}/img/user.jpg" type="image/x-icon" />
-	<link rel="shortcut icon" href="${base}/img/user.jpg" type="image/x-icon" />
+	<link rel="icon" href="${dist}/img/user.jpg" type="image/x-icon" />
+	<link rel="shortcut icon" href="${dist}/img/user.jpg" type="image/x-icon" />
 
     <!-- Bootstrap core CSS -->
-    <link href="${base}/css/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="${dist}/css/bootstrap/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap theme -->
-    <link href="${base}/css/bootstrap-theme.min.css" rel="stylesheet">
-
+    <link href="${dist}/css/bootstrap/bootstrap-theme.min.css" rel="stylesheet">
+	<!-- Font Awesome -->
+	<link href="${dist}/css/font-awesome.min.css" rel="stylesheet">
+	<!-- Pace -->
+	<link href="${dist}/css/pace.css" rel="stylesheet">
+	<!-- stylesheet 自定义样式 -->
+	<link href="${dist}/css/stylesheet.css" rel="stylesheet">
   </head>
 
-  <body role="document">
+  <body role="document" class="overflow-hidden">
 
     <!-- Fixed navbar -->
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -75,7 +80,7 @@
 		<!-- 添加视图模态框 -->
 		<div class="modal fade" id="addSalesRecordModal" tabindex="-1" role="dialog" aria-labelledby="SalesRecordModalLabel" aria-hidden="true">
 		   <div class="modal-dialog">
-		     <form name="addProbeForm" class="form-horizontal no-margin" id="addProbeForm" data-validate="parsley" method="post">
+		   <form id="addSalesRecordForm" class="form-horizontal no-margin" data-validate="parsley" action="${base}/sales/add" method="post">
 		      <div class="modal-content">
 		         <div class="modal-header">
 		            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
@@ -92,105 +97,87 @@
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
-										<label class="control-label col-lg-3">是否启用：</label>
-										<div class="col-lg-4 col-md-offset-3">
-											<input type="checkbox" name="isrun" class="parsley-validated" value="1">
-											<!-- <span class="custom-checkbox"></span> -->
+										<label class="control-label control-required col-lg-4">客户姓名：</label>
+										<div class="col-lg-8">
+											<input type="text" name="base.consumername" class="form-control input-sm parsley-validated" data-required="true" data-required-message="客户姓名不可为空" placeholder="请输入客户姓名" />
 										</div><!-- /.col -->
 									</div><!-- /form-group -->
 								</div>
 								<div class="col-md-6">
-								
+									<div class="form-group">
+										<label class="control-label control-required col-lg-4">身份证号：</label>
+										<div class="col-lg-8">
+											<input type="text" name="base.consumercard" class="form-control input-sm parsley-validated" data-required="true" data-required-message="身份证号不可为空" placeholder="请输入身份证号" />
+										</div><!-- /.col -->
+									</div><!-- /form-group -->
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="control-label control-required col-lg-4">商家名称：</label>
+										<div class="col-lg-8">
+											<input type="text" name="base.merchantname" id="merchantname" list="shop_list" class="form-control input-sm parsley-validated" data-required="true" data-required-message="商家名称不可为空" placeholder="请输入商家名称" />
+											<datalist id="shop_list"></datalist>
+										</div><!-- /.col -->
+									</div><!-- /form-group -->
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="control-label col-lg-4">手机号：</label>
+										<div class="col-lg-8">
+											<input type="text" name="base.consumerphone" class="form-control input-sm parsley-validated" data-type="phone" data-type-phone-message="手机号码格式错误" placeholder="请输入手机号" />
+										</div><!-- /.col -->
+									</div><!-- /form-group -->
 								</div>
 							</div>
 						</fieldset>
-						
-						<div class="form-group">
-							<label class="control-label col-lg-3">探针名称：</label>
-							<div class="col-lg-8">
-								<input type="text" name="name" class="form-control input-sm parsley-validated" data-required="true" data-required-message="探针名称不可为空" data-type="username" data-type-username-message="探针名称不合法"  placeholder="请输入探针名称">
-								<div class="seperator"></div>
-							</div><!-- /.col -->
-						</div><!-- /form-group -->
-						<div class="form-group">
-							<label class="control-label col-lg-3">访问地址：</label>
-							<div class="col-lg-8">
-								<input type="text" name="address" class="form-control input-sm parsley-validated validated-if" data-type="ip" data-type-ip-message="IP地址不合法" data-required="true" data-required-message="访问地址不可为空" placeholder="请输入访问地址">
-								<div class="seperator"></div>
-							</div><!-- /.col -->
-						</div><!-- /form-group -->
-						<div class="form-group">
-							<label class="control-label col-lg-3">访问端口：</label>
-							<div class="col-lg-8">
-								<input type="text" name="port" class="form-control input-sm parsley-validated" data-range="[0, 65535]" data-range-message="访问端口{0-65535}"  data-required="true" data-required-message="访问端口不可为空" placeholder="请输入访问端口">
-								<div class="seperator"></div>
-							</div><!-- /.col -->
-						</div><!-- /form-group -->
-						<div class="form-group">
-							<label class="control-label col-lg-3">访问账号：</label>
-							<div class="col-lg-8">
-								<input type="text" name="account" class="form-control input-sm parsley-validated" data-required="true" data-required-message="访问账号不可为空" placeholder="请输入访问账号">
-								<div class="seperator"></div>
-							</div><!-- /.col -->
-						</div><!-- /form-group -->
-						<div class="form-group">
-							<label class="control-label col-lg-3">访问密码：</label>
-							<div class="col-lg-8">
-								<input type="password" name="password" class="form-control input-sm parsley-validated" data-required="true" data-required-message="访问密码不可为空" placeholder="请输入访问密码">
-								<div class="seperator"></div>
-							</div><!-- /.col -->
-						</div><!-- /form-group -->
-						
-						<div class="form-group">
-							<label class="control-label col-lg-3">数据接口：</label>
-							<div class="col-lg-8 input-group">
-								<select id="probeiflist" name="mirrorIf" class="form-control input-sm parsley-validated" aria-describedby="sync_probeif" data-required="true" data-required-message="探针数据接口不可为空" placeholder="请先配置探针访问信息再选择网络接口">
-									<option value="">请先配置探针访问信息再选择网络接口 </option> <!-- 点击此处时根据配置自动获取探针镜像口 -->
-								</select>
-								<span class="input-group-addon" id="sync_probeif" title="获取探针接口" onclick="updateInterface()"><i class="fa fa-refresh"></i></span>
-							</div><!-- /.col -->
-						</div><!-- /form-group -->
-						
-						<div class="form-group">
-							<label class="control-label col-lg-3"><!-- 过滤策略 -->IP范围：</label>
-							<div class="col-lg-8">
-								<input type="text" name="ipRange" class="form-control input-sm " title="“192.168.1.0/24” ,“192.168.1.12/32”,“192.168.1.0 mask 255.255.255.0”,多网段以“；”分割" placeholder="“192.168.1.0/24” ,“192.168.1.12/32”,“192.168.1.0 mask 255.255.255.0”,多网段以“；”分割"><!-- 请输入IP范围采用“-”分割或多个IP地址采用“,”分割 -->
-								<!-- <span class="custom-checkbox"></span> -->
-							</div><!-- /.col -->
-						</div><!-- /form-group -->
-						
-						<div class="form-group">
-							<label class="control-label col-lg-3">接收地址：</label>
-							<div class="col-lg-8">
-								<select id="routeIp" name="routeIp" class="form-control input-sm parsley-validated">
-									<c:forEach var="name" items="${iplist}">
-										<option value="${name }">${name }</option>
-	                  				</c:forEach>
-								</select>
-								<div class="seperator"></div>
-							</div><!-- /.col -->
-						</div><!-- /form-group -->
-						
-		           		<div class="form-group">
-							<label class="control-label col-lg-3">描述：</label>
-							<div class="col-lg-8">
-								<textarea name="description" id="content" class="form-control parsley-validated" data-maxcheck="200" data-maxcheck-message="描述不可超过200个字符" placeholder="请输入描述..." rows="3"></textarea>
-							</div>
-						</div><!-- /form-group -->	
-		           	</div>
-		           	
+						<fieldset>
+							<legend>商品信息</legend>
+							<table id="goodsTable" data-toggle="table" class="table table-hover table-striped table-bordered table-condensed">
+								<thead>
+									<tr>		
+										<th>商品名称</th>			
+										<th>原价</th>			
+										<th>售价</th>
+										<th>数量</th>
+										<th>操作</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>
+											<input type="text" name="record[0].commodityname" list="good_list" class="form-control input-sm parsley-validated" data-required="true" data-required-message="商品名称不可为空" placeholder="请输入商品名称" />
+											<datalist id="good_list"></datalist>
+										</td>
+										<td>
+											<input type="text" name="record[0].originalcost" class="form-control input-sm parsley-validated" data-required="true" data-required-message="商品原价不可为空" data-type="alphanum" data-type-alphanum-message="请输入金额" placeholder="请输入商品原价（￥）" />
+										</td>
+										<td>
+											<input type="text" name="record[0].sellingprice" class="form-control input-sm parsley-validated" data-required="true" data-required-message="商品售价不可为空" data-type="alphanum" data-type-alphanum-message="请输入金额" placeholder="请输入商品售价（￥）" />
+										</td>
+										<td>
+											<input type="number" name="record[0].number" value="1" min="1" class="form-control input-sm parsley-validated" data-required="true" data-required-message="商品数量不可为空" data-type="integer" data-type-integer-message="请输入大于0数组" placeholder="请输入商品数量" />
+										</td>
+										<td>
+											<!-- <button class="btn btn-xs btn-danger"><i class="fa fa-trash-o"></i></button> -->
+											<a class="btn btn-sm btn-default add-record"><i class="fa fa-plus-circle"></i></a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</fieldset>
+		         	</div>
 		         </div>
 		         <div class="modal-footer">
-		            <button type="submit" class="btn btn-success" onclick="addOrupdateProbe()">
-		              	确定
+		            <button type="submit" class="btn btn-success">
+		              	<spring:message code="button.sure"/>
 		            </button>
 		            <button type="button" class="btn btn-info" data-dismiss="modal">
-		               	取消
+		               	<spring:message code="button.cancel"/>
 		            </button>
-		            <input type="hidden" name="id" />
+		            <!-- input type="hidden" name="id" /> -->
 		         </div>
 		      </div><!-- /.modal-content -->
-		     </form>
+		    </form>
 			</div><!-- /.modal -->
 		</div>
 		
@@ -198,17 +185,144 @@
 
 <div id="script-container">
 	<!-- Jquery -->
-	<script type="text/javascript" src="${base}/js/jquery/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript" src="${dist}/js/jquery/jquery-1.10.2.min.js"></script>
    	<!-- Slimscroll -->
-	<script type="text/javascript" src="${base}/js/jquery/jquery.slimscroll.min.js"></script> 
+	<script type="text/javascript" src="${dist}/js/jquery/jquery.slimscroll.min.js"></script> 
 	<!-- Cookie -->
-	<script type="text/javascript" src="${base}/js/jquery/jquery.cookie.min.js"></script>
+	<script type="text/javascript" src="${dist}/js/jquery/jquery.cookie.min.js"></script>
+	<!-- Popup Overlay -->
+	<script type="text/javascript" src="${dist}/js/jquery/jquery.popupoverlay.min.js"></script>
 	<!-- Bootstrap core JavaScript -->
-    <script type="text/javascript" src="${base}/js/bootstrap/bootstrap.min.js"></script>
+    <script type="text/javascript" src="${dist}/js/bootstrap/bootstrap.js"></script>
+    <!-- Modernizr -->
+	<script type="text/javascript" src="${dist}/js/modernizr.min.js"></script>
 	<!-- Pace -->
-	<script type="text/javascript" src="${base}/js/pace.js"></script>
+	<script type="text/javascript" src="${dist}/js/pace.js"></script>
+	<!-- form validate -->
+    <script type="text/javascript" src="${dist}/js/parsley.min.js"></script>
+    <!-- form submit -->
+    <script type="text/javascript" src="${dist}/js/form/jquery.form.min.js"></script>
     <!-- Endless -->
-    <script type="text/javascript" src="${base}/js/endless.js"></script>
+    <script type="text/javascript" src="${dist}/js/endless.js"></script>
+
+<script type="text/javascript">
+	// 初始化加载数据
+	var ruifiosMap = {
+		init: function(){// 加载商家和商品信息 {}, 
+			$.getJSON("${base}/tree/getshopsinfo", function(data, status, xhr) {
+				//console.log(xhr['responseText']);
+				//data = $.parseJSON(xhr['responseText']);
+				console.log(JSON.stringify(data));
+				var shopsTree = [], shops = [];
+				$.each(data.nodes, function(index, node) {
+					node.open= true,//对资产组节点设置状态 
+					node.chkDisabled=true;
+					// 添加树节点
+					shopsTree.push(node);
+					// 添加商家信息
+					var name = node.name;
+					shops.push(name);
+					// 添加商品信息
+					var goods = [];
+					$.each(node.children, function(index, good) {
+						goods.push(good.name);
+					});
+					ruifiosMap[name] = goods;
+		        });
+				ruifiosMap['shop'] = shops;
+				ruifiosMap['shopsTree'] = shopsTree;
+			});
+		},
+		initShops: function(){// 初始化商家列表
+			var shops = [];
+			if(ruifiosMap['shop'])
+				$.each(ruifiosMap['shop'], function(index, shop){
+					shops.push($('option', {label: shop, value: shop}));
+				});
+			return shops;
+		},
+		refreshShops: function(shop){// 刷新化商家列表
+			$(shop).empty();
+			$(shop).append(ruifiosMap.initShops());
+		},
+		initGoods: function(shop){// 初始化商品列表
+			var goods = [];
+			if(ruifiosMap[shop])
+				$.each(ruifiosMap[shop], function(index, shop){
+					goods.push($('option', {label: shop, value: shop}));
+				});
+			return goods;
+		},
+		refreshGoods: function(good, shops){// 刷新化商品列表
+			$(good).empty();
+			$(good).append(shops);
+		}
+	};
+	
+	$(document).ready(function(){
+		ruifiosMap['recordtr'] = $("#goodsTable tbody>tr:first-child").clone();
+		ruifiosMap.init();
+		ruifiosMap.refreshShops();
+		
+		$(document).on("change",  "#merchantname", function(e){// 刷新商品信息
+			var shops = ruifiosMap.initGoods($(this).val());
+			$("#goodsTable datalist").each(function () {
+				ruifiosMap.refreshGoods($(this), shops);
+			});
+		}).on("click",  "#goodsTable .add-record", function(e){// 添加一条销售记录
+    		var trs = $("#goodsTable tbody tr");
+    		if(trs.length>1)// 去掉最后一个td的删除按钮
+    			$("#goodsTable tbody>tr").last().find("td:last-child").empty();
+    		// 添加新的商品信息
+    		var newtr = ruifiosMap['recordtr'].clone();
+    		
+    		var firsttd = newtr.find('td:first-child');
+    		var inputlist = firsttd.find('input');
+    		inputlist.attr("list", inputlist.attr("list")+trs.length);
+    		var datalist = firsttd.find('datalist');
+    		datalist.attr("id", inputlist.attr("id")+trs.length);
+    		
+    		var lasttd = newtr.find('td:last-child');
+    		lasttd.find('a').addClass("del-record").removeClass("add-record");
+    		lasttd.find('i').addClass("fa-minus-circle").removeClass("fa-plus-circle");
+    		
+    		lasttd.siblings().each(function (index, td) {
+    			var input = $(td).find('input');
+    			var name = input.attr('name').replace(/\d+/g, trs.length);
+    			input.attr('name', name);
+    		});
+    		
+    		$("#goodsTable tbody").append(newtr);
+    	}).on("click",  "#goodsTable .del-record", function(e){// 删除一条销售记录
+    		var tr = $(this).closest('tr');
+    		if($("#goodsTable tbody>tr").length>2)
+    			tr.prev().find('td:last-child').append(tr.find('td:last-child').html());
+    		tr.remove();
+    	}).on("hide.modal.bs", "#addSalesRecordModal", function(e){// 摸态框关闭清理表单
+    		$("#goodsTable tr:gt(0)").remove();
+    		var form = $(this).find('form');
+    		form.reset();
+    	});
+		
+		$("#addSalesRecordForm").submit(function() {debugger;
+			if($(this).parsley().isValid()) {
+				$(this).ajaxSubmit({
+		            type: 'POST',
+		            dataType: 'json',
+		            resetForm: true,
+		            success: function(response, status, xhr, form) {
+		              	$("#addSalesRecordModal").modal('hide');
+		            },
+		            error: function(xhr, status, error, form) {
+		            	console.log(xhr);
+		            }
+		        });
+	        }
+	        
+	        return false;
+		});
+	});
+</script>
 </div>
   </body>
 </html>

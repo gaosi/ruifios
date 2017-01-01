@@ -16,9 +16,9 @@ import org.springframework.context.ApplicationContextAware;
 
 import com.ruifios.dao.Dao;
 
-public class RuifiosEnv implements ApplicationContextAware, ServletContextListener
+public class Env implements ApplicationContextAware, ServletContextListener
 {
-	private Logger log = Logger.getLogger(RuifiosEnv.class);
+	private Logger log = Logger.getLogger(Env.class);
 	 
 	//建议直接使用 SystemUtils.IS_OS_LINUX
 	//public static final Boolean linux = SystemUtils.IS_OS_LINUX;
@@ -83,7 +83,7 @@ public class RuifiosEnv implements ApplicationContextAware, ServletContextListen
 	{
 		context = appContext;
 		//Env.dao = (Dao)context.getBean("mysqlDynamicdao");
-		dao = (Dao)context.getBean("mysqlDynamicdao");
+		dao = (Dao)context.getBean("dao");
 	}
 
 	public String getAppRoot(ServletContext servletcontext) 

@@ -53,6 +53,7 @@ public interface TreeNode {
      * 冗余接口，方便界面使用，直接调用{@link #getLevelcode()}截断获得即可
      * @return
      */
+    @JsonProperty("pId")
     public String getParentKey();
 
     /**

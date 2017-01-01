@@ -10,6 +10,7 @@
 	<!-- 自动扫描且只扫描@Controller -->
 	<context:component-scan base-package="com.ruifios" use-default-filters="false">
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController"/>
 		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
 	</context:component-scan>
 	
@@ -19,11 +20,19 @@
 			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
 		    	<constructor-arg value="UTF-8" />
 			</bean>
+			<!-- FormHttpMessageConverter 将表单封装为对象 -->  
+            <bean class="com.ruifios.server.HttpMessageConverterAdaptor"/>  
+			<!-- 将ByteArrayHttpMessageConverter加在Jackson2HttpMessageConverter前面，为下载准备 -->  
+            <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter"/>  
 			<!-- 将Jackson2HttpMessageConverter的默认格式化输出设为true -->
 			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
                 <property name="prettyPrint" value="true"/>
             </bean>			
   		</mvc:message-converters>
+  		<!-- 自定义解析器 -->
+  		<mvc:argument-resolvers>  
+            <bean class="com.ruifios.server.FormModelMethodArgumentResolver"/>  
+        </mvc:argument-resolvers>  
 	</mvc:annotation-driven>
 	
 	<!-- 注意：FreeMarker与SpringMVC集成时，其配置一定要放在SpringMVC的配置之前 

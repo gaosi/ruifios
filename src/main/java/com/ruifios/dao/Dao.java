@@ -150,6 +150,30 @@ public class Dao extends HibernateDaoSupport {
 		}
 	}
 
+	public <T> List<T> query(Class<T> t, String condition) {
+		Session session = null;
+		String hql = "from " + t.getSimpleName();
+		try {
+			if(condition != null){
+				hql += " " + condition;
+			}
+			session = getSessionFactory().openSession();
+			Query query = session.createQuery(hql);
+			@SuppressWarnings("unchecked")
+			List<T> list = query.list();
+			return list;
+		} catch (Exception e) {
+			this.logger.warn("", e);
+			return new ArrayList<T>();
+		} finally {
+			try {
+				session.close();
+			} catch (Exception e1) {
+				this.logger.warn("", e1);
+			}
+		}
+	}
+	
 	public <T> List<T> query(String hql, int currentPage, int pageSize) {
 		Session session = null;
 		

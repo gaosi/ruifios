@@ -79,7 +79,7 @@ function _checkparent(){
 	}
 }
 $(document).ready(function() {
-	$("#login-form").submit(function() {debugger;
+	$("#login-form").submit(function() {
 		if($(this).parsley().isValid()) {
 			$(this).ajaxSubmit({
 	            type: 'POST',
@@ -87,13 +87,14 @@ $(document).ready(function() {
 	            resetForm: true,
 	            success: function(response, status, xhr, form) {
 	              	console.log(response);
-	            },
-	            error: function(xhr, status, error, form) {
-	            	if(xhr && xhr == 'success'){
+	            	if(response && response == 'success'){
 	            		window.location="${base}/auth/loginsuccess";
 	            	}else{
 	            		window.location="${base}/auth/index";
 	            	}
+	            },
+	            error: function(xhr, status, error, form) {
+	            	console.log(xhr);
 	            }
 	        });
         }

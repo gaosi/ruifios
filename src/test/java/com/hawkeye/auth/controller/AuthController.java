@@ -19,7 +19,7 @@ import com.github.abel533.echarts.series.Map;
 import com.hawkeye.auth.data.AuthStatus;
 import com.hawkeye.entity.auth.SecUser;
 import com.hawkeye.server.AbstractController;
-import com.hawkeye.server.RuifiosEnv;
+import com.hawkeye.server.Env;
 
 @Controller
 @RequestMapping("/auth")
@@ -68,7 +68,7 @@ public class AuthController extends AbstractController
 	{
 		try 
 		{
-			List<SecUser> list = RuifiosEnv.dao.query("from "+SecUser.class.getSimpleName()+" where name = '"+userName+"'");
+			List<SecUser> list = Env.dao.query("from "+SecUser.class.getSimpleName()+" where name = '"+userName+"'");
 			if (list != null && list.size() > 0)
 			{
 				ServletContext application = request.getServletContext();
@@ -80,7 +80,7 @@ public class AuthController extends AbstractController
 					{
 						u.setIslock(0);
 						u.setLockOpenTime(0l);
-						RuifiosEnv.dao.update(u);
+						Env.dao.update(u);
 						logOk(request, userName + "账号解锁");
 						application.removeAttribute(userName);
 					}
@@ -104,7 +104,7 @@ public class AuthController extends AbstractController
 					logOk(request, "用户登录");
 					
 					u.setLastLoginTime(System.currentTimeMillis());
-					RuifiosEnv.dao.update(u);// 修改用户的最近登录时间
+					Env.dao.update(u);// 修改用户的最近登录时间
 					
 					//String srcIp = request.getRemoteHost();
 					//sessionManager.refreshSession(srcIp, userName, "");

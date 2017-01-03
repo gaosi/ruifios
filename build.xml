@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="ruifios" default="release" basedir="." >
+	
+	<taskdef resource="proguard/ant/task.properties" classpath="${basedir}/maker/proguard.jar" />
+	<taskdef resource="net/jtools/classloadertask/antlib.xml" classpath="${basedir}/maker/ant-classloadertask.jar"/>
+	
+	<property file="build.properties" />
+
+	<property name="deploy.path" value="${deploy.version}" />
+	<property name="src.home" value="${basedir}/src/main/java" />
+	<property name="resources.home" value="${basedir}/src/main/resources" />
+	<property name="web.home" value="${basedir}/WebContent" />
+	<property name="build.home" value="${web.home}/WEB-INF/classes" />
+	<property name="lib.compile.home" value="${web.home}/WEB-INF/lib" />
+	<property name="webapp.home" value="${catalina.home}/webapps" />
+	<property name="app.name" value="${webapp.home}/${deploy.path}" />
+
+	<path id="compile-classpath">
+		<path >
+			<fileset dir="${basedir}/lib" includes="*.jar" />
+			<fileset dir="${lib.compile.home}" includes="*.jar" />
+		</path>
+	</path>
+
+	<target name="deploy" depends="clean,compile,copy-web" description="发布调式版本到Tomcat中" />
+	
+	<target name="release" depends="clean,compile,-war" description="发布版本">
+		<!-- concat destfile="${build.home}/initial.sql" fixlastline="true" encoding="utf-8" append="true">
+			<fileset dir="${basedir}/ddl/mysql" includes="schema.sql"/>
+			<fileset dir="${basedir}/ddl/mysql">
+				<include name="**/*schema.sql" />
+				<exclude name="schema.sql" />
+			</fileset>
+			<fileset dir="${basedir}/ddl/mysql" includes="**/*data.sql" />
+		</concat -->
+	</target>
+	
+	<target name="-war" depends="clean,compile" description="构建分发用开发环境包WAR文件">
+		<delete file="${app.name}.war" />
+		<war warfile="${app.name}.war" webxml="${web.home}/WEB-INF/web.xml">
+			<fileset dir="${web.home}" />  
+		</war>
+	</target>
+	
+	<target name="clean" description="删除所有预编译文件,重新编译所有Java类" >
+		<delete dir="${build.home}" />
+		<mkdir dir="${build.home}" />
+	</target>
+	
+	<target name="-clean-web" description="清除web容器目录">
+		<delete dir="${deploy.path}" />
+		<mkdir dir="${deploy.path}" />
+	</target>
+	
+	<target name="compile" depends="clean" description="编译代码">
+		<classloader loader="thread" classpath="${basedir}/maker/ecj-3.7.2.jar"/>
+		<javac srcdir="${src.home}/" destdir="${build.home}" debug="true" deprecation="false" optimize="true" nowarn="on" encoding="UTF-8" source="1.7" target="1.7" compiler="org.eclipse.jdt.core.JDTCompilerAdapter">
+			<classpath refid="compile-classpath" />
+		</javac>
+		<copy todir="${build.home}" overwrite="true">
+			<fileset dir="${src.home}">
+				<exclude name="**/*.java"/>
+			</fileset>
+			<fileset dir="${resources.home}" />
+		</copy>
+	</target>
+	
+	<target name="copy-web" depends="compile,-clean-web" description="发布web工程到容器">
+		<copy todir="${deploy.path}" overwrite="true">
+			<fileset dir="${web.home}" />
+		</copy>
+	</target>
+	
+	<target name="jar" depends="compile">
+		<echo>代码混淆</echo>
+		<proguard configuration="${basedir}/maker/ruifios.pro" forceprocessing="true"/>
+	</target>
+	
+</project>

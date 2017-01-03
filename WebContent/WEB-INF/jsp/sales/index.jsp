@@ -382,12 +382,12 @@
     			tr.prev().find('td:last-child').append(tr.find('td:last-child').html());
     		tr.remove();
     	}).on("show.modal.bs", "#addSalesRecordModal", function(e){// 摸态框关闭清理表单
-    		$("#goodsTable tr:gt(0)").remove();
+    		$("#goodsTable tbody>tr:gt(0)").remove();
     		var form = $(this).find('form');
-    		ruifiosMap['formdata']['base'] = {consumername: '', consumercard: '', consumerphone: ''};
+    		ruifiosMap['formdata'] = {base: {consumername: '', consumercard: '', consumerphone: ''}};
     		var row = $("#UserTable").bootstrapTable('getSelections'); 
     		if(row) {
-    			ruifiosMap['formdata']['base'] = {consumername: row['realName'], consumercard: row['userName'], consumerphone: row['userPhone']};
+    			ruifiosMap['formdata'] = {base: {consumername: row['realName'], consumercard: row['userName'], consumerphone: row['userPhone']}};
     		}
     	}).on("show.modal.bs", "#SalesRecordModal", function(e){// 摸态框关闭清理表单
     		ruifiosMap['salesrecord'] = {consumercard: $(this).data("id")};

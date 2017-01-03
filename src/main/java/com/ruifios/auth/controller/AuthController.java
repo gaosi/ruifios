@@ -1,5 +1,6 @@
 package com.ruifios.auth.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -8,6 +9,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +20,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ruifios.auth.model.AuthAssistant;
 import com.ruifios.auth.model.AuthStatus;
 import com.ruifios.auth.model.User;
+import com.ruifios.commons.Pager;
+import com.ruifios.sales.service.SalesService;
 import com.ruifios.server.AbstractController;
 import com.ruifios.server.RuifiosEnv;
 
@@ -24,6 +29,10 @@ import com.ruifios.server.RuifiosEnv;
 @RequestMapping("/auth")
 public class AuthController extends AbstractController
 {
+	
+	@Autowired
+	@Qualifier(SalesService.IOC_NAME)
+	private SalesService salesservice;
 	
 	/**
 	 * 进入登陆页面
@@ -183,6 +192,44 @@ public class AuthController extends AbstractController
 		return null;
 	}
 
+	/**
+	 * 获取用户信息
+	 * @param request
+	 * @param user
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/getuserlist")
+	public Pager<AuthStatus> getUserList(HttpServletRequest request, Pager<AuthStatus> pager)
+	{
+		try 
+		{
+			String condition = ""; 
+			//if(!"".equals(condition)){
+				List<User> users = RuifiosEnv.dao.query("from " + User.class.getSimpleName()+condition, pager.getCurrentPage(), pager.getPageSize());
+				long records = RuifiosEnv.dao.getCount(User.class, condition);
+				List<AuthStatus> data = new ArrayList<AuthStatus>();
+				for(User user: users){
+					AuthStatus as = new AuthStatus(user);
+					double consum = salesservice.getSalesSum(user.getName());
+					as.setUserPhone(user.getPhone());
+					as.setConsum(consum);
+					data.add(as);
+				}
+				
+				pager.setRecords(records);
+				pager.setData(data);
+			//}
+				
+			
+			logOk(request, "获取用户信息");
+			return pager;
+		} catch (Exception e) {
+			logFail(request, "获取用户信息");
+			return pager;
+		}
+	}
+	
 	/**
 	 * 修改密码
 	 * @param request

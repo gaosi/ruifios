@@ -2,24 +2,31 @@ package com.ruifios.auth.model;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * 用户登录状态
  */
 public class AuthStatus implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
-	private String userId;
-	
-	private String userName;
-	
-	private String realName;
 
-	private boolean isLocked = false;
+    @JsonProperty("id")
+	protected String userId;
 	
-	private long lockEndTime = 0;
+	protected String userName;
+	
+	protected String realName;
+	
+	protected String userPhone;
+	
+	protected double consum;
 
-	private boolean legalUser = true;
+	protected boolean isLocked = false;
+	
+	protected long lockEndTime = 0;
+
+	protected boolean legalUser = true;
 
 	public AuthStatus() {
 
@@ -29,6 +36,46 @@ public class AuthStatus implements Serializable {
 		this.userId = user.getId();
 		this.userName = user.getName();
 		this.realName = user.getRealName();
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getRealName() {
+		return realName;
+	}
+
+	public void setRealName(String realName) {
+		this.realName = realName;
+	}
+
+	public String getUserPhone() {
+		return userPhone;
+	}
+
+	public void setUserPhone(String userPhone) {
+		this.userPhone = userPhone;
+	}
+
+	public double getConsum() {
+		return consum;
+	}
+
+	public void setConsum(double consum) {
+		this.consum = consum;
 	}
 
 	public boolean isLocked() {
@@ -55,27 +102,4 @@ public class AuthStatus implements Serializable {
 		this.legalUser = legalUser;
 	}
 
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getRealName() {
-		return realName;
-	}
-
-	public void setRealName(String realName) {
-		this.realName = realName;
-	}
 }

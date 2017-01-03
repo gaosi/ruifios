@@ -116,7 +116,25 @@ public abstract class IdRecordHelper {
 		updateTblMaxId(Hibernates.getTableName(clazz));
 	}
 	
-
+	/**
+	 * 获取可使用ID，同时更新
+	 * 
+	 * @param tblName 数据库表名
+	 * @return
+	 */
+	public static final long getTblMaxIdWithUpdate(String tblName, int size) {
+		if (tblName == null)
+			return -1;
+		
+		synchronized(lock(tblName)) {
+			IdRecord record = fetch(tblName);
+			long maxid = record.getMaxid();
+			record.setMaxid(maxid+size);
+			RuifiosEnv.dao.update(record);
+			return maxid;
+		}
+	}
+	
 	/**
 	 * 获取可使用ID，同时更新
 	 * 
@@ -124,16 +142,17 @@ public abstract class IdRecordHelper {
 	 * @return
 	 */
 	public static final long getTblMaxIdWithUpdate(String tblName) {
-		if (tblName == null)
-			return -1;
-		
-		synchronized(lock(tblName)) {
-			IdRecord record = fetch(tblName);
-			long maxid = record.getMaxid();
-			record.setMaxid(maxid+1);
-			RuifiosEnv.dao.update(record);
-			return maxid;
-		}
+		return getTblMaxIdWithUpdate(tblName, 1);
+	}
+
+	/**
+	 * 获取可使用ID，同时更新
+	 * 
+	 * @param entity 代表POJO与数据库表对应关系的Entity对象
+	 * @return
+	 */
+	public static final long getTblMaxIdWithUpdate(Class<?> clazz, int size) {
+		return getTblMaxIdWithUpdate(Hibernates.getTableName(clazz), size);
 	}
 	
 	/**

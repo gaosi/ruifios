@@ -12,6 +12,10 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
+import org.springframework.util.StringUtils;
+
+import com.ruifios.commons.Pager;
+import com.ruifios.server.RuifiosEnv;
 
 /**
  * 
@@ -129,6 +133,26 @@ public class Dao extends HibernateDaoSupport {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Object> SQLQuery(String sql) {
+		Session session = null;
+		
+		try {
+			session = getSessionFactory().openSession();
+			 Query q = session.createSQLQuery(sql);               
+	         return q.list();  
+		} catch (Exception e) {
+			this.logger.warn("", e);
+			return new ArrayList<>();
+		} finally {
+			try {
+				session.close();
+			} catch (Exception e1) {
+				this.logger.warn("", e1);
+			}
+		}
+	}
+	
 	public <T> List<T> query(String hql) {
 		Session session = null;
 	
@@ -171,6 +195,24 @@ public class Dao extends HibernateDaoSupport {
 			} catch (Exception e1) {
 				this.logger.warn("", e1);
 			}
+		}
+	}
+
+	public <T> Pager<T> query(Class<T> t, Pager<T> pager, String condition) {
+		try {
+			long records = RuifiosEnv.dao.getCount(t, condition);
+			String hql = "from " + t.getSimpleName();
+			if(StringUtils.isEmpty(condition)){
+				hql += " "+condition;
+			}
+			List<T> data = query(hql, pager.getCurrentPage(), pager.getPageSize());
+			pager.setRecords(records);
+			pager.setData(data);
+			
+			return pager;
+		} catch (Exception e) {
+			this.logger.warn("", e);
+			return null;
 		}
 	}
 	

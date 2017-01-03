@@ -1,5 +1,7 @@
 <%@ include file="/WEB-INF/template/taglibs.jsp" %>
 
+<!-- 为菜单是否选中识别用 -->
+<c:set var="menu" value="sales" scope="request" />
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -18,6 +20,8 @@
     <link href="${dist}/css/bootstrap/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap theme -->
     <link href="${dist}/css/bootstrap/bootstrap-theme.min.css" rel="stylesheet">
+    <!-- Bootstrap table CSS -->
+    <link href="${dist}/css/bootstrap/bootstrap-table.css" rel="stylesheet">
 	<!-- Font Awesome -->
 	<link href="${dist}/css/font-awesome.min.css" rel="stylesheet">
 	<!-- Pace -->
@@ -27,40 +31,9 @@
   </head>
 
   <body role="document" class="overflow-hidden">
-
-    <!-- Fixed navbar -->
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Bootstrap theme</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
-              <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li class="divider"></li>
-                <li class="dropdown-header">Nav header</li>
-                <li><a href="#">Separated link</a></li>
-                <li><a href="#">One more separated link</a></li>
-              </ul>
-            </li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
+  
+  	<!-- 头部 -->
+	<c:import url="/WEB-INF/template/top.jsp"></c:import>
 
     <div id="main-container" class="container theme-showcase" role="main">
 		<div class="row">
@@ -73,12 +46,54 @@
 						<i class="fa fa-minus-circle fa-lg"></i><spring:message code="button.del"/>
 					</a>
 				</div>
+				<div class="pull-right col-lg-6 input-group">
+	            	<input class="form-control" id="fuzzy" placeholder="请输入身份证号进行查询" type="text">
+	            	<div class="input-group-btn" role="group">
+	            		<button id="search-btn" type="button" class="btn btn-primary">&nbsp;<i class="fa  fa-search fa-lg"></i>&nbsp;</button>
+	            	</div>
+	            </div>
 			</div>
 		</div>
       
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="panel bg fadeInDown animation-delay1">
+					<table id="UserTable" data-toggle="table" class="table table-hover table-striped table-bordered table-condensed">
+						
+					</table>
+				</div>
+			</div>
+		</div>  
+      
+      	<!-- 销售记录视图模态框 -->
+		<div class="modal fade" id="SalesRecordModal" tabindex="-1" role="dialog" aria-labelledby="SalesRecordModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+		    	<div class="modal-content">
+		         	<div class="modal-header">
+		            	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+		                  &times;
+		            	</button>
+		            	<h4 class="modal-title" id="SalesRecordModalLabel">
+		               		销售记录
+		            	</h4>
+		         	</div>
+		         	<div class="modal-body">
+		         		<div class="row">
+		         			<div class="col-lg-12">
+								<div class="panel bg fadeInDown animation-delay1">
+									<table id="SalesRecordTable" data-toggle="table" class="table table-hover table-striped table-bordered table-condensed">
+										
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div><!-- /.modal -->
+		</div>
 
 		<!-- 添加视图模态框 -->
-		<div class="modal fade" id="addSalesRecordModal" tabindex="-1" role="dialog" aria-labelledby="SalesRecordModalLabel" aria-hidden="true">
+		<div class="modal fade" id="addSalesRecordModal" tabindex="-1" role="dialog" aria-labelledby="addSalesRecordModalLabel" aria-hidden="true">
 		   <div class="modal-dialog">
 		   <form id="addSalesRecordForm" class="form-horizontal no-margin" data-validate="parsley" action="${base}/sales/add" method="post">
 		      <div class="modal-content">
@@ -86,12 +101,12 @@
 		            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
 		                  &times;
 		            </button>
-		            <h4 class="modal-title" id="SalesRecordModalLabel">
+		            <h4 class="modal-title" id="addSalesRecordModalLabel">
 		               	添加销售记录
 		            </h4>
 		         </div>
 		         <div class="modal-body">
-		         	<div class="panel-body">
+		         	<div class="row">
 		           		<fieldset>
 							<legend>基本信息</legend>
 							<div class="row">
@@ -194,6 +209,8 @@
 	<script type="text/javascript" src="${dist}/js/jquery/jquery.popupoverlay.min.js"></script>
 	<!-- Bootstrap core JavaScript -->
     <script type="text/javascript" src="${dist}/js/bootstrap/bootstrap.js"></script>
+	<!-- Bootstrap table -->
+    <script type="text/javascript" src="${dist}/js/bootstrap/bootstrap-table.js"></script>
     <!-- Modernizr -->
 	<script type="text/javascript" src="${dist}/js/modernizr.min.js"></script>
 	<!-- Pace -->
@@ -208,11 +225,19 @@
 <script type="text/javascript">
 	// 初始化加载数据
 	var ruifiosMap = {
-		init: function(){// 加载商家和商品信息 {}, 
+		salesrecord: {},
+		user: {},
+		userselections: []
+	};
+	
+	var SalesRecordHandler = {
+		init: function(){
+			// 复制销售记录行
+			ruifiosMap['recordtr'] = $("#goodsTable tbody>tr:first-child").clone();
+			// 加载用户信息
+			SalesRecordHandler.loadUserTable(1);
+			
 			$.getJSON("${base}/tree/getshopsinfo", function(data, status, xhr) {
-				//console.log(xhr['responseText']);
-				//data = $.parseJSON(xhr['responseText']);
-				console.log(JSON.stringify(data));
 				var shopsTree = [], shops = [];
 				$.each(data.nodes, function(index, node) {
 					node.open= true,//对资产组节点设置状态 
@@ -232,42 +257,100 @@
 				ruifiosMap['shop'] = shops;
 				ruifiosMap['shopsTree'] = shopsTree;
 			});
+			
+			SalesRecordHandler.refreshShops($("#merchantname"));
 		},
-		initShops: function(){// 初始化商家列表
+		refreshShops: function(shop){// 刷新化商家列表
+			$(shop).empty();
 			var shops = [];
 			if(ruifiosMap['shop'])
 				$.each(ruifiosMap['shop'], function(index, shop){
 					shops.push($('option', {label: shop, value: shop}));
 				});
-			return shops;
+			
+			$(shop).append(shops);
 		},
-		refreshShops: function(shop){// 刷新化商家列表
-			$(shop).empty();
-			$(shop).append(ruifiosMap.initShops());
-		},
-		initGoods: function(shop){// 初始化商品列表
+		refreshGoods: function(good, shop){// 刷新化商品列表
+			$(good).empty();
 			var goods = [];
 			if(ruifiosMap[shop])
 				$.each(ruifiosMap[shop], function(index, shop){
 					goods.push($('option', {label: shop, value: shop}));
 				});
-			return goods;
+			
+			$(good).append(goods);
+		},	
+		getIdSelections: function($table) {
+	        return $.map($table.bootstrapTable('getSelections'), function (row) {
+	            return row.id
+	        });
+	    },
+		loadSalesRecordTable: function(currentPage){
+			$.loadBootstrapTable("#SalesRecordTable", {
+				url: "${base}/sales/getsalesrecord",
+				queryParams: function(params){ //设置传入参数
+					params['currentPage'] = params.pageNumber;
+					$.extend(params, ruifiosMap['salesrecord']);
+					return params;
+				},
+				data: { page: currentPage },
+				columns: [
+					//{title:"全部", field: "id", checkbox:true, visible:false},
+					{title:"用户名称", field: "consumername", width: "10%" },
+					{title:"身份证号", field: "consumercard", width: "10%" },
+					{title:"商家名称", field: "merchantname", width: "10%" },
+					{title:"商品名称", field: "commodityname", width: "10%"},
+					{title:"购买数量", field: "number", width: "5%" },
+					{title:"商品原价", field: "originalcost", width: "5%" },
+					{title:"商品售价", field: "sellingprice", width: "5%" },
+					{title:"让利额度", field: "transferprice", width: "5%" },
+					{title:"政府补贴", field: "subsidyprice", width: "5%" },
+					{title:"实际支付", field: "actualpayment", width: "5%" }
+					//{title:"", field: "timeLast", formatter: startTimeFormatter}
+				]
+			});
 		},
-		refreshGoods: function(good, shops){// 刷新化商品列表
-			$(good).empty();
-			$(good).append(shops);
+		loadUserTable: function(currentPage){ //加载用户信息
+			$.loadBootstrapTable("#UserTable", {
+				url: "${base}/auth/getuserlist",
+				pageSize: 20,
+				queryParams: function(params){ //设置传入参数
+					params['currentPage'] = params.pageNumber;
+					$.extend(params, ruifiosMap['user']);
+					return params;
+				},
+				data: { page: currentPage },
+				columns: [
+					{title:"全部", field: "id", checkbox:true, width: "16px" },
+					{title:"用户名称", field: "realName", width: "25%" },
+					{title:"身份证号", field: "userName", width: "25%" },
+					{title:"电话号码", field: "userPhone", width: "25%" },
+					{title:"消费金额（￥）", field: "consum", width: "25%" }
+				]
+			}).on('check.bs.table uncheck.bs.table ' +
+	                'check-all.bs.table uncheck-all.bs.table', function () {
+				var flag = false, selections = SalesRecordHandler.getIdSelections($("#UserTable"));
+	            $("#delSalesRecord").prop('disabled', !selections.length);
+	            
+				if(selections.length < 2){
+					flag = true;
+				}
+				$("#addSalesRecord").prop('disabled', !flag);
+				
+	            // save your data, here just save the current page
+	            ruifiosMap.selections = SalesRecordHandler.getIdSelections($table);
+	            // push or splice the selections if you want to save all data selections
+	        });
 		}
 	};
 	
 	$(document).ready(function(){
-		ruifiosMap['recordtr'] = $("#goodsTable tbody>tr:first-child").clone();
-		ruifiosMap.init();
-		ruifiosMap.refreshShops();
+		SalesRecordHandler.init();
 		
 		$(document).on("change",  "#merchantname", function(e){// 刷新商品信息
-			var shops = ruifiosMap.initGoods($(this).val());
+			var shop = $(this).val();
 			$("#goodsTable datalist").each(function () {
-				ruifiosMap.refreshGoods($(this), shops);
+				SalesRecordHandler.refreshGoods($(this), shop);
 			});
 		}).on("click",  "#goodsTable .add-record", function(e){// 添加一条销售记录
     		var trs = $("#goodsTable tbody tr");
@@ -298,10 +381,18 @@
     		if($("#goodsTable tbody>tr").length>2)
     			tr.prev().find('td:last-child').append(tr.find('td:last-child').html());
     		tr.remove();
-    	}).on("hide.modal.bs", "#addSalesRecordModal", function(e){// 摸态框关闭清理表单
+    	}).on("show.modal.bs", "#addSalesRecordModal", function(e){// 摸态框关闭清理表单
     		$("#goodsTable tr:gt(0)").remove();
     		var form = $(this).find('form');
-    		form.reset();
+    		ruifiosMap['formdata']['base'] = {consumername: '', consumercard: '', consumerphone: ''};
+    		var row = $("#UserTable").bootstrapTable('getSelections'); 
+    		if(row) {
+    			ruifiosMap['formdata']['base'] = {consumername: row['realName'], consumercard: row['userName'], consumerphone: row['userPhone']};
+    		}
+    	}).on("show.modal.bs", "#SalesRecordModal", function(e){// 摸态框关闭清理表单
+    		ruifiosMap['salesrecord'] = {consumercard: $(this).data("id")};
+    		
+    		SalesRecordHandler.loadSalesRecordTable(1);
     	});
 		
 		$("#addSalesRecordForm").submit(function() {debugger;
@@ -312,6 +403,8 @@
 		            resetForm: true,
 		            success: function(response, status, xhr, form) {
 		              	$("#addSalesRecordModal").modal('hide');
+		              	$("#SalesRecordModal").data('id', response);
+		              	$("#SalesRecordModal").modal('show');
 		            },
 		            error: function(xhr, status, error, form) {
 		            	console.log(xhr);

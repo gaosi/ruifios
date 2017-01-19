@@ -47,11 +47,24 @@
 			<div class="col-lg-10">
 				<div class="row">
 					<div class="col-md-12">
-						<div class="input-group"><!-- pull-right search -->
+						<div class="input-group">
 			            	<input class="form-control" id="fuzzy" placeholder="请输入身份证号进行查询" type="text">
 			            	<div class="input-group-btn" role="group">
-			            		<button id="search-btn" type="button" class="btn btn-primary">&nbsp;<i class="fa  fa-search fa-lg"></i>&nbsp;</button>
-			            	</div>
+			            		<button type="button" id="search-btn" class="btn btn-primary">&nbsp;<i class="fa  fa-search fa-lg"></i>&nbsp;</button>
+			            		<div class="btn-group">
+				            		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+										<i class="glyphicon glyphicon-export icon-share"></i> <span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu export" role="menu" data-target="#SalesRecordTable">
+										<li data-type="json"><a href="javascript:void(0)">JSON</a></li>
+										<li data-type="xml"><a href="javascript:void(0)">XML</a></li>
+										<li data-type="csv"><a href="javascript:void(0)">CSV</a></li>
+										<li data-type="txt"><a href="javascript:void(0)">TXT</a></li>
+										<li data-type="sql"><a href="javascript:void(0)">SQL</a></li>
+										<li data-type="excel"><a href="javascript:void(0)">MS-Excel</a></li>
+									</ul>
+								</div>
+				            </div>
 			            </div>
 					</div>
 				</div>
@@ -60,7 +73,7 @@
 						<div id="toolbar">
 						
 						</div>	
-						<table id="SalesRecordTable" data-toggle="table" data-toolbar="#toolbar" data-search="true" data-show-export="true" class="table table-hover table-striped table-bordered table-condensed">
+						<table id="SalesRecordTable" data-toggle="table" class="table table-hover table-striped table-bordered table-condensed">
 							
 						</table>
 					</div>
@@ -132,54 +145,32 @@
 		},
 		clickTreeNode: function(event, treeId, treeNode) {
 			var parent = treeNode.getParentNode();
-			if(parent){
+			ruifiosMap['salesrecord'] = {commodityname: '', merchantname: ''};
+			if(parent && parent.merchantname){
 				ruifiosMap['salesrecord'] = {merchantname: parent.name, commodityname: treeNode.name};
-			}else{
+			}else if(treeNode.merchantname){
 				ruifiosMap['salesrecord'] = {merchantname: treeNode.name};
-			}
-			var treeObj = ruifiosMap['allztree'];
-			if(treeObj){
-				var nodes = treeObj.getNodes();
-				if (nodes.length>0) treeObj.cancelSelectedNode(nodes[0]);
 			}
 			
 			SalesRecordHandler.loadSalesRecordTable(1);
 		},
 		init: function(){
-			//
-			ruifiosMap['allztree'] =$.fn.zTree.init($("#AllShopsInfo"), 
-				{
-					data: {simpleData: {enable: true}},
-				 	callback: {
-						onClick: function(treeId, treeNode) { 
-							SalesRecordHandler.loadSalesRecordTable(1);
-							var treeObj = ruifiosMap['ztree'];
-							if(treeObj){
-								treeObj.cancelSelectedNode();
-							}
-						}
-					}
-				}, 
-				[{ id:13, pId:1, name: '全部商品'}]
-			);
-			
-			SalesRecordHandler.loadSalesRecordTable(1);
-			
-			$.getJSON("${base}/tree/getshopsinfo", function(data, status, xhr) {
+			// 加载商家商品信息, status, xhr
+			$.getJSON("${base}/tree/getshopsinfo", function(data) {
 				var shopsTree = [];
 				$.each(data.nodes, function(index, node) {
 					node.open= true,//对资产组节点设置状态 
 					node.chkDisabled=true;
+					node.merchantname=true;
 					// 添加树节点
 					shopsTree.push(node);
 		        });
 				
-				ruifiosMap['shopsTree'] = shopsTree;
+				ruifiosMap['shopsTree'] = [{ name: '全部商品', open: true, children: shopsTree}];
 				
-				ruifiosMap['ztree'] = $.fn.zTree.init($("#ShopsInfoTree"), {
-		            view: {
-		                selectedMulti: false
-		            },
+				ruifiosMap['ztree'] = $.fn.zTree.init($("#AllShopsInfo"), {
+					data: {simpleData: {enable: true}},
+		            view: { selectedMulti: false },
 		            callback: {
                         beforeClick: function(treeId, treeNode) { 
                         	if(treeNode.passing)
@@ -189,14 +180,29 @@
                         },
                         onClick: SalesRecordHandler.clickTreeNode
 		            }
-			     }, shopsTree);
+			     }, ruifiosMap['shopsTree']);
 			});
+			
+			// 加载销售信息
+			SalesRecordHandler.loadSalesRecordTable(1);
 		}
 	};
 	
 	$(document).ready(function(){
 		// 初始化销售记录
 		SalesRecordHandler.init();
+		
+		$(document).on("click", "#search-btn", function(){
+			var fuzzy = $("#fuzzy").val();
+			$.extend(ruifiosMap['salesrecord'], {consumercard: fuzzy});
+			
+			SalesRecordHandler.loadSalesRecordTable(1);
+		}).on("click", ".export.dropdown-menu >li", function(){
+			var type = $(this).data('type');
+			var table = $(this).parent("ul").data("target");
+			
+			$(table).tableExport({type: type, escape: false});
+		});
 	});
 </script>
 </div>

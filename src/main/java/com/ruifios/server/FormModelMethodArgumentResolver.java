@@ -135,8 +135,8 @@ public class FormModelMethodArgumentResolver /*extends AbstractNamedValueMethodA
 			    		String tempkey = prefix + "." + fieldName;
 			    		arg = createBean(fieldType, parameter, properties, tempkey, binder);
 			    	}
-			           
-			    	field.set(target, arg);  
+			        if(arg != null)   
+			        	field.set(target, arg);  
 				}
 				 
 			}

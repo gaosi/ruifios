@@ -1,6 +1,7 @@
 package com.ruifios.auth.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -204,23 +205,24 @@ public class AuthController extends AbstractController
 	{
 		try 
 		{
-			String condition = ""; 
-			//if(!"".equals(condition)){
-				List<User> users = RuifiosEnv.dao.query("from " + User.class.getSimpleName()+condition, pager.getCurrentPage(), pager.getPageSize());
-				long records = RuifiosEnv.dao.getCount(User.class, condition);
-				List<AuthStatus> data = new ArrayList<AuthStatus>();
-				for(User user: users){
-					AuthStatus as = new AuthStatus(user);
-					double consum = salesservice.getSalesSum(user.getName());
-					as.setUserPhone(user.getPhone());
-					as.setConsum(consum);
-					data.add(as);
-				}
-				
-				pager.setRecords(records);
-				pager.setData(data);
-			//}
-				
+			String fuzzy = request.getParameter("fuzzy");
+			String condition = " where role = 'weixin' "; 
+			if(fuzzy != null && !"".equals(fuzzy)){
+				condition += " and (name like '%"+fuzzy+"%' or realName like '%"+fuzzy+"%') ";
+			}
+			List<User> users = RuifiosEnv.dao.query("from " + User.class.getSimpleName()+condition, pager.getCurrentPage(), pager.getPageSize());
+			long records = RuifiosEnv.dao.getCount(User.class, condition);
+			List<AuthStatus> data = new ArrayList<AuthStatus>();
+			for(User user: users){
+				AuthStatus as = new AuthStatus(user);
+				double consum = salesservice.getSalesSum(user.getName());
+				as.setUserPhone(user.getPhone());
+				as.setConsum(consum);
+				data.add(as);
+			}
+			
+			pager.setRecords(records);
+			pager.setData(data);
 			
 			logOk(request, "获取用户信息");
 			return pager;
@@ -323,6 +325,30 @@ public class AuthController extends AbstractController
 			return "success";
 		} catch (Exception e) {
 			logFail(resq, "配置用户");
+			return "error";
+		}
+	}
+	
+	/**
+	 * 删除用户
+	 * @param request
+	 * @param userIds
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/deleteusers")
+	public String delUsers(HttpServletRequest request, String[] userIds)
+	{
+		try 
+		{
+			for(String id: userIds){
+				RuifiosEnv.dao.delete(User.class, id);
+			}
+			logOk(request, "删除用户"+Arrays.toString(userIds));
+			
+			return "success";
+		} catch (Exception e) {
+			logFail(request, "删除用户"+Arrays.toString(userIds));
 			return "error";
 		}
 	}

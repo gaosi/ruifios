@@ -336,6 +336,45 @@ $(function	()	{
 	// Tooltip
     $("[data-toggle=tooltip]").tooltip();
 	
+    // 获取当前登录用户信息
+    $(document).on("show.modal.bs",  "#editProfileModal", function(e){
+    	var that = $(this);
+    	$.ajax({
+			url: that.data('url'),
+			type: 'post',
+			dataType: 'json',
+			success:function(data){
+				that.find('form input, textarea').each(function() {
+	                var name = $(this).attr('name');
+	                var v = $.getJSONField(data, name);
+	                v = typeof v == 'undefined' ? "" : v;
+	                $(this).val(v);
+	            });
+			},
+			error:function(error){
+				console.log(error);
+			}
+		});
+	});
+
+    // 修改当前登录用户信息
+    $("#editProfileForm").submit(function() {
+    	if($(this).parsley().isValid()) {
+			$(this).ajaxSubmit({
+	            type: 'POST',
+	            dataType: 'json',
+	            resetForm: true,
+	            success: function(response, status, xhr, form) {
+	              	$("#editProfileModal").modal('hide');
+	            },
+	            error: function(xhr, status, error, form) {
+	            	console.log(xhr);
+	            }
+	        });
+        }
+        
+        return false;
+	});
 });
 
 $(window).load(function() {

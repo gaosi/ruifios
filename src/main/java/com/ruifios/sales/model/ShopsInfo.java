@@ -33,9 +33,9 @@ public class ShopsInfo extends AbstractTreeNode implements Serializable {
 		this.id = id;
 	}
 	
-	@Override
+	/*@Override
 	public String getKey() {
 		return String.valueOf(id);
-	}
+	}*/
 	
 }

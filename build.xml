@@ -54,8 +54,8 @@
 	</target>
 	
 	<target name="compile" depends="clean" description="编译代码">
-		<classloader loader="thread" classpath="${basedir}/maker/ecj-3.7.2.jar"/>
-		<javac srcdir="${src.home}/" destdir="${build.home}" debug="true" deprecation="false" optimize="true" nowarn="on" encoding="UTF-8" source="1.7" target="1.7" compiler="org.eclipse.jdt.core.JDTCompilerAdapter">
+		<!-- classloader loader="thread" classpath="${basedir}/maker/ecj-3.7.2.jar" compiler="org.eclipse.jdt.core.JDTCompilerAdapter" / -->
+		<javac srcdir="${src.home}/" destdir="${build.home}" debug="true" deprecation="false" optimize="true" nowarn="on" encoding="UTF-8" source="1.7" target="1.7" executable="${jdk7}/bin/javac.exe" >
 			<classpath refid="compile-classpath" />
 		</javac>
 		<copy todir="${build.home}" overwrite="true">

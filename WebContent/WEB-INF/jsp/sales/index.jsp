@@ -30,7 +30,7 @@
 	<link href="${dist}/css/stylesheet.css" rel="stylesheet">
   </head>
 
-  <body role="document" class="overflow-hidden">
+  <body role="document" id="wrapper">
   
   	<!-- 头部 -->
 	<c:import url="/WEB-INF/template/top.jsp"></c:import>
@@ -42,12 +42,12 @@
 					<a id="addSalesRecord" class="btn btn-primary btn-sm" href="#addSalesRecordModal" data-toggle="modal">
 						<i class="fa fa-plus-circle fa-lg"></i><spring:message code="button.add"/>
 					</a>
-					<a id="delSalesRecord" class="btn btn-primary btn-sm">
+					<a id="delSalesRecord" class="btn btn-primary btn-sm" disabled href="#delUserModal" data-toggle="modal">
 						<i class="fa fa-minus-circle fa-lg"></i><spring:message code="button.del"/>
 					</a>
 				</div>
-				<div class="pull-right col-lg-6 input-group">
-	            	<input class="form-control" id="fuzzy" placeholder="请输入身份证号进行查询" type="text">
+				<div class="pull-right col-lg-5 input-group">
+	            	<input type="text" class="form-control" id="fuzzy" placeholder="请输入身份证号或名称进行查询" />
 	            	<div class="input-group-btn" role="group">
 	            		<button id="search-btn" type="button" class="btn btn-primary">&nbsp;<i class="fa  fa-search fa-lg"></i>&nbsp;</button>
 	            	</div>
@@ -64,33 +64,6 @@
 				</div>
 			</div>
 		</div>  
-      
-      	<!-- 销售记录视图模态框 -->
-		<div class="modal fade" id="SalesRecordModal" tabindex="-1" role="dialog" aria-labelledby="SalesRecordModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-		    	<div class="modal-content">
-		         	<div class="modal-header">
-		            	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-		                  &times;
-		            	</button>
-		            	<h4 class="modal-title" id="SalesRecordModalLabel">
-		               		销售记录
-		            	</h4>
-		         	</div>
-		         	<div class="modal-body">
-		         		<div class="row">
-		         			<div class="col-lg-12">
-								<div class="panel bg fadeInDown animation-delay1">
-									<table id="SalesRecordTable" data-toggle="table" class="table table-hover table-striped table-bordered table-condensed">
-										
-									</table>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div><!-- /.modal -->
-		</div>
 
 		<!-- 添加视图模态框 -->
 		<div class="modal fade" id="addSalesRecordModal" tabindex="-1" role="dialog" aria-labelledby="addSalesRecordModalLabel" aria-hidden="true">
@@ -107,7 +80,7 @@
 		         </div>
 		         <div class="modal-body">
 		         	<div class="row">
-		           		<fieldset>
+		           		<fieldset class="base">
 							<legend>基本信息</legend>
 							<div class="row">
 								<div class="col-md-6">
@@ -196,6 +169,41 @@
 			</div><!-- /.modal -->
 		</div>
 		
+      	<!-- 销售记录视图模态框 -->
+		<div class="modal fade" id="SalesRecordModal" tabindex="-1" role="dialog" aria-labelledby="SalesRecordModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+		    	<div class="modal-content">
+		         	<div class="modal-header">
+		            	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+		                  &times;
+		            	</button>
+		            	<h4 class="modal-title" id="SalesRecordModalLabel">
+		               		销售记录
+		            	</h4>
+		         	</div>
+		         	<div class="modal-body">
+		         		<table id="SalesRecordTable" data-toggle="table" class="table table-hover table-striped table-bordered table-condensed"></table>
+					</div>
+				</div>
+			</div><!-- /.modal -->
+		</div>
+		
+		<!-- 删除用户确认框 -->			
+	    <div class="modal fade" id="delUserModal" tabindex="-1" role="dialog" aria-hidden="true">
+	        <div class="modal-dialog modal-sm">
+	            <div class="modal-content">
+	                <div class="modal-body">
+	                    <em>确定要删除以下用户吗： </em>
+	                    <ul class="names" role="tablist"></ul>
+	                </div>
+	                <div class="modal-footer">
+	                    <button type="button" class="btn btn-danger" id="delUserConfirm"><spring:message code="button.del" /></button>
+	                    <button type="button" class="btn btn-info" data-dismiss="modal"><spring:message code="button.cancel"/></button>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+			
     </div> <!-- /container -->
 
 <div id="script-container">
@@ -256,33 +264,29 @@
 		        });
 				ruifiosMap['shop'] = shops;
 				ruifiosMap['shopsTree'] = shopsTree;
+				
+				SalesRecordHandler.refreshShops($("#shop_list"));
 			});
-			
-			SalesRecordHandler.refreshShops($("#merchantname"));
 		},
-		refreshShops: function(shop){// 刷新化商家列表
-			$(shop).empty();
+		refreshShops: function($shop){// 刷新化商家列表
+			$shop.empty();
 			var shops = [];
 			if(ruifiosMap['shop'])
-				$.each(ruifiosMap['shop'], function(index, shop){
-					shops.push($('option', {label: shop, value: shop}));
+				$.each(ruifiosMap['shop'], function(index, item){
+					$shop.append($('<option></option>', {label: item, value: item}));
 				});
-			
-			$(shop).append(shops);
 		},
 		refreshGoods: function(good, shop){// 刷新化商品列表
 			$(good).empty();
 			var goods = [];
 			if(ruifiosMap[shop])
-				$.each(ruifiosMap[shop], function(index, shop){
-					goods.push($('option', {label: shop, value: shop}));
+				$.each(ruifiosMap[shop], function(index, item){
+					$(good).append($('<option></option>', {label: item, value: item}));
 				});
-			
-			$(good).append(goods);
 		},	
-		getIdSelections: function($table) {
+		getTableSelections: function($table) {
 	        return $.map($table.bootstrapTable('getSelections'), function (row) {
-	            return row.id
+	            return row
 	        });
 	    },
 		loadSalesRecordTable: function(currentPage){
@@ -304,7 +308,7 @@
 					{title:"商品原价", field: "originalcost", width: "5%" },
 					{title:"商品售价", field: "sellingprice", width: "5%" },
 					{title:"让利额度", field: "transferprice", width: "5%" },
-					{title:"政府补贴", field: "subsidyprice", width: "5%" },
+					{title:"政府补贴", field: "subsidyprice", width: "5%", "class": "danger" },
 					{title:"实际支付", field: "actualpayment", width: "5%" }
 					//{title:"", field: "timeLast", formatter: startTimeFormatter}
 				]
@@ -321,33 +325,63 @@
 				},
 				data: { page: currentPage },
 				columns: [
-					{title:"全部", field: "id", checkbox:true, width: "16px" },
-					{title:"用户名称", field: "realName", width: "25%" },
+					{title:"全部", checkbox:true, width: "16px" },
+					{title:"用户名称", field: "realName", width: "25%", formatter: function(value, row, index) {
+				        return [
+			                '<a class="userdetail" href="javascript:void(0)">',
+			                value,
+			                '</a>'
+			            ].join('');
+			        }, events: operateEvents},
 					{title:"身份证号", field: "userName", width: "25%" },
 					{title:"电话号码", field: "userPhone", width: "25%" },
-					{title:"消费金额（￥）", field: "consum", width: "25%" }
+					{title:"消费金额（￥）", field: "consum", width: "25%", "class": "warning"}
 				]
 			}).on('check.bs.table uncheck.bs.table ' +
 	                'check-all.bs.table uncheck-all.bs.table', function () {
-				var flag = false, selections = SalesRecordHandler.getIdSelections($("#UserTable"));
-	            $("#delSalesRecord").prop('disabled', !selections.length);
+				var selections = SalesRecordHandler.getTableSelections($("#UserTable"));
+	            $("#delSalesRecord").attr('disabled', !selections.length);
 	            
-				if(selections.length < 2){
-					flag = true;
-				}
-				$("#addSalesRecord").prop('disabled', !flag);
-				
 	            // save your data, here just save the current page
-	            ruifiosMap.selections = SalesRecordHandler.getIdSelections($table);
+	            ruifiosMap.selections = selections;
 	            // push or splice the selections if you want to save all data selections
 	        });
+		},
+		deleteUser: function(ids){
+			// 删除用户
+    		$.ajax({
+                url: "${base}/auth/deleteusers",
+                data: {userIds: ids},
+                type: "POST",
+                dataType: "json",
+                success: function() {
+                	SalesRecordHandler.loadUserTable(1);
+                }
+            });
 		}
 	};
-	
+
+    window.operateEvents = {
+        'click .userdetail': function (e, value, row, index) {
+            $("#SalesRecordModal").data('id', row.userName);
+          	$("#SalesRecordModal").modal('show');
+        },
+        'click .removeuser': function (e, value, row, index) {
+        	var ids = [row.id];
+            $(this).closest('table').bootstrapTable('remove', {
+                field: 'id',
+                values: ids
+            });
+        }
+    };
+
 	$(document).ready(function(){
 		SalesRecordHandler.init();
 		
-		$(document).on("change",  "#merchantname", function(e){// 刷新商品信息
+		$(document).on("click",  "#search-btn", function(e){// 查询用户
+			ruifiosMap['user'] = {fuzzy: $("#fuzzy").val()};
+			SalesRecordHandler.loadUserTable(1);
+		}).on("change",  "#merchantname", function(e){// 刷新商品信息
 			var shop = $(this).val();
 			$("#goodsTable datalist").each(function () {
 				SalesRecordHandler.refreshGoods($(this), shop);
@@ -363,7 +397,8 @@
     		var inputlist = firsttd.find('input');
     		inputlist.attr("list", inputlist.attr("list")+trs.length);
     		var datalist = firsttd.find('datalist');
-    		datalist.attr("id", inputlist.attr("id")+trs.length);
+    		datalist.attr("id", datalist.attr("id")+trs.length);
+    		SalesRecordHandler.refreshGoods(datalist, $("#merchantname").val());
     		
     		var lasttd = newtr.find('td:last-child');
     		lasttd.find('a').addClass("del-record").removeClass("add-record");
@@ -383,19 +418,44 @@
     		tr.remove();
     	}).on("show.modal.bs", "#addSalesRecordModal", function(e){// 摸态框关闭清理表单
     		$("#goodsTable tbody>tr:gt(0)").remove();
-    		var form = $(this).find('form');
+    		// 设置选中用户信息
     		ruifiosMap['formdata'] = {base: {consumername: '', consumercard: '', consumerphone: ''}};
-    		var row = $("#UserTable").bootstrapTable('getSelections'); 
-    		if(row) {
+    		var rows = $("#UserTable").bootstrapTable('getSelections'); 
+    		if(rows && rows.length === 1) {
+    			var row = rows[0]; 
     			ruifiosMap['formdata'] = {base: {consumername: row['realName'], consumercard: row['userName'], consumerphone: row['userPhone']}};
     		}
+			// 初始化表单数据 
+			$(this).find('form .base input').each(function() {
+                var name = $(this).attr('name');
+                var v = $.getJSONField(ruifiosMap['formdata'], name);
+                v = typeof v == 'undefined' ? "" : v;
+                $(this).val(v);
+            });
     	}).on("show.modal.bs", "#SalesRecordModal", function(e){// 摸态框关闭清理表单
     		ruifiosMap['salesrecord'] = {consumercard: $(this).data("id")};
-    		
+    		$(this).removeData('id');
     		SalesRecordHandler.loadSalesRecordTable(1);
+    	}).on("show.modal.bs", "#delUserModal", function(e){// 删除用户确认摸态框
+    		if(ruifiosMap.selections && ruifiosMap.selections.length){
+    			var ids = [], ul = $(this).find("ul.names").empty();
+    			$.each(ruifiosMap.selections, function(index, item) {
+    				var li = $('<li />', {text: item.realName, role: "presentation", "class": "active"})
+    				//li.append($('<a />', {"class": "glyphicon glyphicon-remove-circle"}));
+    				ul.append(li);
+    				ids.push(item.id);
+    			});
+    			$(this).data('ids', ids);
+    		}else{
+    			
+    		}
+    	}).on("click",  "#delUserConfirm", function(e){// 确认删除选中用户
+    		var ids = $("#delUserModal").data('ids');
+    		$("#delUserModal").removeData('ids').modal("hide");
+    		SalesRecordHandler.deleteUser(ids);
     	});
 		
-		$("#addSalesRecordForm").submit(function() {debugger;
+		$("#addSalesRecordForm").submit(function() {
 			if($(this).parsley().isValid()) {
 				$(this).ajaxSubmit({
 		            type: 'POST',

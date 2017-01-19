@@ -202,7 +202,7 @@ public class Dao extends HibernateDaoSupport {
 		try {
 			long records = RuifiosEnv.dao.getCount(t, condition);
 			String hql = "from " + t.getSimpleName();
-			if(StringUtils.isEmpty(condition)){
+			if(!StringUtils.isEmpty(condition)){
 				hql += " "+condition;
 			}
 			List<T> data = query(hql, pager.getCurrentPage(), pager.getPageSize());
@@ -283,11 +283,6 @@ public class Dao extends HibernateDaoSupport {
 			} catch (Exception e1) {
 				this.logger.warn("", e1);
 			}
-		}
-		try {
-			session.close();
-		} catch (Exception e1) {
-			this.logger.warn("", e1);
 		}
 
 		return null;

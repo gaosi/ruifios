@@ -57,7 +57,7 @@ public class SalesService {
 		// 添加商品销售信息
 		List<SalesRecord> list = new ArrayList<SalesRecord>();
 		// 个人消费总金额
-		double consum = getSalesSum(base.getConsumercard())*(1/discount);
+		double consum = getSalesSum(base)*(1/discount);
 		for(SalesRecord record: records){
 			record.newSalesRecord(base);
 			// 计算返利
@@ -89,7 +89,7 @@ public class SalesService {
 				good.setLevelcode(levelcode+"/"+goodid);
 				goods.add(good);
 			}else{
-				ShopsInfo good = getShopsInfo(base.getMerchantname());
+				ShopsInfo good = getShopsInfo(name);
 				if(good == null){
 					long goodid = IdRecordHelper.getTblMaxIdWithUpdate(ShopsInfo.class);
 					good = new ShopsInfo();
@@ -100,8 +100,8 @@ public class SalesService {
 				}
 			}
 		}
-		RuifiosEnv.dao.insert(list);
-		RuifiosEnv.dao.insert(goods);
+		RuifiosEnv.dao.batchInsert(list);
+		RuifiosEnv.dao.batchInsert(goods);
 	}
 	
 	/**
@@ -113,6 +113,33 @@ public class SalesService {
 	public Pager<SalesRecord> getSalesRecord(Pager<SalesRecord> pager, String condition){
 		return RuifiosEnv.dao.query(SalesRecord.class, pager, condition);
 	}
+
+	/**
+	 * 获取用户消费总金额
+	 *  若用户不存在，添加用户信息
+	 *  若用户存在，计算消费总金额
+	 * @param base
+	 */
+	public double getSalesSum(BaseSales base){
+		double consum = 0.0;
+		try {
+			List<User> users = RuifiosEnv.dao.query(User.class, " where name = '"+base.getConsumercard()+"'");
+			if(users == null || users.size()==0){
+				User user = new User();
+				user.setName(base.getConsumercard());
+				user.setRealName(base.getConsumername());
+				user.setPhone(base.getConsumerphone());
+				user.setRole("weixin");
+				
+				RuifiosEnv.dao.insert(user);
+			}else{
+				consum = getSalesSum(base.getConsumercard());
+			}
+		} catch (Exception e) {
+			logger.error("", e);
+		}
+		return consum;
+	}
 	
 	/**
 	 * 获取用户消费总金额
@@ -122,10 +149,11 @@ public class SalesService {
 	public double getSalesSum(String consumercard){
 		double consum = 0.0;
 		try {
-			String sql = "select count(actualpayment) from t_salesrecord where consumercard = '"+consumercard+"'"; 
+			String sql = "select sum(actualpayment) from t_salesrecord where consumercard = '"+consumercard+"'"; 
 			List<Object> list = RuifiosEnv.dao.SQLQuery(sql);
 			if(list != null && list.size()>0){
-				consum = Double.parseDouble(String.valueOf(list.get(0)));
+				if(list.get(0) != null)
+					consum = Double.parseDouble(String.valueOf(list.get(0)));
 			}
 		} catch (Exception e) {
 			logger.error("", e);
@@ -144,23 +172,6 @@ public class SalesService {
 			return shopsinfos.get(0);
 		}
 		return null;
-	}
-	
-	/**
-	 * 添加用户信息
-	 * @param base
-	 */
-	public void addUser(BaseSales base){
-		List<User> users = RuifiosEnv.dao.query(User.class, " where name = "+base.getConsumercard());
-		if(users == null || users.size()==0){
-			User user = new User();
-			user.setName(base.getConsumercard());
-			user.setRealName(base.getConsumername());
-			user.setPhone(base.getConsumerphone());
-			user.setRole("weixin");
-			
-			RuifiosEnv.dao.insert(user);
-		}
 	}
 	
 }

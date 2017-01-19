@@ -1,25 +1,24 @@
 package com.ruifios.sales.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
+
+import com.ruifios.commons.BaseTimedObject;
 
 /**
  * 基础销售信息
  */
 @MappedSuperclass
-public class BaseSales implements Serializable {
+public class BaseSales extends BaseTimedObject {
 
 	private static final long serialVersionUID = -8281280437325993085L;
 
 	/**
 	 * 发票编码	invoiceno	Varchar	必须	发票号
 	 */
-	@NotNull
 	@Column(name="invoiceno")
-	protected String invoiceno;
+	protected String invoiceno = "发票编码";
 
 	/**
 	 * 消费者姓名	consumername	Varchar	必须	消费者姓名
@@ -44,6 +43,7 @@ public class BaseSales implements Serializable {
 	/**
 	 * 商家名称	merchantname	Varchar	必须	商家名称
 	 */
+	@NotNull
 	@Column(name="merchantname")
 	protected String merchantname;
 

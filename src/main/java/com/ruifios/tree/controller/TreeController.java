@@ -1,5 +1,7 @@
 package com.ruifios.tree.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ruifios.commons.ListWraper;
 import com.ruifios.sales.model.BaseSales;
 import com.ruifios.sales.model.SalesRecord;
 import com.ruifios.sales.model.ShopsInfo;
@@ -46,7 +47,7 @@ public class TreeController extends AbstractController {
 	
 	@ResponseBody
 	@RequestMapping("/add")
-	public String addSalesRecord(HttpServletRequest request, @Param("base")BaseSales base, @Param("record")ListWraper<SalesRecord> record) 
+	public String addSalesRecord(HttpServletRequest request, @Param("base")BaseSales base, @Param("record")List<SalesRecord> record) 
 	{
 		
 		return "";

@@ -1,6 +1,6 @@
-UPDATE `mysql`.`user` SET `Password`=PASSWORD('cybersky.db.ROOT@305') WHERE `User`='cybersky';
+UPDATE `mysql`.`user` SET `Password`=PASSWORD('***') WHERE `User`='ruifios';
 
-grant all privileges on cybersky.* to 'cybersky'@'localhost' identified by 'cybersky';
+grant all privileges on ruifios.* to 'ruifios'@'localhost' identified by 'ruifios';
 
 FLUSH PRIVILEGES;
 REPAIR table `mysql`.`db`, `mysql`.`user`;

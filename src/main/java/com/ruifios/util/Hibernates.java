@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Iterator;
 
+import javax.persistence.Table;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang3.StringUtils;
@@ -17,7 +18,7 @@ import org.hibernate.dialect.SQLServer2008Dialect;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
-import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
+import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 
 import com.ruifios.server.RuifiosEnv;
 
@@ -102,7 +103,7 @@ public class Hibernates {
     private static <T> PersistentClass getPersistentClass(Class<T> clazz) {  
         synchronized (clazz) {   
         	Configuration configuration = getConfiguration();
-            PersistentClass pc = getConfiguration().getClassMapping(clazz.getSimpleName());   
+            PersistentClass pc = configuration.getClassMapping(clazz.getSimpleName());   
             if (pc == null) {  
                 configuration = configuration.addClass(clazz);  
                 pc = configuration.getClassMapping(clazz.getName());  
@@ -119,6 +120,10 @@ public class Hibernates {
      * @return 表名 
      */  
     public static String getTableName(Class<?> clazz) {  
+    	Table annotation = (Table)clazz.getAnnotation(Table.class);
+        if(annotation != null){
+            return annotation.name();
+    	}
         return getPersistentClass(clazz).getTable().getName();  
     }  
   
